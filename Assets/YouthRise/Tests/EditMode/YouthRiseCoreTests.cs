@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using UnityEngine;
 
 namespace YouthRise.Tests
 {
@@ -82,6 +83,35 @@ namespace YouthRise.Tests
             Assert.That(urgent.urgency, Is.EqualTo("SEGERA"));
             Assert.That(nonUrgent.immediateSafetyConcern, Is.False);
             Assert.That(nonUrgent.category, Is.EqualTo("Perundungan"));
+        }
+
+        [Test]
+        public void VisualArtCatalog_ContainsEveryChapterOneAsset()
+        {
+            string[] resourcePaths =
+            {
+                "YouthRise/Art/Backgrounds/bg_home",
+                "YouthRise/Art/Backgrounds/bg_school_gate",
+                "YouthRise/Art/Backgrounds/bg_classroom",
+                "YouthRise/Art/Backgrounds/bg_hallway",
+                "YouthRise/Art/Backgrounds/bg_back_school",
+                "YouthRise/Art/Backgrounds/bg_street",
+                "YouthRise/Art/Backgrounds/bg_bedroom",
+                "YouthRise/Art/Characters/char_maya_chroma",
+                "YouthRise/Art/Characters/char_kevin_chroma",
+                "YouthRise/Art/Characters/char_rina_chroma",
+                "YouthRise/Art/Characters/char_ibu_chroma",
+                "YouthRise/Art/Characters/char_senior_chroma",
+                "YouthRise/Art/Characters/char_mr_daniel_chroma"
+            };
+
+            foreach (string resourcePath in resourcePaths)
+            {
+                Texture2D texture = Resources.Load<Texture2D>(resourcePath);
+                Assert.That(texture, Is.Not.Null, resourcePath);
+                Assert.That(texture.width, Is.GreaterThan(512), resourcePath);
+                Assert.That(texture.height, Is.GreaterThan(512), resourcePath);
+            }
         }
     }
 }

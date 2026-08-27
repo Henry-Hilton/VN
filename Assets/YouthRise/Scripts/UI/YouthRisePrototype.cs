@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -41,6 +42,8 @@ namespace YouthRise
         private GameObject safeReportPanel;
 
         private Image sceneBackground;
+        private Image nextSceneBackground;
+        private Image characterPortrait;
         private Image riskFill;
         private Image trustFill;
         private Text riskValue;
@@ -50,8 +53,29 @@ namespace YouthRise
         private Text speakerInitials;
         private Text dialogueText;
         private Text toastText;
+        private GameObject toastRoot;
+        private GameObject speakerPlaceholder;
+        private CanvasGroup dialogueGroup;
+        private CanvasGroup characterGroup;
+        private CanvasGroup storyInteractionGroup;
+        private CanvasGroup toastGroup;
+        private RectTransform dialogueRect;
+        private RectTransform characterRect;
+        private RectTransform toastRect;
+        private Image toastBackground;
+        private Image toastAccent;
+        private Material chromaKeyMaterial;
+        private Coroutine storyTransition;
+        private Coroutine screenTransition;
+        private Coroutine meterTransition;
+        private Coroutine toastTransition;
+        private float displayedRisk;
+        private float displayedTrust;
+        private bool metersInitialized;
+        private readonly Dictionary<string, Sprite> artSprites = new Dictionary<string, Sprite>(StringComparer.OrdinalIgnoreCase);
         private readonly Button[] choiceButtons = new Button[3];
         private readonly Text[] choiceLabels = new Text[3];
+        private readonly CanvasGroup[] choiceGroups = new CanvasGroup[3];
         private Button continueStoryButton;
         private Button continueMenuButton;
         private Button safeZoneMenuButton;
@@ -141,20 +165,34 @@ namespace YouthRise
             completionScreen = BuildCompletionScreen(canvasRect);
             safeZoneScreen = BuildSafeZoneScreen(canvasRect);
 
-            GameObject toast = CreateRect("Toast", canvasRect, new Vector2(0.27f, 0.89f), new Vector2(0.73f, 0.97f));
-            AddImage(toast, new Color(Navy.r, Navy.g, Navy.b, 0.94f));
-            toastText = AddText(toast, string.Empty, 22, White, TextAnchor.MiddleCenter, FontStyle.Bold);
-            toast.SetActive(false);
+            toastRoot = CreateRect("Toast", canvasRect, new Vector2(0.365f, 0.862f), new Vector2(0.635f, 0.897f));
+            toastRect = toastRoot.GetComponent<RectTransform>();
+            toastBackground = AddImage(toastRoot, new Color(Navy.r, Navy.g, Navy.b, 0.96f));
+            toastBackground.raycastTarget = false;
+            toastGroup = toastRoot.AddComponent<CanvasGroup>();
+            toastGroup.interactable = false;
+            toastGroup.blocksRaycasts = false;
+            toastText = AddText(toastRoot, string.Empty, 17, White, TextAnchor.MiddleCenter, FontStyle.Bold);
+            SetTextPadding(toastText, 28f, 20f, 4f, 4f);
+            GameObject toastStripe = CreateRect("Accent", toastRoot.transform, Vector2.zero, new Vector2(0.018f, 1f));
+            toastAccent = AddImage(toastStripe, Cyan);
+            toastAccent.raycastTarget = false;
+            toastRoot.SetActive(false);
         }
 
         private GameObject BuildStartScreen(RectTransform parent)
         {
             GameObject root = CreateRect("Start Screen", parent, Vector2.zero, Vector2.one);
-            AddImage(root, Navy);
+            Image menuBackground = AddImage(root, Navy);
+            menuBackground.sprite = LoadArtSprite("YouthRise/Art/Backgrounds/bg_school_gate");
+            menuBackground.color = menuBackground.sprite != null ? White : Navy;
 
-            CreateDecorativeBlock(root.transform, "Sun", new Vector2(0.73f, 0.60f), new Vector2(0.96f, 0.98f), Gold);
-            CreateDecorativeBlock(root.transform, "Sky", new Vector2(0.03f, 0.04f), new Vector2(0.20f, 0.36f), Cyan);
-            CreateDecorativeBlock(root.transform, "Coral", new Vector2(0.82f, 0.08f), new Vector2(0.97f, 0.29f), Coral);
+            GameObject menuWash = CreateRect("Menu Wash", root.transform, Vector2.zero, Vector2.one);
+            AddImage(menuWash, new Color(Navy.r, Navy.g, Navy.b, 0.82f)).raycastTarget = false;
+
+            CreateDecorativeBlock(root.transform, "Sun", new Vector2(0.945f, 0.60f), new Vector2(0.957f, 0.96f), Gold);
+            CreateDecorativeBlock(root.transform, "Sky", new Vector2(0.03f, 0.06f), new Vector2(0.042f, 0.34f), Cyan);
+            CreateDecorativeBlock(root.transform, "Coral", new Vector2(0.945f, 0.10f), new Vector2(0.957f, 0.28f), Coral);
 
             GameObject eyebrow = CreateRect("Eyebrow", root.transform, new Vector2(0.18f, 0.79f), new Vector2(0.68f, 0.86f));
             AddText(eyebrow, "YOUTHRise • INTERACTIVE STORY", 24, Cyan, TextAnchor.MiddleLeft, FontStyle.Bold);
@@ -196,55 +234,116 @@ namespace YouthRise
         private GameObject BuildStoryScreen(RectTransform parent)
         {
             GameObject root = CreateRect("Story Screen", parent, Vector2.zero, Vector2.one);
-            sceneBackground = AddImage(root, Hex("6AA6D8"));
+            AddImage(root, Navy).raycastTarget = false;
+            storyInteractionGroup = root.AddComponent<CanvasGroup>();
 
-            CreateDecorativeBlock(root.transform, "Horizon", new Vector2(0f, 0f), new Vector2(1f, 0.43f), new Color(Navy.r, Navy.g, Navy.b, 0.16f));
-            CreateDecorativeBlock(root.transform, "Light", new Vector2(0.66f, 0.34f), new Vector2(0.93f, 0.88f), new Color(1f, 1f, 1f, 0.10f));
+            GameObject background = CreateRect("Background", root.transform, Vector2.zero, Vector2.one);
+            sceneBackground = AddImage(background, White);
+            sceneBackground.raycastTarget = false;
 
-            GameObject topBar = CreateRect("Top Bar", root.transform, new Vector2(0.025f, 0.90f), new Vector2(0.975f, 0.98f));
+            GameObject nextBackground = CreateRect("Background Crossfade", root.transform, Vector2.zero, Vector2.one);
+            nextSceneBackground = AddImage(nextBackground, new Color(1f, 1f, 1f, 0f));
+            nextSceneBackground.raycastTarget = false;
+
+            GameObject atmosphere = CreateRect("Atmosphere", root.transform, Vector2.zero, Vector2.one);
+            AddImage(atmosphere, new Color(Navy.r, Navy.g, Navy.b, 0.24f)).raycastTarget = false;
+
+            GameObject characterBackdrop = CreateRect("Character Backdrop", root.transform, new Vector2(0.015f, 0.20f), new Vector2(0.37f, 0.90f));
+            AddImage(characterBackdrop, new Color(Navy.r, Navy.g, Navy.b, 0.18f)).raycastTarget = false;
+
+            GameObject character = CreateRect("Character Stage", root.transform, new Vector2(0.018f, 0.19f), new Vector2(0.38f, 0.90f));
+            characterRect = character.GetComponent<RectTransform>();
+            characterGroup = character.AddComponent<CanvasGroup>();
+
+            GameObject portraitVisual = CreateRect("Character Portrait", character.transform, Vector2.zero, Vector2.one);
+            characterPortrait = AddImage(portraitVisual, new Color(1f, 1f, 1f, 0f));
+            characterPortrait.preserveAspect = true;
+            characterPortrait.raycastTarget = false;
+
+            Shader chromaShader = Shader.Find("YouthRise/UI Chroma Key");
+            if (chromaShader != null)
+            {
+                chromaKeyMaterial = new Material(chromaShader);
+                chromaKeyMaterial.SetColor("_KeyColor", Color.green);
+                chromaKeyMaterial.SetFloat("_Threshold", 0.36f);
+                chromaKeyMaterial.SetFloat("_Softness", 0.16f);
+                characterPortrait.material = chromaKeyMaterial;
+            }
+            else
+            {
+                Debug.LogWarning("YouthRise chroma-key shader was not found. Character art will use its source background.");
+            }
+
+            speakerPlaceholder = CreateRect("Narrator Mark", character.transform, new Vector2(0.30f, 0.45f), new Vector2(0.70f, 0.65f));
+            AddImage(speakerPlaceholder, new Color(Navy.r, Navy.g, Navy.b, 0.78f)).raycastTarget = false;
+            speakerInitials = AddText(speakerPlaceholder, "✦", 56, Gold, TextAnchor.MiddleCenter, FontStyle.Bold);
+
+            GameObject hudShadow = CreateRect("HUD Shadow", root.transform, new Vector2(0.025f, 0.892f), new Vector2(0.975f, 0.902f));
+            AddImage(hudShadow, new Color(0f, 0f, 0f, 0.24f)).raycastTarget = false;
+
+            GameObject topBar = CreateRect("Top Bar", root.transform, new Vector2(0.025f, 0.90f), new Vector2(0.975f, 0.982f));
             AddImage(topBar, new Color(Navy.r, Navy.g, Navy.b, 0.95f));
 
-            GameObject brand = CreateRect("Brand", topBar.transform, new Vector2(0.025f, 0.12f), new Vector2(0.20f, 0.88f));
+            GameObject brandAccent = CreateRect("Brand Accent", topBar.transform, new Vector2(0.018f, 0.22f), new Vector2(0.024f, 0.78f));
+            AddImage(brandAccent, Cyan).raycastTarget = false;
+
+            GameObject brand = CreateRect("Brand", topBar.transform, new Vector2(0.035f, 0.12f), new Vector2(0.19f, 0.88f));
             AddText(brand, "YOUTHRise", 25, White, TextAnchor.MiddleLeft, FontStyle.Bold);
 
-            GameObject location = CreateRect("Location", topBar.transform, new Vector2(0.20f, 0.12f), new Vector2(0.52f, 0.88f));
-            locationText = AddText(location, "", 21, new Color(1f, 1f, 1f, 0.72f), TextAnchor.MiddleLeft);
+            GameObject separator = CreateRect("Separator", topBar.transform, new Vector2(0.193f, 0.25f), new Vector2(0.195f, 0.75f));
+            AddImage(separator, new Color(1f, 1f, 1f, 0.14f)).raycastTarget = false;
+
+            GameObject locationDot = CreateRect("Location Dot", topBar.transform, new Vector2(0.207f, 0.12f), new Vector2(0.225f, 0.88f));
+            AddText(locationDot, "●", 13, Cyan, TextAnchor.MiddleCenter, FontStyle.Bold);
+            GameObject location = CreateRect("Location", topBar.transform, new Vector2(0.228f, 0.12f), new Vector2(0.52f, 0.88f));
+            locationText = AddText(location, "", 20, new Color(1f, 1f, 1f, 0.76f), TextAnchor.MiddleLeft, FontStyle.Bold);
 
             CreateMeter(topBar.transform, "Risk", "RISK", new Vector2(0.55f, 0.18f), new Vector2(0.75f, 0.82f), Coral, out riskFill, out riskValue);
             CreateMeter(topBar.transform, "Trust", "TRUST", new Vector2(0.77f, 0.18f), new Vector2(0.97f, 0.82f), Cyan, out trustFill, out trustValue);
 
-            GameObject portraitCard = CreateRect("Speaker Card", root.transform, new Vector2(0.035f, 0.25f), new Vector2(0.245f, 0.86f));
-            AddImage(portraitCard, new Color(Paper.r, Paper.g, Paper.b, 0.96f));
+            GameObject dialogueShadow = CreateRect("Dialogue Shadow", root.transform, new Vector2(0.315f, 0.258f), new Vector2(0.97f, 0.848f));
+            AddImage(dialogueShadow, new Color(0f, 0f, 0f, 0.20f)).raycastTarget = false;
 
-            GameObject portrait = CreateRect("Portrait", portraitCard.transform, new Vector2(0.12f, 0.36f), new Vector2(0.88f, 0.88f));
-            AddImage(portrait, new Color(Blue.r, Blue.g, Blue.b, 0.20f));
-            speakerInitials = AddText(portrait, "A", 92, Navy, TextAnchor.MiddleCenter, FontStyle.Bold);
+            GameObject dialogueCard = CreateRect("Dialogue Card", root.transform, new Vector2(0.31f, 0.27f), new Vector2(0.965f, 0.86f));
+            dialogueRect = dialogueCard.GetComponent<RectTransform>();
+            AddImage(dialogueCard, new Color(Paper.r, Paper.g, Paper.b, 0.96f));
+            dialogueGroup = dialogueCard.AddComponent<CanvasGroup>();
 
-            GameObject name = CreateRect("Speaker Name", portraitCard.transform, new Vector2(0.08f, 0.16f), new Vector2(0.92f, 0.34f));
-            speakerName = AddText(name, "NARASI", 28, Navy, TextAnchor.MiddleCenter, FontStyle.Bold);
+            GameObject accent = CreateRect("Dialogue Accent", dialogueCard.transform, new Vector2(0f, 0f), new Vector2(0.012f, 1f));
+            AddImage(accent, Cyan).raycastTarget = false;
 
-            GameObject cardCaption = CreateRect("Card Caption", portraitCard.transform, new Vector2(0.08f, 0.05f), new Vector2(0.92f, 0.15f));
-            AddText(cardCaption, "CHAPTER 01", 16, new Color(Navy.r, Navy.g, Navy.b, 0.45f), TextAnchor.MiddleCenter, FontStyle.Bold);
+            GameObject name = CreateRect("Speaker Name", dialogueCard.transform, new Vector2(0.055f, 0.81f), new Vector2(0.55f, 0.94f));
+            speakerName = AddText(name, "NARASI", 27, Blue, TextAnchor.MiddleLeft, FontStyle.Bold);
 
-            GameObject dialogueCard = CreateRect("Dialogue Card", root.transform, new Vector2(0.27f, 0.25f), new Vector2(0.965f, 0.86f));
-            AddImage(dialogueCard, new Color(Paper.r, Paper.g, Paper.b, 0.97f));
+            GameObject cardCaption = CreateRect("Card Caption", dialogueCard.transform, new Vector2(0.69f, 0.82f), new Vector2(0.94f, 0.93f));
+            AddText(cardCaption, "CHAPTER 01  •  THE FIRST DAY", 15, new Color(Navy.r, Navy.g, Navy.b, 0.42f), TextAnchor.MiddleRight, FontStyle.Bold);
 
-            GameObject dialogue = CreateRect("Dialogue", dialogueCard.transform, new Vector2(0.055f, 0.17f), new Vector2(0.945f, 0.88f));
-            dialogueText = AddText(dialogue, "", 34, Ink, TextAnchor.MiddleLeft);
+            GameObject dialogue = CreateRect("Dialogue", dialogueCard.transform, new Vector2(0.055f, 0.18f), new Vector2(0.945f, 0.79f));
+            dialogueText = AddText(dialogue, "", 32, Ink, TextAnchor.MiddleLeft);
             dialogueText.resizeTextForBestFit = true;
-            dialogueText.resizeTextMinSize = 24;
-            dialogueText.resizeTextMaxSize = 34;
+            dialogueText.resizeTextMinSize = 22;
+            dialogueText.resizeTextMaxSize = 32;
 
             continueStoryButton = CreateButton(dialogueCard.transform, "Continue Story", "LANJUT  →", new Vector2(0.70f, 0.04f), new Vector2(0.94f, 0.16f), Navy, White, 20);
 
+            Color[] choiceAccents = { Coral, Gold, Cyan };
             for (int index = 0; index < choiceButtons.Length; index++)
             {
                 float startX = 0.035f + index * 0.315f;
                 float endX = startX + 0.295f;
-                choiceButtons[index] = CreateButton(root.transform, $"Choice {index + 1}", "", new Vector2(startX, 0.055f), new Vector2(endX, 0.205f), Navy, White, 21);
+                choiceButtons[index] = CreateButton(root.transform, $"Choice {index + 1}", "", new Vector2(startX, 0.045f), new Vector2(endX, 0.225f), new Color(Navy.r, Navy.g, Navy.b, 0.96f), White, 21);
                 choiceLabels[index] = choiceButtons[index].GetComponentInChildren<Text>();
                 choiceLabels[index].alignment = TextAnchor.MiddleLeft;
-                SetTextPadding(choiceLabels[index], 22f, 14f, 5f, 5f);
+                SetTextPadding(choiceLabels[index], 88f, 18f, 5f, 5f);
+
+                GameObject choiceAccent = CreateRect("Accent", choiceButtons[index].transform, Vector2.zero, new Vector2(0.016f, 1f));
+                AddImage(choiceAccent, choiceAccents[index]).raycastTarget = false;
+
+                GameObject keycap = CreateRect("Keycap", choiceButtons[index].transform, new Vector2(0.052f, 0.31f), new Vector2(0.145f, 0.69f));
+                AddImage(keycap, new Color(choiceAccents[index].r, choiceAccents[index].g, choiceAccents[index].b, 0.18f)).raycastTarget = false;
+                Text keyText = AddText(keycap, ((char)('A' + index)).ToString(), 20, choiceAccents[index], TextAnchor.MiddleCenter, FontStyle.Bold);
+                keyText.raycastTarget = false;
+                choiceGroups[index] = choiceButtons[index].gameObject.AddComponent<CanvasGroup>();
             }
 
             return root;
@@ -253,10 +352,15 @@ namespace YouthRise
         private GameObject BuildCompletionScreen(RectTransform parent)
         {
             GameObject root = CreateRect("Completion Screen", parent, Vector2.zero, Vector2.one);
-            AddImage(root, Navy);
+            Image completionBackground = AddImage(root, Navy);
+            completionBackground.sprite = LoadArtSprite("YouthRise/Art/Backgrounds/bg_bedroom");
+            completionBackground.color = completionBackground.sprite != null ? White : Navy;
 
-            CreateDecorativeBlock(root.transform, "Gold", new Vector2(0.72f, 0.54f), new Vector2(0.96f, 0.96f), Gold);
-            CreateDecorativeBlock(root.transform, "Mint", new Vector2(0.05f, 0.05f), new Vector2(0.23f, 0.37f), Mint);
+            GameObject completionWash = CreateRect("Completion Wash", root.transform, Vector2.zero, Vector2.one);
+            AddImage(completionWash, new Color(Navy.r, Navy.g, Navy.b, 0.78f)).raycastTarget = false;
+
+            CreateDecorativeBlock(root.transform, "Gold", new Vector2(0.945f, 0.58f), new Vector2(0.957f, 0.94f), Gold);
+            CreateDecorativeBlock(root.transform, "Mint", new Vector2(0.043f, 0.08f), new Vector2(0.055f, 0.35f), Mint);
 
             GameObject card = CreateRect("Reflection Card", root.transform, new Vector2(0.18f, 0.16f), new Vector2(0.82f, 0.88f));
             AddImage(card, Paper);
@@ -414,6 +518,7 @@ namespace YouthRise
             PrototypeSaveService.Clear();
             profile = new PlayerProfile();
             profile.ResetForChapterOne();
+            ResetMeterAnimation();
             branchPath = string.Empty;
             chapterCompleted = false;
             sessionSeed = Guid.NewGuid().GetHashCode();
@@ -431,6 +536,7 @@ namespace YouthRise
             }
 
             profile = save.profile;
+            ResetMeterAnimation();
             branchPath = save.branchPath ?? string.Empty;
             chapterCompleted = save.chapterCompleted;
             telemetry = new DecisionTelemetry(story.Chapter.id);
@@ -458,15 +564,125 @@ namespace YouthRise
                 return;
             }
 
-            currentNode = node;
+            bool animateBetweenNodes = storyScreen.activeInHierarchy && currentNode != null;
+            if (storyTransition != null)
+                StopCoroutine(storyTransition);
+
+            storyTransition = StartCoroutine(TransitionToNode(node, animateBetweenNodes));
+        }
+
+        private IEnumerator TransitionToNode(StoryNode node, bool animateBetweenNodes)
+        {
             SetScreen(storyScreen);
-            ApplyBackground(node.background);
+            storyInteractionGroup.interactable = false;
+            storyInteractionGroup.blocksRaycasts = false;
+
+            Sprite nextBackground = LoadArtSprite(
+                $"YouthRise/Art/Backgrounds/bg_{(node.background ?? string.Empty).Replace('-', '_')}");
+            Color fallback = BackgroundFallback(node.background);
+
+            if (!animateBetweenNodes)
+            {
+                sceneBackground.sprite = nextBackground;
+                sceneBackground.color = nextBackground != null ? White : fallback;
+                nextSceneBackground.sprite = null;
+                nextSceneBackground.color = new Color(1f, 1f, 1f, 0f);
+                PopulateNode(node);
+                SetCharacterArt(node.speaker);
+
+                dialogueGroup.alpha = 0f;
+                characterGroup.alpha = 0f;
+                SetChoiceAnimationState(0f, 0.97f);
+                yield return AnimateNodeEntrance(0.42f);
+            }
+            else
+            {
+                nextSceneBackground.sprite = nextBackground;
+                Color nextBase = nextBackground != null ? White : fallback;
+                nextSceneBackground.color = WithAlpha(nextBase, 0f);
+
+                const float exitDuration = 0.18f;
+                for (float elapsed = 0f; elapsed < exitDuration; elapsed += Time.unscaledDeltaTime)
+                {
+                    float eased = Ease01(elapsed / exitDuration);
+                    dialogueGroup.alpha = 1f - eased;
+                    characterGroup.alpha = 1f - eased;
+                    nextSceneBackground.color = WithAlpha(nextBase, eased * 0.46f);
+                    yield return null;
+                }
+
+                PopulateNode(node);
+                SetCharacterArt(node.speaker);
+                dialogueGroup.alpha = 0f;
+                characterGroup.alpha = 0f;
+                SetChoiceAnimationState(0f, 0.97f);
+
+                const float entranceDuration = 0.38f;
+                Vector2 dialogueRest = Vector2.zero;
+                Vector2 characterRest = Vector2.zero;
+                dialogueRect.anchoredPosition = dialogueRest + new Vector2(44f, -8f);
+                characterRect.anchoredPosition = characterRest + new Vector2(-42f, -12f);
+
+                for (float elapsed = 0f; elapsed < entranceDuration; elapsed += Time.unscaledDeltaTime)
+                {
+                    float normalized = Mathf.Clamp01(elapsed / entranceDuration);
+                    float eased = Ease01(normalized);
+                    nextSceneBackground.color = WithAlpha(nextBase, Mathf.Lerp(0.46f, 1f, eased));
+                    dialogueGroup.alpha = eased;
+                    characterGroup.alpha = eased;
+                    dialogueRect.anchoredPosition = Vector2.Lerp(dialogueRest + new Vector2(44f, -8f), dialogueRest, eased);
+                    characterRect.anchoredPosition = Vector2.Lerp(characterRest + new Vector2(-42f, -12f), characterRest, eased);
+                    AnimateChoiceCards(normalized);
+                    yield return null;
+                }
+
+                sceneBackground.sprite = nextBackground;
+                sceneBackground.color = nextBase;
+                nextSceneBackground.sprite = null;
+                nextSceneBackground.color = new Color(1f, 1f, 1f, 0f);
+                dialogueRect.anchoredPosition = dialogueRest;
+                characterRect.anchoredPosition = characterRest;
+            }
+
+            dialogueGroup.alpha = 1f;
+            characterGroup.alpha = HasCharacterVisual() ? 1f : 0f;
+            SetChoiceAnimationState(1f, 1f);
+            storyInteractionGroup.interactable = true;
+            storyInteractionGroup.blocksRaycasts = true;
+            decisionStartedAt = Time.unscaledTime;
+            storyTransition = null;
+        }
+
+        private IEnumerator AnimateNodeEntrance(float duration)
+        {
+            Vector2 dialogueRest = Vector2.zero;
+            Vector2 characterRest = Vector2.zero;
+            dialogueRect.anchoredPosition = dialogueRest + new Vector2(52f, -10f);
+            characterRect.anchoredPosition = characterRest + new Vector2(-48f, -14f);
+
+            for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+            {
+                float normalized = Mathf.Clamp01(elapsed / duration);
+                float eased = Ease01(normalized);
+                dialogueGroup.alpha = eased;
+                characterGroup.alpha = HasCharacterVisual() ? eased : 0f;
+                dialogueRect.anchoredPosition = Vector2.Lerp(dialogueRest + new Vector2(52f, -10f), dialogueRest, eased);
+                characterRect.anchoredPosition = Vector2.Lerp(characterRest + new Vector2(-48f, -14f), characterRest, eased);
+                AnimateChoiceCards(normalized);
+                yield return null;
+            }
+
+            dialogueRect.anchoredPosition = dialogueRest;
+            characterRect.anchoredPosition = characterRest;
+        }
+
+        private void PopulateNode(StoryNode node)
+        {
+            currentNode = node;
             locationText.text = (node.location ?? string.Empty).ToUpperInvariant();
             speakerName.text = (node.speaker ?? "Narasi").ToUpperInvariant();
             speakerInitials.text = GetInitials(node.speaker);
             dialogueText.text = conversationGenerator.Generate(node, profile, sessionSeed);
-            decisionStartedAt = Time.unscaledTime;
-
             bool hasChoices = node.choices != null && node.choices.Length > 0;
             for (int index = 0; index < choiceButtons.Length; index++)
             {
@@ -480,7 +696,7 @@ namespace YouthRise
                 choiceButtons[index].gameObject.SetActive(true);
                 choiceButtons[index].onClick.RemoveAllListeners();
                 choiceButtons[index].onClick.AddListener(() => SelectChoice(selectedChoice));
-                choiceLabels[index].text = $"{(char)('A' + index)}   {selectedChoice.label}";
+                choiceLabels[index].text = selectedChoice.label;
             }
 
             continueStoryButton.gameObject.SetActive(!hasChoices);
@@ -493,6 +709,89 @@ namespace YouthRise
 
             UpdateMeters();
             SaveProgress(node.id, false);
+        }
+
+        private void SetCharacterArt(string speaker)
+        {
+            string resource = CharacterResource(speaker);
+            Sprite sprite = string.IsNullOrEmpty(resource) ? null : LoadArtSprite(resource);
+            characterPortrait.sprite = sprite;
+            characterPortrait.color = sprite != null ? White : new Color(1f, 1f, 1f, 0f);
+            speakerPlaceholder.SetActive(sprite == null);
+        }
+
+        private bool HasCharacterVisual()
+        {
+            return characterPortrait != null &&
+                   (characterPortrait.sprite != null ||
+                    (speakerPlaceholder != null && speakerPlaceholder.activeSelf));
+        }
+
+        private Sprite LoadArtSprite(string resourcePath)
+        {
+            if (string.IsNullOrWhiteSpace(resourcePath))
+                return null;
+
+            if (artSprites.TryGetValue(resourcePath, out Sprite cached))
+                return cached;
+
+            Texture2D texture = Resources.Load<Texture2D>(resourcePath);
+            if (texture == null)
+            {
+                Debug.LogWarning($"YouthRise art asset was not found at Resources/{resourcePath}.");
+                artSprites[resourcePath] = null;
+                return null;
+            }
+
+            var sprite = Sprite.Create(
+                texture,
+                new Rect(0f, 0f, texture.width, texture.height),
+                new Vector2(0.5f, 0f),
+                100f,
+                0,
+                SpriteMeshType.FullRect);
+            sprite.name = texture.name + " Runtime Sprite";
+            artSprites[resourcePath] = sprite;
+            return sprite;
+        }
+
+        private static string CharacterResource(string speaker)
+        {
+            string normalized = (speaker ?? string.Empty).Trim().ToLowerInvariant();
+            if (normalized.StartsWith("maya")) return "YouthRise/Art/Characters/char_maya_chroma";
+            if (normalized.StartsWith("kevin")) return "YouthRise/Art/Characters/char_kevin_chroma";
+            if (normalized.StartsWith("rina")) return "YouthRise/Art/Characters/char_rina_chroma";
+            if (normalized.StartsWith("ibu")) return "YouthRise/Art/Characters/char_ibu_chroma";
+            if (normalized.StartsWith("senior")) return "YouthRise/Art/Characters/char_senior_chroma";
+            if (normalized.Contains("wali kelas") || normalized.Contains("daniel") || normalized.Contains("guru bk"))
+                return "YouthRise/Art/Characters/char_mr_daniel_chroma";
+            return null;
+        }
+
+        private void SetChoiceAnimationState(float alpha, float scale)
+        {
+            for (int index = 0; index < choiceGroups.Length; index++)
+            {
+                if (choiceGroups[index] == null)
+                    continue;
+
+                choiceGroups[index].alpha = alpha;
+                choiceButtons[index].transform.localScale = Vector3.one * scale;
+            }
+        }
+
+        private void AnimateChoiceCards(float normalized)
+        {
+            for (int index = 0; index < choiceGroups.Length; index++)
+            {
+                if (choiceGroups[index] == null || !choiceButtons[index].gameObject.activeSelf)
+                    continue;
+
+                float delayed = Mathf.Clamp01((normalized - index * 0.11f) / 0.78f);
+                float eased = Ease01(delayed);
+                choiceGroups[index].alpha = eased;
+                choiceButtons[index].transform.localScale = Vector3.one * Mathf.Lerp(0.97f, 1f, eased);
+            }
         }
 
         private void SelectChoice(StoryChoice choice)
@@ -536,12 +835,12 @@ namespace YouthRise
             if (grantReward && !chapterCompleted)
                 CompleteChapter();
             else
-                SetScreen(completionScreen);
+                ShowScreenSmooth(completionScreen);
         }
 
         private void ShowStartMenu()
         {
-            SetScreen(startScreen);
+            ShowScreenSmooth(startScreen);
 
             bool hasSave = PrototypeSaveService.TryLoad(out PrototypeSave save);
             if (hasSave && save.profile != null)
@@ -565,7 +864,7 @@ namespace YouthRise
             if (profile == null || !profile.safeZoneUnlocked)
                 return;
 
-            SetScreen(safeZoneScreen);
+            ShowScreenSmooth(safeZoneScreen);
             telemetry?.RecordSafeZoneOpened(profile);
             ShowSafeTab("chat");
         }
@@ -637,10 +936,63 @@ namespace YouthRise
             if (profile == null)
                 return;
 
-            riskFill.fillAmount = profile.risk / 100f;
-            trustFill.fillAmount = profile.TrustScore / 100f;
-            riskValue.text = profile.risk.ToString("00");
-            trustValue.text = profile.TrustScore.ToString("00");
+            float targetRisk = profile.risk;
+            float targetTrust = profile.TrustScore;
+            if (!metersInitialized)
+            {
+                displayedRisk = targetRisk;
+                displayedTrust = targetTrust;
+                metersInitialized = true;
+                ApplyMeterVisuals();
+                return;
+            }
+
+            if (Mathf.Approximately(displayedRisk, targetRisk) && Mathf.Approximately(displayedTrust, targetTrust))
+            {
+                ApplyMeterVisuals();
+                return;
+            }
+
+            if (meterTransition != null)
+                StopCoroutine(meterTransition);
+            meterTransition = StartCoroutine(AnimateMeters(targetRisk, targetTrust));
+        }
+
+        private IEnumerator AnimateMeters(float targetRisk, float targetTrust)
+        {
+            float startRisk = displayedRisk;
+            float startTrust = displayedTrust;
+            const float duration = 0.38f;
+
+            for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+            {
+                float eased = Ease01(elapsed / duration);
+                displayedRisk = Mathf.Lerp(startRisk, targetRisk, eased);
+                displayedTrust = Mathf.Lerp(startTrust, targetTrust, eased);
+                ApplyMeterVisuals();
+                yield return null;
+            }
+
+            displayedRisk = targetRisk;
+            displayedTrust = targetTrust;
+            ApplyMeterVisuals();
+            meterTransition = null;
+        }
+
+        private void ApplyMeterVisuals()
+        {
+            riskFill.fillAmount = displayedRisk / 100f;
+            trustFill.fillAmount = displayedTrust / 100f;
+            riskValue.text = $"{Mathf.RoundToInt(displayedRisk):00}%";
+            trustValue.text = $"{Mathf.RoundToInt(displayedTrust):00}%";
+        }
+
+        private void ResetMeterAnimation()
+        {
+            if (meterTransition != null)
+                StopCoroutine(meterTransition);
+            meterTransition = null;
+            metersInitialized = false;
         }
 
         private void ShowChoiceFeedback(int previousRisk, int previousTrust)
@@ -660,19 +1012,31 @@ namespace YouthRise
             }
         }
 
-        private void ApplyBackground(string background)
+        private static Color BackgroundFallback(string background)
         {
             switch ((background ?? string.Empty).ToLowerInvariant())
             {
-                case "home": sceneBackground.color = Hex("D99C79"); break;
-                case "school-gate": sceneBackground.color = Hex("68A7C9"); break;
-                case "classroom": sceneBackground.color = Hex("7FB58F"); break;
-                case "hallway": sceneBackground.color = Hex("D6B36B"); break;
-                case "back-school": sceneBackground.color = Hex("657A6B"); break;
-                case "street": sceneBackground.color = Hex("C78973"); break;
-                case "bedroom": sceneBackground.color = Hex("5B6289"); break;
-                default: sceneBackground.color = Hex("6AA6D8"); break;
+                case "home": return Hex("D99C79");
+                case "school-gate": return Hex("68A7C9");
+                case "classroom": return Hex("7FB58F");
+                case "hallway": return Hex("D6B36B");
+                case "back-school": return Hex("657A6B");
+                case "street": return Hex("C78973");
+                case "bedroom": return Hex("5B6289");
+                default: return Hex("6AA6D8");
             }
+        }
+
+        private static Color WithAlpha(Color color, float alpha)
+        {
+            color.a = Mathf.Clamp01(alpha);
+            return color;
+        }
+
+        private static float Ease01(float value)
+        {
+            value = Mathf.Clamp01(value);
+            return value * value * (3f - 2f * value);
         }
 
         private void ShowToast(string message, bool error)
@@ -682,15 +1046,62 @@ namespace YouthRise
 
             toastText.text = message;
             toastText.color = error ? Gold : White;
-            toastText.transform.parent.gameObject.SetActive(true);
-            CancelInvoke(nameof(HideToast));
-            Invoke(nameof(HideToast), error ? 5f : 1.8f);
+            toastBackground.color = new Color(Navy.r, Navy.g, Navy.b, 0.97f);
+            toastAccent.color = error ? Coral : Cyan;
+
+            if (toastTransition != null)
+                StopCoroutine(toastTransition);
+            toastTransition = StartCoroutine(AnimateToast(error ? 4.5f : 1.45f));
+        }
+
+        private IEnumerator AnimateToast(float holdDuration)
+        {
+            toastRoot.SetActive(true);
+            toastGroup.alpha = 0f;
+            toastRect.localScale = Vector3.one * 0.97f;
+
+            const float fadeInDuration = 0.14f;
+            for (float elapsed = 0f; elapsed < fadeInDuration; elapsed += Time.unscaledDeltaTime)
+            {
+                float eased = Ease01(elapsed / fadeInDuration);
+                toastGroup.alpha = eased;
+                toastRect.localScale = Vector3.one * Mathf.Lerp(0.97f, 1f, eased);
+                yield return null;
+            }
+
+            toastGroup.alpha = 1f;
+            toastRect.localScale = Vector3.one;
+            yield return new WaitForSecondsRealtime(holdDuration);
+
+            const float fadeOutDuration = 0.20f;
+            for (float elapsed = 0f; elapsed < fadeOutDuration; elapsed += Time.unscaledDeltaTime)
+            {
+                toastGroup.alpha = 1f - Ease01(elapsed / fadeOutDuration);
+                yield return null;
+            }
+
+            HideToast();
+            toastTransition = null;
         }
 
         private void HideToast()
         {
-            if (toastText != null)
-                toastText.transform.parent.gameObject.SetActive(false);
+            if (toastRoot != null)
+                toastRoot.SetActive(false);
+        }
+
+        private void OnDestroy()
+        {
+            if (chromaKeyMaterial != null)
+                Destroy(chromaKeyMaterial);
+
+            foreach (Sprite sprite in artSprites.Values)
+            {
+                if (sprite != null)
+                    Destroy(sprite);
+            }
+
+            artSprites.Clear();
         }
 
         private void SetScreen(GameObject active)
@@ -701,23 +1112,100 @@ namespace YouthRise
             safeZoneScreen.SetActive(active == safeZoneScreen);
         }
 
+        private void ShowScreenSmooth(GameObject target)
+        {
+            GameObject current = null;
+            int activeCount = 0;
+            foreach (GameObject screen in AllScreens())
+            {
+                if (!screen.activeSelf)
+                    continue;
+
+                current = screen;
+                activeCount++;
+            }
+
+            if (activeCount != 1 || current == null)
+            {
+                SetScreen(target);
+                return;
+            }
+
+            if (current == target)
+                return;
+
+            if (screenTransition != null)
+                StopCoroutine(screenTransition);
+
+            screenTransition = StartCoroutine(CrossfadeScreens(current, target));
+        }
+
+        private IEnumerator CrossfadeScreens(GameObject current, GameObject target)
+        {
+            CanvasGroup from = GetOrAddCanvasGroup(current);
+            CanvasGroup to = GetOrAddCanvasGroup(target);
+            to.alpha = 0f;
+            to.interactable = false;
+            to.blocksRaycasts = false;
+            target.SetActive(true);
+
+            from.interactable = false;
+            from.blocksRaycasts = false;
+            const float duration = 0.32f;
+            for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+            {
+                float eased = Ease01(elapsed / duration);
+                from.alpha = 1f - eased;
+                to.alpha = eased;
+                yield return null;
+            }
+
+            foreach (GameObject screen in AllScreens())
+                screen.SetActive(screen == target);
+
+            from.alpha = 1f;
+            to.alpha = 1f;
+            to.interactable = true;
+            to.blocksRaycasts = true;
+            screenTransition = null;
+        }
+
+        private IEnumerable<GameObject> AllScreens()
+        {
+            yield return startScreen;
+            yield return storyScreen;
+            yield return completionScreen;
+            yield return safeZoneScreen;
+        }
+
+        private static CanvasGroup GetOrAddCanvasGroup(GameObject target)
+        {
+            CanvasGroup group = target.GetComponent<CanvasGroup>();
+            return group != null ? group : target.AddComponent<CanvasGroup>();
+        }
+
         private void CreateMeter(Transform parent, string name, string label, Vector2 min, Vector2 max, Color color, out Image fill, out Text value)
         {
             GameObject container = CreateRect(name, parent, min, max);
+            AddImage(container, new Color(1f, 1f, 1f, 0.045f)).raycastTarget = false;
 
-            GameObject labelObject = CreateRect("Label", container.transform, new Vector2(0f, 0f), new Vector2(0.30f, 1f));
-            AddText(labelObject, label, 15, new Color(1f, 1f, 1f, 0.72f), TextAnchor.MiddleLeft, FontStyle.Bold);
+            GameObject accent = CreateRect("Accent", container.transform, new Vector2(0f, 0.18f), new Vector2(0.014f, 0.82f));
+            AddImage(accent, color).raycastTarget = false;
 
-            GameObject track = CreateRect("Track", container.transform, new Vector2(0.30f, 0.31f), new Vector2(0.82f, 0.69f));
-            AddImage(track, new Color(1f, 1f, 1f, 0.13f));
+            GameObject labelObject = CreateRect("Label", container.transform, new Vector2(0.055f, 0f), new Vector2(0.30f, 1f));
+            AddText(labelObject, label, 14, new Color(1f, 1f, 1f, 0.76f), TextAnchor.MiddleLeft, FontStyle.Bold);
+
+            GameObject track = CreateRect("Track", container.transform, new Vector2(0.31f, 0.34f), new Vector2(0.77f, 0.66f));
+            AddImage(track, new Color(1f, 1f, 1f, 0.17f)).raycastTarget = false;
             GameObject fillObject = CreateRect("Fill", track.transform, Vector2.zero, Vector2.one);
             fill = AddImage(fillObject, color);
+            fill.raycastTarget = false;
             fill.type = Image.Type.Filled;
             fill.fillMethod = Image.FillMethod.Horizontal;
             fill.fillOrigin = 0;
 
-            GameObject valueObject = CreateRect("Value", container.transform, new Vector2(0.84f, 0f), new Vector2(1f, 1f));
-            value = AddText(valueObject, "00", 18, White, TextAnchor.MiddleRight, FontStyle.Bold);
+            GameObject valueObject = CreateRect("Value", container.transform, new Vector2(0.79f, 0f), new Vector2(0.96f, 1f));
+            value = AddText(valueObject, "00%", 16, White, TextAnchor.MiddleRight, FontStyle.Bold);
         }
 
         private void CreateArticleCard(Transform parent, float minX, float maxX, string title, string body, Color accent)
@@ -773,6 +1261,7 @@ namespace YouthRise
             colors.selectedColor = colors.highlightedColor;
             colors.disabledColor = new Color(background.r, background.g, background.b, 0.28f);
             colors.colorMultiplier = 1f;
+            colors.fadeDuration = 0.08f;
             button.colors = colors;
 
             GameObject labelObject = CreateRect("Label", buttonObject.transform, new Vector2(0.04f, 0.08f), new Vector2(0.96f, 0.92f));

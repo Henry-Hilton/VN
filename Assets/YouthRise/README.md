@@ -11,6 +11,14 @@ YouthRise is a playable Indonesian high-school visual novel prototype. Open the 
 - Chapter completion reflection, 100 XP reward, and persistent Safe Zone unlock.
 - Safe Zone chat, short wellbeing articles, and a discreet **Need Extra Help?** reporting tab.
 - Local, explainable report triage for prototype use, including immediate-safety guidance.
+- Seven hand-painted Indonesian school and home environments plus six illustrated cast portraits.
+- Crossfaded scene changes, sliding character entrances, dialogue fades, staggered choice reveals, and smooth screen transitions.
+
+## Visual direction
+
+Chapter 1 uses a warm, hand-painted visual-novel style grounded in an Indonesian school setting. Runtime art lives under `Resources/YouthRise/Art/`. Character renders use a project-local chroma-key UI shader so their generated green backplates become transparent in game without destructive source-image processing.
+
+The **YouthRise > QA** editor menu can start the chapter, continue dialogue, or choose the first option while the game is running. These controls are intended only for rapid visual review and are not included in player builds.
 
 ## Safety and privacy boundaries
 
