@@ -1,0 +1,465 @@
+{
+  "id": "chapter-1",
+  "title": "The First Day",
+  "subtitle": "Hari Pertama",
+  "startNodeId": "opening",
+  "nodes": [
+    {
+      "id": "opening",
+      "location": "Rumah • 06.15",
+      "background": "home",
+      "speaker": "Narasi",
+      "body": "Alarm berbunyi. Alex membuka mata dan menatap seragam barunya.\n\n“Hari ini adalah hari pertamaku di sekolah baru...”",
+      "nextNodeId": "node-1",
+      "branch": "home"
+    },
+    {
+      "id": "node-1",
+      "location": "Rumah • Pagi",
+      "background": "home",
+      "speaker": "Ibu",
+      "body": "Semoga harimu menyenangkan, Alex.",
+      "branch": "home",
+      "choices": [
+        {
+          "id": "1A",
+          "label": "Peluk Ibu",
+          "nextNodeId": "node-2",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "trustParent", "amount": 5 },
+            { "stat": "socialSupport", "amount": 3 }
+          ]
+        },
+        {
+          "id": "1B",
+          "label": "Pamit baik-baik",
+          "nextNodeId": "node-2",
+          "tendency": "assertive",
+          "effects": [
+            { "stat": "trustParent", "amount": 2 },
+            { "stat": "socialSupport", "amount": 1 }
+          ]
+        },
+        {
+          "id": "1C",
+          "label": "Pergi diam-diam",
+          "nextNodeId": "node-2",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "trustParent", "amount": -3 },
+            { "stat": "socialSupport", "amount": -2 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-2",
+      "location": "Gerbang YouthRise High",
+      "background": "school-gate",
+      "speaker": "Kevin",
+      "body": "Bruk! Seorang siswa hampir menjatuhkan tas Alex.\n\n“Ups, maaf bro.”",
+      "branch": "meet-kevin",
+      "choices": [
+        {
+          "id": "2A",
+          "label": "“Tidak apa-apa.”",
+          "nextNodeId": "node-3",
+          "tendency": "prosocial",
+          "effects": [ { "stat": "trustFriend", "amount": 3 } ]
+        },
+        {
+          "id": "2B",
+          "label": "“Lihat jalan, dong.”",
+          "nextNodeId": "node-3",
+          "tendency": "impulsive",
+          "effects": [ { "stat": "risk", "amount": 2 } ]
+        },
+        {
+          "id": "2C",
+          "label": "Abaikan Kevin",
+          "nextNodeId": "node-3",
+          "tendency": "avoidant",
+          "effects": [ { "stat": "trustFriend", "amount": -2 } ]
+        }
+      ]
+    },
+    {
+      "id": "node-3",
+      "location": "Gerbang YouthRise High",
+      "background": "school-gate",
+      "speaker": "Kevin",
+      "body": "Aku Kevin. Kantin sekolah lumayan enak. Mau ikut nanti?",
+      "branch": "meet-kevin",
+      "choices": [
+        {
+          "id": "3A",
+          "label": "“Boleh.”",
+          "nextNodeId": "node-4",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "trustFriend", "amount": 5 },
+            { "stat": "socialSupport", "amount": 3 }
+          ]
+        },
+        {
+          "id": "3B",
+          "label": "“Mungkin.”",
+          "nextNodeId": "node-4",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "trustFriend", "amount": 2 },
+            { "stat": "socialSupport", "amount": 1 }
+          ]
+        },
+        {
+          "id": "3C",
+          "label": "“Tidak, terima kasih.”",
+          "nextNodeId": "node-4",
+          "tendency": "assertive",
+          "effects": [ { "stat": "trustFriend", "amount": -3 } ]
+        }
+      ]
+    },
+    {
+      "id": "node-4",
+      "location": "Kelas XI-B",
+      "background": "classroom",
+      "speaker": "Wali Kelas",
+      "body": "Sebelum pelajaran dimulai, silakan siswa baru memperkenalkan diri.",
+      "branch": "class-introduction",
+      "choices": [
+        {
+          "id": "4A",
+          "label": "Perkenalkan diri dengan percaya diri",
+          "nextNodeId": "node-5",
+          "tendency": "assertive",
+          "effects": [ { "stat": "confidence", "amount": 5 } ]
+        },
+        {
+          "id": "4B",
+          "label": "Perkenalkan diri singkat saja",
+          "nextNodeId": "node-5",
+          "tendency": "avoidant",
+          "effects": [ { "stat": "confidence", "amount": 2 } ]
+        },
+        {
+          "id": "4C",
+          "label": "Menolak bicara",
+          "nextNodeId": "node-5",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "confidence", "amount": -4 },
+            { "stat": "anxiety", "amount": 3 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-5",
+      "location": "Kelas XI-B • Istirahat",
+      "background": "classroom",
+      "speaker": "Maya",
+      "body": "Kalau butuh bantuan, bilang saja.",
+      "branch": "meet-maya",
+      "variants": [
+        {
+          "stat": "anxiety",
+          "minInclusive": 0,
+          "maxInclusive": 22,
+          "text": "Hai, aku Maya. Kalau butuh bantuan, bilang saja. Aku bisa tunjukkan ruang-ruang di sekolah."
+        },
+        {
+          "stat": "anxiety",
+          "minInclusive": 23,
+          "maxInclusive": 100,
+          "text": "Kamu kelihatan sedikit tegang. Tidak apa-apa, hari pertama memang berat. Kalau butuh bantuan, bilang saja."
+        }
+      ],
+      "choices": [
+        {
+          "id": "5A",
+          "label": "“Terima kasih, Maya.”",
+          "nextNodeId": "node-6",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "trustMaya", "amount": 4 },
+            { "stat": "socialSupport", "amount": 2 }
+          ]
+        },
+        {
+          "id": "5B",
+          "label": "“Aku baik-baik saja.”",
+          "nextNodeId": "node-6",
+          "tendency": "assertive",
+          "effects": [ { "stat": "trustMaya", "amount": 1 } ]
+        },
+        {
+          "id": "5C",
+          "label": "Pergi tanpa menjawab",
+          "nextNodeId": "node-6",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "trustMaya", "amount": -3 },
+            { "stat": "socialSupport", "amount": -1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-6",
+      "location": "Koridor Sekolah",
+      "background": "hallway",
+      "speaker": "Kevin",
+      "body": "Ada senior ngajak nongkrong di belakang sekolah. Ikut, yuk.",
+      "branch": "peer-pressure",
+      "choices": [
+        {
+          "id": "6A",
+          "label": "Ikut Kevin",
+          "nextNodeId": "node-7",
+          "tendency": "impulsive",
+          "effects": [ { "stat": "risk", "amount": 10 } ]
+        },
+        {
+          "id": "6B",
+          "label": "Tolak ajakan",
+          "nextNodeId": "node-9",
+          "tendency": "assertive",
+          "effects": [ { "stat": "risk", "amount": -3 } ]
+        },
+        {
+          "id": "6C",
+          "label": "Tanya situasinya dulu",
+          "nextNodeId": "node-7",
+          "tendency": "assertive",
+          "effects": [
+            { "stat": "risk", "amount": 2 },
+            { "stat": "knowledge", "amount": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-7",
+      "location": "Belakang Sekolah",
+      "background": "back-school",
+      "speaker": "Senior",
+      "body": "Seorang senior mengeluarkan vape dan menyodorkannya.\n\n“Coba sekali. Santai saja.”",
+      "branch": "vape-offer",
+      "choices": [
+        {
+          "id": "7A",
+          "label": "Coba sekali",
+          "nextNodeId": "node-8",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "risk", "amount": 20 },
+            { "stat": "knowledge", "amount": -5 }
+          ]
+        },
+        {
+          "id": "7B",
+          "label": "Tolak dengan jelas",
+          "nextNodeId": "node-8",
+          "tendency": "assertive",
+          "effects": [
+            { "stat": "knowledge", "amount": 5 },
+            { "stat": "risk", "amount": -5 }
+          ]
+        },
+        {
+          "id": "7C",
+          "label": "Diam dan tetap di sana",
+          "nextNodeId": "node-8",
+          "tendency": "avoidant",
+          "effects": [ { "stat": "risk", "amount": 5 } ]
+        }
+      ]
+    },
+    {
+      "id": "node-8",
+      "location": "Belakang Sekolah",
+      "background": "back-school",
+      "speaker": "Kevin",
+      "body": "Kevin ikut mencoba. “Santai aja.”",
+      "branch": "vape-pressure",
+      "variants": [
+        {
+          "stat": "risk",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Kevin ikut mencoba, lalu melihat Alex masih ragu. “Santai aja. Tidak usah terlalu dipikir.”"
+        },
+        {
+          "stat": "risk",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Kevin tersenyum seolah semua ini biasa. “Nah, begitu dong. Santai aja.”"
+        }
+      ],
+      "choices": [
+        {
+          "id": "8A",
+          "label": "Ikut Kevin",
+          "nextNodeId": "node-9",
+          "tendency": "impulsive",
+          "effects": [ { "stat": "risk", "amount": 15 } ]
+        },
+        {
+          "id": "8B",
+          "label": "Pergi dari sana",
+          "nextNodeId": "node-9",
+          "tendency": "assertive",
+          "effects": [ { "stat": "confidence", "amount": 3 } ]
+        },
+        {
+          "id": "8C",
+          "label": "Minta Kevin berhenti",
+          "nextNodeId": "node-9",
+          "tendency": "prosocial",
+          "effects": [ { "stat": "empathy", "amount": 4 } ]
+        }
+      ]
+    },
+    {
+      "id": "node-9",
+      "location": "Depan Sekolah • Sore",
+      "background": "street",
+      "speaker": "Narasi",
+      "body": "Sepulang sekolah, Alex melihat Rina duduk sendirian. Matanya sembap seperti habis menangis.",
+      "branch": "rina",
+      "variants": [
+        {
+          "stat": "empathy",
+          "minInclusive": 0,
+          "maxInclusive": 52,
+          "text": "Sepulang sekolah, Alex melihat Rina menangis. Keramaian di gerbang membuatnya mudah untuk terus berjalan."
+        },
+        {
+          "stat": "empathy",
+          "minInclusive": 53,
+          "maxInclusive": 100,
+          "text": "Sepulang sekolah, Alex melihat Rina menangis. Ada sesuatu dalam diamnya yang membuat Alex ingin memastikan ia tidak sendirian."
+        }
+      ],
+      "choices": [
+        {
+          "id": "9A",
+          "label": "Tanya keadaan Rina",
+          "nextNodeId": "node-10",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "trustRina", "amount": 5 },
+            { "stat": "socialSupport", "amount": 2 }
+          ]
+        },
+        {
+          "id": "9B",
+          "label": "Lewat saja",
+          "nextNodeId": "node-11",
+          "tendency": "avoidant",
+          "effects": [ { "stat": "trustRina", "amount": -2 } ]
+        },
+        {
+          "id": "9C",
+          "label": "Beritahu Guru BK",
+          "nextNodeId": "node-11",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "trustTeacher", "amount": 4 },
+            { "stat": "socialSupport", "amount": 2 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-10",
+      "location": "Depan Sekolah • Sore",
+      "background": "street",
+      "speaker": "Rina",
+      "body": "Aku lagi banyak masalah di rumah. Rasanya sulit menjelaskan semuanya.",
+      "branch": "rina-confides",
+      "choices": [
+        {
+          "id": "10A",
+          "label": "Dengarkan tanpa menghakimi",
+          "nextNodeId": "node-11",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "empathy", "amount": 5 },
+            { "stat": "socialSupport", "amount": 3 }
+          ]
+        },
+        {
+          "id": "10B",
+          "label": "Langsung beri solusi",
+          "nextNodeId": "node-11",
+          "tendency": "assertive",
+          "effects": [ { "stat": "empathy", "amount": 2 } ]
+        },
+        {
+          "id": "10C",
+          "label": "Ganti topik pembicaraan",
+          "nextNodeId": "node-11",
+          "tendency": "avoidant",
+          "effects": [ { "stat": "empathy", "amount": -3 } ]
+        }
+      ]
+    },
+    {
+      "id": "node-11",
+      "location": "Kamar Alex • 21.18",
+      "background": "bedroom",
+      "speaker": "Kevin • Grup Kelas",
+      "body": "Besok cabut pelajaran terakhir, yuk.",
+      "branch": "whatsapp",
+      "choices": [
+        {
+          "id": "11A",
+          "label": "Setuju ikut cabut",
+          "nextNodeId": "bedtime",
+          "tendency": "impulsive",
+          "effects": [ { "stat": "risk", "amount": 8 } ]
+        },
+        {
+          "id": "11B",
+          "label": "Tolak ajakan",
+          "nextNodeId": "bedtime",
+          "tendency": "assertive",
+          "effects": [ { "stat": "risk", "amount": -4 } ]
+        },
+        {
+          "id": "11C",
+          "label": "Tidak membalas",
+          "nextNodeId": "bedtime",
+          "tendency": "avoidant",
+          "effects": [ { "stat": "risk", "amount": 1 } ]
+        }
+      ]
+    },
+    {
+      "id": "bedtime",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Narasi",
+      "body": "Sebelum tidur, Alex memikirkan semua yang terjadi.\n\n“Hari pertama ternyata lebih melelahkan daripada yang kubayangkan.”",
+      "nextNodeId": "END",
+      "branch": "reflection",
+      "variants": [
+        {
+          "stat": "risk",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Sebelum tidur, Alex mengingat pilihan-pilihan yang membuatnya {trustMood} pada orang lain.\n\n“Hari pertama ternyata lebih melelahkan daripada yang kubayangkan.”"
+        },
+        {
+          "stat": "risk",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Sebelum tidur, Alex bertanya-tanya apakah beberapa keputusan tadi terlalu {riskMood}.\n\n“Hari pertama ternyata lebih melelahkan daripada yang kubayangkan.”"
+        }
+      ]
+    }
+  ]
+}
