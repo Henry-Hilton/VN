@@ -63,7 +63,10 @@ namespace YouthRise
         private Text completionRewardText;
         private Text completionPrimaryLabel;
         private Text chapterTwoMenuLabel;
+        private Text chapterThreeMenuLabel;
         private Text bullyingArticleBody;
+        private Text healthyRelationshipArticleBody;
+        private Text digitalSafetyGuideBody;
         private GameObject toastRoot;
         private GameObject speakerPlaceholder;
         private CanvasGroup dialogueGroup;
@@ -90,6 +93,7 @@ namespace YouthRise
         private Button continueStoryButton;
         private Button continueMenuButton;
         private Button chapterTwoMenuButton;
+        private Button chapterThreeMenuButton;
         private Button safeZoneMenuButton;
         private Button completionPrimaryButton;
         private Text safeZoneMenuLabel;
@@ -222,12 +226,16 @@ namespace YouthRise
             GameObject feature = CreateRect("Features", root.transform, new Vector2(0.18f, 0.40f), new Vector2(0.75f, 0.48f));
             menuFeatureText = AddText(feature, "DIALOG PCG LOKAL   •   PILIHAN BERCABANG   •   SAFE ZONE", 19, new Color(1f, 1f, 1f, 0.65f), TextAnchor.MiddleLeft, FontStyle.Bold);
 
-            Button start = CreateButton(root.transform, "Start", "MULAI CHAPTER 1", new Vector2(0.18f, 0.30f), new Vector2(0.49f, 0.37f), Blue, White, 21);
+            Button start = CreateButton(root.transform, "Start", "CHAPTER 1", new Vector2(0.18f, 0.30f), new Vector2(0.385f, 0.37f), Blue, White, 18);
             start.onClick.AddListener(StartNewGame);
 
-            chapterTwoMenuButton = CreateButton(root.transform, "Start Chapter 2", "CHAPTER 2 • TERKUNCI", new Vector2(0.51f, 0.30f), new Vector2(0.82f, 0.37f), Coral, White, 21);
+            chapterTwoMenuButton = CreateButton(root.transform, "Start Chapter 2", "CHAPTER 2 • TERKUNCI", new Vector2(0.397f, 0.30f), new Vector2(0.603f, 0.37f), Coral, White, 17);
             chapterTwoMenuLabel = chapterTwoMenuButton.GetComponentInChildren<Text>();
             chapterTwoMenuButton.onClick.AddListener(StartChapterTwo);
+
+            chapterThreeMenuButton = CreateButton(root.transform, "Start Chapter 3", "CHAPTER 3 • TERKUNCI", new Vector2(0.615f, 0.30f), new Vector2(0.82f, 0.37f), Gold, Navy, 17);
+            chapterThreeMenuLabel = chapterThreeMenuButton.GetComponentInChildren<Text>();
+            chapterThreeMenuButton.onClick.AddListener(StartChapterThree);
 
             continueMenuButton = CreateButton(root.transform, "Continue", "LANJUTKAN", new Vector2(0.18f, 0.22f), new Vector2(0.49f, 0.29f), Cyan, Navy, 20);
             continueMenuButton.onClick.AddListener(ContinueGame);
@@ -488,10 +496,12 @@ namespace YouthRise
             GameObject panel = CreateRect("Articles Panel", parent, new Vector2(0.045f, 0.095f), new Vector2(0.955f, 0.71f));
             AddImage(panel, Paper);
 
-            CreateArticleCard(panel.transform, 0.05f, 0.48f, 0.53f, 0.93f, "TEKANAN TEMAN SEBAYA", "Kamu boleh menolak tanpa menjelaskan panjang. Cari teman atau orang dewasa yang mendukung keputusan amanmu.", Blue);
-            CreateArticleCard(panel.transform, 0.52f, 0.95f, 0.53f, 0.93f, "MENGELOLA CEMAS", "Tarik napas perlahan, beri nama pada perasaanmu, lalu pilih satu langkah kecil yang bisa dilakukan sekarang.", Cyan);
-            CreateArticleCard(panel.transform, 0.05f, 0.48f, 0.07f, 0.47f, "HUBUNGAN SEHAT", "Hubungan yang sehat menghormati batas, tidak memaksa, dan memberi ruang untuk berkata tidak.", Coral);
-            bullyingArticleBody = CreateArticleCard(panel.transform, 0.52f, 0.95f, 0.07f, 0.47f, "DUKUNGAN BULLYING", "TERKUNCI • Selesaikan Chapter 2 untuk membuka artikel ini.", Gold);
+            CreateArticleCard(panel.transform, 0.04f, 0.33f, 0.53f, 0.93f, "TEKANAN TEMAN SEBAYA", "Kamu boleh menolak tanpa menjelaskan panjang. Cari dukungan untuk keputusan yang aman.", Blue);
+            CreateArticleCard(panel.transform, 0.355f, 0.645f, 0.53f, 0.93f, "MENGELOLA CEMAS", "Tarik napas, beri nama pada perasaanmu, lalu pilih satu langkah kecil yang aman.", Cyan);
+            CreateArticleCard(panel.transform, 0.67f, 0.96f, 0.53f, 0.93f, "BATAS DAN RASA AMAN", "Rasa tidak nyaman adalah alasan yang cukup untuk berhenti, menjauh, atau berkata tidak.", Coral);
+            bullyingArticleBody = CreateArticleCard(panel.transform, 0.04f, 0.33f, 0.07f, 0.47f, "DUKUNGAN BULLYING", "TERKUNCI • Selesaikan Chapter 2.", Gold);
+            healthyRelationshipArticleBody = CreateArticleCard(panel.transform, 0.355f, 0.645f, 0.07f, 0.47f, "HUBUNGAN SEHAT", "TERKUNCI • Selesaikan Chapter 3.", Mint);
+            digitalSafetyGuideBody = CreateArticleCard(panel.transform, 0.67f, 0.96f, 0.07f, 0.47f, "KEAMANAN DIGITAL", "TERKUNCI • Selesaikan Chapter 3.", Blue);
 
             return panel;
         }
@@ -586,6 +596,41 @@ namespace YouthRise
             }
 
             profile.PrepareForChapterTwo();
+            ResetMeterAnimation();
+            branchPath = string.Empty;
+            chapterCompleted = false;
+            sessionSeed = Guid.NewGuid().GetHashCode();
+            telemetry = new DecisionTelemetry(story.Chapter.id);
+            telemetry.RecordSessionStarted(profile);
+            ShowNode(story.Chapter.startNodeId);
+        }
+
+        private void StartChapterThree()
+        {
+            if (PrototypeSaveService.TryLoad(out PrototypeSave saved) && saved.profile != null)
+            {
+                NormalizeLoadedProgress(saved);
+                profile = saved.profile;
+            }
+
+            if (!CampaignProgression.CanStartChapterThree(profile))
+            {
+                ShowToast("Selesaikan Chapter 2 untuk membuka Chapter 3.", false);
+                return;
+            }
+
+            try
+            {
+                story = StoryRepository.LoadChapterThree();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                ShowToast("Chapter 3 gagal dimuat.", true);
+                return;
+            }
+
+            profile.PrepareForChapterThree();
             ResetMeterAnimation();
             branchPath = string.Empty;
             chapterCompleted = false;
@@ -849,6 +894,7 @@ namespace YouthRise
             if (normalized.StartsWith("kevin")) return "YouthRise/Art/Characters/char_kevin_chroma";
             if (normalized.StartsWith("rina")) return "YouthRise/Art/Characters/char_rina_chroma";
             if (normalized.StartsWith("leo")) return "YouthRise/Art/Characters/char_leo_chroma";
+            if (normalized.StartsWith("sarah")) return "YouthRise/Art/Characters/char_sarah_chroma";
             if (normalized.StartsWith("ibu")) return "YouthRise/Art/Characters/char_ibu_chroma";
             if (normalized.StartsWith("senior")) return "YouthRise/Art/Characters/char_senior_chroma";
             if (normalized.Contains("wali kelas") || normalized.Contains("daniel") || normalized.Contains("guru bk"))
@@ -937,8 +983,10 @@ namespace YouthRise
 
         private void HandleCompletionPrimary()
         {
-            if (IsChapterTwo())
+            if (IsChapterThree())
                 ShowSafeZone();
+            else if (IsChapterTwo())
+                StartChapterThree();
             else
                 StartChapterTwo();
         }
@@ -967,10 +1015,17 @@ namespace YouthRise
             completionRewardText.text = $"★ {chapter.rewardXp} XP{unlocks}";
 
             bool chapterTwo = IsChapterTwo();
-            completionPrimaryLabel.text = chapterTwo ? "MASUK SAFE ZONE" : "MULAI CHAPTER 2";
-            completionBackground.sprite = LoadArtSprite(chapterTwo
-                ? "YouthRise/Art/Backgrounds/bg_classroom"
-                : "YouthRise/Art/Backgrounds/bg_bedroom");
+            bool chapterThree = IsChapterThree();
+            completionPrimaryLabel.text = chapterThree
+                ? "MASUK SAFE ZONE"
+                : chapterTwo
+                    ? "MULAI CHAPTER 3"
+                    : "MULAI CHAPTER 2";
+            completionBackground.sprite = LoadArtSprite(chapterThree
+                ? "YouthRise/Art/Backgrounds/bg_cafeteria"
+                : chapterTwo
+                    ? "YouthRise/Art/Backgrounds/bg_classroom"
+                    : "YouthRise/Art/Backgrounds/bg_bedroom");
             completionBackground.color = completionBackground.sprite != null ? White : Navy;
         }
 
@@ -998,7 +1053,20 @@ namespace YouthRise
                     ? "ULANGI CHAPTER 2"
                     : "MULAI CHAPTER 2";
 
-            if (chapterTwoUnlocked)
+            bool chapterThreeUnlocked = hasSave && save.profile != null && save.profile.completedChapterTwo;
+            SetButtonEnabled(chapterThreeMenuButton, chapterThreeUnlocked);
+            chapterThreeMenuLabel.text = !chapterThreeUnlocked
+                ? "CHAPTER 3 • TERKUNCI"
+                : save.profile.completedChapterThree
+                    ? "ULANGI CHAPTER 3"
+                    : "MULAI CHAPTER 3";
+
+            if (chapterThreeUnlocked)
+            {
+                menuTitleText.text = "MORE THAN A\nCRUSH";
+                menuSubtitleText.text = "Chapter 3 • Hubungan sehat, batas pribadi, dan keamanan digital";
+            }
+            else if (chapterTwoUnlocked)
             {
                 menuTitleText.text = "BEHIND THE\nSMILE";
                 menuSubtitleText.text = "Chapter 2 • Bullying, keberanian, dan mencari bantuan";
@@ -1009,9 +1077,11 @@ namespace YouthRise
                 menuSubtitleText.text = "Chapter 1 • Hari pertama Alex di sekolah baru";
             }
 
-            menuFeatureText.text = hasSave && save.profile != null && save.profile.relationshipPathUnlocked
-                ? "RELATIONSHIP PATH • TERBUKA   •   SAFE ZONE   •   2 CHAPTER"
-                : "DIALOG PCG LOKAL   •   PILIHAN BERCABANG   •   SAFE ZONE";
+            menuFeatureText.text = hasSave && save.profile != null && save.profile.completedChapterThree
+                ? "DIGITAL SAFETY GUIDE • TERBUKA   •   SAFE ZONE   •   3 CHAPTER"
+                : hasSave && save.profile != null && save.profile.relationshipPathUnlocked
+                    ? "RELATIONSHIP PATH • TERBUKA   •   CHAPTER 3"
+                    : "DIALOG PCG LOKAL   •   PILIHAN BERCABANG   •   SAFE ZONE";
         }
 
         private void ShowSafeZone()
@@ -1042,17 +1112,30 @@ namespace YouthRise
 
         private void UpdateSafeZoneArticles()
         {
-            if (bullyingArticleBody == null)
+            if (bullyingArticleBody == null || healthyRelationshipArticleBody == null || digitalSafetyGuideBody == null)
                 return;
 
             bullyingArticleBody.text = profile != null && profile.bullyingSupportArticleUnlocked
                 ? "Simpan bukti, dekati korban dengan aman, dan libatkan orang dewasa tepercaya. Diam juga merupakan sebuah pilihan."
                 : "TERKUNCI • Selesaikan Chapter 2 untuk membuka artikel ini.";
+
+            healthyRelationshipArticleBody.text = profile != null && profile.healthyRelationshipArticleUnlocked
+                ? "Hubungan sehat memberi ruang untuk berkata tidak, memiliki waktu sendiri, dan didengarkan tanpa ancaman atau paksaan."
+                : "TERKUNCI • Selesaikan Chapter 3 untuk membuka artikel ini.";
+
+            digitalSafetyGuideBody.text = profile != null && profile.digitalSafetyGuideUnlocked
+                ? "Jangan bagikan data atau foto pribadi karena tekanan. Blokir dan laporkan akun mencurigakan, simpan bukti, lalu cari bantuan."
+                : "TERKUNCI • Selesaikan Chapter 3 untuk membuka panduan ini.";
         }
 
         private bool IsChapterTwo()
         {
             return string.Equals(story?.Chapter?.id, "chapter-2", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool IsChapterThree()
+        {
+            return string.Equals(story?.Chapter?.id, "chapter-3", StringComparison.OrdinalIgnoreCase);
         }
 
         private void SendSafeZoneChat()

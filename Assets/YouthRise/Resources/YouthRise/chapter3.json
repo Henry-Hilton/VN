@@ -1,0 +1,542 @@
+{
+  "id": "chapter-3",
+  "title": "More Than a Crush",
+  "subtitle": "Lebih dari Sekadar Suka",
+  "number": 3,
+  "rewardXp": 200,
+  "completionHeading": "LEBIH DARI SEKADAR SUKA\nSELESAI",
+  "reflectionLines": [
+    "Hubungan sehat dibangun dengan rasa hormat.",
+    "Kamu berhak menetapkan batas pribadi.",
+    "Kamu tidak harus melakukan sesuatu yang membuatmu tidak nyaman.",
+    "Saat sesuatu terasa tidak aman, bicaralah dengan orang yang kamu percaya."
+  ],
+  "unlockLabels": [
+    "SAFE ZONE • HUBUNGAN SEHAT",
+    "PANDUAN KEAMANAN DIGITAL"
+  ],
+  "startNodeId": "opening",
+  "nodes": [
+    {
+      "id": "opening",
+      "location": "Kantin Sekolah • Siang",
+      "background": "cafeteria",
+      "speaker": "Kevin",
+      "body": "Kevin duduk bersama Sarah di kantin.\n\n“Jadi... sekarang kami resmi pacaran,” katanya.\n\nMaya tersenyum. “Bagus. Ingat untuk saling menghormati batas masing-masing.”\n\nHubungan bisa terasa menyenangkan, tetapi juga membawa tanggung jawab.",
+      "nextNodeId": "node-1",
+      "branch": "new-relationship",
+      "variants": [
+        {
+          "stat": "relationshipAwareness",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Kevin duduk bersama Sarah di kantin. “Jadi... sekarang kami resmi pacaran,” katanya. Maya mengingatkan mereka untuk menghormati batas masing-masing. Alex bertanya-tanya apa arti hubungan yang sehat."
+        },
+        {
+          "stat": "relationshipAwareness",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Kevin duduk bersama Sarah di kantin. “Jadi... sekarang kami resmi pacaran,” katanya. Maya mengingatkan mereka untuk menghormati batas masing-masing. Alex tahu rasa suka tidak menghapus hak seseorang untuk merasa aman."
+        }
+      ]
+    },
+    {
+      "id": "node-1",
+      "location": "Kantin Sekolah",
+      "background": "cafeteria",
+      "speaker": "Kevin",
+      "body": "Kalau benar-benar suka seseorang, kita harus selalu menyetujui apa pun yang dia mau, kan?",
+      "branch": "relationship-advice",
+      "choices": [
+        {
+          "id": "1A",
+          "label": "“Tidak selalu. Keduanya harus dihormati.”",
+          "nextNodeId": "node-2",
+          "tendency": "assertive",
+          "effects": [
+            { "stat": "confidence", "amount": 4 },
+            { "stat": "empathy", "amount": 4 },
+            { "stat": "relationshipAwareness", "amount": 5 },
+            { "stat": "boundaryAwareness", "amount": 3 }
+          ]
+        },
+        {
+          "id": "1B",
+          "label": "“Mungkin.”",
+          "nextNodeId": "node-2",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "risk", "amount": 2 },
+            { "stat": "relationshipAwareness", "amount": -3 }
+          ]
+        },
+        {
+          "id": "1C",
+          "label": "“Aku tidak tahu.”",
+          "nextNodeId": "node-2",
+          "tendency": "reflective",
+          "effects": [
+            { "stat": "knowledge", "amount": 1 },
+            { "stat": "relationshipAwareness", "amount": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-2",
+      "location": "Kantin Sekolah",
+      "background": "cafeteria",
+      "speaker": "Kevin",
+      "body": "Sarah tidak cepat membalas pesanku. Menurutku dia harus selalu menjawab.",
+      "branch": "reply-pressure",
+      "choices": [
+        {
+          "id": "2A",
+          "label": "“Dia berhak memiliki waktunya sendiri.”",
+          "nextNodeId": "node-3",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "knowledge", "amount": 4 },
+            { "stat": "empathy", "amount": 4 },
+            { "stat": "relationshipAwareness", "amount": 4 },
+            { "stat": "boundaryAwareness", "amount": 4 }
+          ]
+        },
+        {
+          "id": "2B",
+          "label": "“Mungkin kirim pesan terus sampai dia menjawab.”",
+          "nextNodeId": "node-3",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "risk", "amount": 4 },
+            { "stat": "relationshipAwareness", "amount": -4 }
+          ]
+        },
+        {
+          "id": "2C",
+          "label": "“Itu masalahmu.”",
+          "nextNodeId": "node-3",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "trustFriend", "amount": -2 },
+            { "stat": "empathy", "amount": -1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-3",
+      "location": "Koridor Sekolah",
+      "background": "hallway",
+      "speaker": "Sarah",
+      "body": "Kadang Kevin marah saat aku berkata tidak.",
+      "branch": "boundaries",
+      "variants": [
+        {
+          "stat": "boundaryAwareness",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Sarah menunduk sambil menggenggam ponselnya. “Kadang Kevin marah saat aku berkata tidak. Apa aku yang salah?”"
+        },
+        {
+          "stat": "boundaryAwareness",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Sarah menarik napas. “Kadang Kevin marah saat aku berkata tidak. Aku cuma ingin batasanku dihormati.”"
+        }
+      ],
+      "choices": [
+        {
+          "id": "3A",
+          "label": "“Batasmu penting dan harus dihormati.”",
+          "nextNodeId": "node-4",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "empathy", "amount": 5 },
+            { "stat": "confidence", "amount": 4 },
+            { "stat": "trustSarah", "amount": 2 },
+            { "stat": "boundaryAwareness", "amount": 6 },
+            { "stat": "relationshipAwareness", "amount": 4 }
+          ]
+        },
+        {
+          "id": "3B",
+          "label": "“Mungkin kamu sebaiknya menurut saja.”",
+          "nextNodeId": "node-4",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "risk", "amount": 5 },
+            { "stat": "empathy", "amount": -5 },
+            { "stat": "trustSarah", "amount": -3 },
+            { "stat": "boundaryAwareness", "amount": -6 },
+            { "stat": "relationshipAwareness", "amount": -5 }
+          ]
+        },
+        {
+          "id": "3C",
+          "label": "“Bicaralah dengan orang yang kamu percaya.”",
+          "nextNodeId": "node-4",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "socialSupport", "amount": 5 },
+            { "stat": "trustTeacher", "amount": 3 },
+            { "stat": "helpSeeking", "amount": 6 },
+            { "stat": "boundaryAwareness", "amount": 3 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-4",
+      "location": "Koridor Sekolah • Sepi",
+      "background": "hallway",
+      "speaker": "Sarah",
+      "body": "Sarah menunjukkan sebuah percakapan di ponselnya.\n\n“Kevin terus memintaku mengirim sesuatu yang pribadi.”",
+      "branch": "private-messages",
+      "choices": [
+        {
+          "id": "4A",
+          "label": "“Kamu tidak perlu mengirim apa pun yang tidak kamu mau.”",
+          "nextNodeId": "node-5",
+          "tendency": "assertive",
+          "effects": [
+            { "stat": "knowledge", "amount": 5 },
+            { "stat": "confidence", "amount": 4 },
+            { "stat": "trustSarah", "amount": 2 },
+            { "stat": "digitalSafety", "amount": 6 },
+            { "stat": "boundaryAwareness", "amount": 5 }
+          ]
+        },
+        {
+          "id": "4B",
+          "label": "“Mungkin kirim sekali saja.”",
+          "nextNodeId": "node-5",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "risk", "amount": 8 },
+            { "stat": "digitalSafety", "amount": -7 },
+            { "stat": "boundaryAwareness", "amount": -5 }
+          ]
+        },
+        {
+          "id": "4C",
+          "label": "“Abaikan saja pesannya.”",
+          "nextNodeId": "node-5",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "socialSupport", "amount": -2 },
+            { "stat": "digitalSafety", "amount": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-5",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Akun Tidak Dikenal",
+      "body": "Sebuah permintaan pertemanan muncul.\n\n“Hai! Kamu kelihatan keren. Mau ngobrol lewat chat pribadi?”",
+      "branch": "online-stranger",
+      "choices": [
+        {
+          "id": "5A",
+          "label": "Jangan bagikan informasi pribadi",
+          "nextNodeId": "node-6",
+          "tendency": "assertive",
+          "effects": [
+            { "stat": "knowledge", "amount": 5 },
+            { "stat": "risk", "amount": -3 },
+            { "stat": "digitalSafety", "amount": 6 }
+          ]
+        },
+        {
+          "id": "5B",
+          "label": "Terima dan bagikan informasi sekolah",
+          "nextNodeId": "node-6",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "risk", "amount": 8 },
+            { "stat": "digitalSafety", "amount": -7 }
+          ]
+        },
+        {
+          "id": "5C",
+          "label": "Lanjut mengobrol, tetapi tetap berhati-hati",
+          "nextNodeId": "node-6",
+          "tendency": "reflective",
+          "effects": [
+            { "stat": "risk", "amount": 2 },
+            { "stat": "knowledge", "amount": 2 },
+            { "stat": "digitalSafety", "amount": 2 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-6",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Akun Tidak Dikenal",
+      "body": "Pesan berikutnya membuat Alex tidak nyaman.\n\n“Jangan beri tahu siapa pun. Ayo bertemu di tempat yang sepi.”",
+      "branch": "secret-meeting",
+      "variants": [
+        {
+          "stat": "digitalSafety",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Pesan berikutnya terasa membingungkan. “Jangan beri tahu siapa pun. Ayo bertemu di tempat yang sepi.” Alex berhenti sejenak sebelum menjawab."
+        },
+        {
+          "stat": "digitalSafety",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Pesan berikutnya langsung terasa seperti tanda bahaya. “Jangan beri tahu siapa pun. Ayo bertemu di tempat yang sepi.”"
+        }
+      ],
+      "choices": [
+        {
+          "id": "6A",
+          "label": "Jangan bertemu dan beri tahu orang dewasa tepercaya",
+          "nextNodeId": "node-7",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "risk", "amount": -5 },
+            { "stat": "socialSupport", "amount": 6 },
+            { "stat": "digitalSafety", "amount": 6 },
+            { "stat": "helpSeeking", "amount": 6 }
+          ]
+        },
+        {
+          "id": "6B",
+          "label": "Setuju untuk bertemu",
+          "nextNodeId": "node-7",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "risk", "amount": 15 },
+            { "stat": "digitalSafety", "amount": -8 }
+          ]
+        },
+        {
+          "id": "6C",
+          "label": "Tanyakan informasi lebih banyak dulu",
+          "nextNodeId": "node-7",
+          "tendency": "reflective",
+          "effects": [
+            { "stat": "risk", "amount": 5 },
+            { "stat": "digitalSafety", "amount": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-7",
+      "location": "Koridor Sekolah • Pagi",
+      "background": "hallway",
+      "speaker": "Maya",
+      "body": "Kalau seseorang meminta hubungan dirahasiakan atau membuatmu tidak nyaman, itu tanda bahaya.",
+      "branch": "maya-advice",
+      "choices": [
+        {
+          "id": "7A",
+          "label": "“Kamu benar.”",
+          "nextNodeId": "node-8",
+          "tendency": "reflective",
+          "effects": [
+            { "stat": "knowledge", "amount": 4 },
+            { "stat": "trustMaya", "amount": 3 },
+            { "stat": "relationshipAwareness", "amount": 4 },
+            { "stat": "digitalSafety", "amount": 3 }
+          ]
+        },
+        {
+          "id": "7B",
+          "label": "“Mungkin itu normal.”",
+          "nextNodeId": "node-8",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "risk", "amount": 3 },
+            { "stat": "relationshipAwareness", "amount": -3 }
+          ]
+        },
+        {
+          "id": "7C",
+          "label": "“Aku akan meminta bantuan orang dewasa.”",
+          "nextNodeId": "node-8",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "socialSupport", "amount": 5 },
+            { "stat": "helpSeeking", "amount": 5 },
+            { "stat": "digitalSafety", "amount": 4 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-8",
+      "location": "Depan Sekolah • Sore",
+      "background": "street",
+      "speaker": "Sarah",
+      "body": "Aku tidak tahu harus melakukan apa lagi.",
+      "branch": "sarah-needs-help",
+      "variants": [
+        {
+          "stat": "trustSarah",
+          "minInclusive": -50,
+          "maxInclusive": 1,
+          "text": "Sarah menjaga jarak. “Aku tidak tahu harus melakukan apa lagi.”"
+        },
+        {
+          "stat": "trustSarah",
+          "minInclusive": 2,
+          "maxInclusive": 50,
+          "text": "Sarah menatap Alex dengan sedikit lebih tenang. “Aku tidak tahu harus melakukan apa lagi. Terima kasih sudah mendengarkan.”"
+        }
+      ],
+      "choices": [
+        {
+          "id": "8A",
+          "label": "Dengarkan tanpa menghakimi",
+          "nextNodeId": "node-9",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "empathy", "amount": 6 },
+            { "stat": "trustSarah", "amount": 4 },
+            { "stat": "relationshipAwareness", "amount": 4 },
+            { "stat": "helpSeeking", "amount": 3 }
+          ]
+        },
+        {
+          "id": "8B",
+          "label": "Katakan apa yang harus ia lakukan",
+          "nextNodeId": "node-9",
+          "tendency": "assertive",
+          "effects": [
+            { "stat": "empathy", "amount": 1 },
+            { "stat": "relationshipAwareness", "amount": 1 }
+          ]
+        },
+        {
+          "id": "8C",
+          "label": "Suruh ia mengatasinya sendiri",
+          "nextNodeId": "node-9",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "socialSupport", "amount": -4 },
+            { "stat": "trustSarah", "amount": -3 },
+            { "stat": "helpSeeking", "amount": -4 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-9",
+      "location": "Ruang BK",
+      "background": "counselor",
+      "speaker": "Mr. Daniel",
+      "body": "Kamu selalu berhak menetapkan batas dan meminta bantuan.",
+      "branch": "trusted-adult",
+      "choices": [
+        {
+          "id": "9A",
+          "label": "Dukung Sarah untuk mencari bantuan",
+          "nextNodeId": "node-10",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "socialSupport", "amount": 5 },
+            { "stat": "trustTeacher", "amount": 5 },
+            { "stat": "helpSeeking", "amount": 6 },
+            { "stat": "boundaryAwareness", "amount": 3 }
+          ]
+        },
+        {
+          "id": "9B",
+          "label": "Simpan semuanya sebagai rahasia",
+          "nextNodeId": "node-10",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "risk", "amount": 5 },
+            { "stat": "helpSeeking", "amount": -5 },
+            { "stat": "boundaryAwareness", "amount": -3 }
+          ]
+        },
+        {
+          "id": "9C",
+          "label": "Abaikan situasinya",
+          "nextNodeId": "node-10",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "empathy", "amount": -4 },
+            { "stat": "helpSeeking", "amount": -3 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-10",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Akun Tidak Dikenal",
+      "body": "Pesan lain masuk.\n\n“Jangan beri tahu siapa pun.”",
+      "branch": "final-digital-choice",
+      "choices": [
+        {
+          "id": "10A",
+          "label": "Blokir dan laporkan akun tersebut",
+          "nextNodeId": "node-11",
+          "tendency": "assertive",
+          "effects": [
+            { "stat": "risk", "amount": -6 },
+            { "stat": "confidence", "amount": 4 },
+            { "stat": "digitalSafety", "amount": 6 },
+            { "stat": "helpSeeking", "amount": 4 }
+          ]
+        },
+        {
+          "id": "10B",
+          "label": "Lanjutkan percakapan",
+          "nextNodeId": "node-11",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "risk", "amount": 8 },
+            { "stat": "digitalSafety", "amount": -6 }
+          ]
+        },
+        {
+          "id": "10C",
+          "label": "Tanyakan pendapat Maya",
+          "nextNodeId": "node-11",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "trustMaya", "amount": 4 },
+            { "stat": "socialSupport", "amount": 3 },
+            { "stat": "digitalSafety", "amount": 2 },
+            { "stat": "helpSeeking", "amount": 4 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-11",
+      "location": "Kantin Sekolah • Keesokan Hari",
+      "background": "cafeteria",
+      "speaker": "Narasi",
+      "body": "Hubungan yang sehat bukan tentang mengendalikan seseorang. Hubungan sehat dibangun dengan rasa hormat, batas pribadi, kepercayaan, dan rasa aman.",
+      "nextNodeId": "END",
+      "branch": "healthy-relationship-reflection",
+      "variants": [
+        {
+          "stat": "digitalSafety",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Alex memikirkan kembali semua pesan hari itu. Tanda bahaya tidak selalu mudah dikenali, tetapi kesempatan untuk berhenti, memblokir, dan mencari bantuan selalu ada."
+        },
+        {
+          "stat": "digitalSafety",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Hubungan yang sehat bukan tentang mengendalikan seseorang. Hubungan sehat dibangun dengan rasa hormat, batas pribadi, kepercayaan, dan rasa aman."
+        }
+      ]
+    }
+  ]
+}

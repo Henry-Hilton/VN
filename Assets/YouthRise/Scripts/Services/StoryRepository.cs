@@ -7,6 +7,7 @@ namespace YouthRise
     {
         private const string ChapterOneResource = "YouthRise/chapter1";
         private const string ChapterTwoResource = "YouthRise/chapter2";
+        private const string ChapterThreeResource = "YouthRise/chapter3";
 
         public static StoryGraph LoadChapterOne()
         {
@@ -18,11 +19,18 @@ namespace YouthRise
             return Load(ChapterTwoResource, "Chapter 2");
         }
 
+        public static StoryGraph LoadChapterThree()
+        {
+            return Load(ChapterThreeResource, "Chapter 3");
+        }
+
         public static StoryGraph LoadById(string chapterId)
         {
-            return string.Equals(chapterId, "chapter-2", StringComparison.OrdinalIgnoreCase)
-                ? LoadChapterTwo()
-                : LoadChapterOne();
+            if (string.Equals(chapterId, "chapter-3", StringComparison.OrdinalIgnoreCase))
+                return LoadChapterThree();
+            if (string.Equals(chapterId, "chapter-2", StringComparison.OrdinalIgnoreCase))
+                return LoadChapterTwo();
+            return LoadChapterOne();
         }
 
         private static StoryGraph Load(string resourcePath, string displayName)

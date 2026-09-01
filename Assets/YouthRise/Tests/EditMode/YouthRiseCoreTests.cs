@@ -55,6 +55,31 @@ namespace YouthRise.Tests
         }
 
         [Test]
+        public void ChapterThree_IsValidAndContainsTenDecisionNodes()
+        {
+            StoryGraph graph = StoryRepository.LoadChapterThree();
+
+            Assert.That(graph.Chapter.id, Is.EqualTo("chapter-3"));
+            Assert.That(graph.Chapter.number, Is.EqualTo(3));
+            Assert.That(graph.Chapter.rewardXp, Is.EqualTo(200));
+            Assert.That(graph.Chapter.nodes, Has.Length.EqualTo(12));
+            Assert.That(graph.Chapter.startNodeId, Is.EqualTo("opening"));
+            Assert.That(graph.Get("node-11").nextNodeId, Is.EqualTo("END"));
+
+            int decisionNodes = 0;
+            foreach (StoryNode node in graph.Chapter.nodes)
+            {
+                if (node.choices == null || node.choices.Length == 0)
+                    continue;
+
+                decisionNodes++;
+                Assert.That(node.choices, Has.Length.EqualTo(3), node.id);
+            }
+
+            Assert.That(decisionNodes, Is.EqualTo(10));
+        }
+
+        [Test]
         public void Profile_AppliesHiddenRiskAndTrustEffects()
         {
             var profile = new PlayerProfile();
@@ -96,6 +121,38 @@ namespace YouthRise.Tests
         }
 
         [Test]
+        public void ChapterThreeProgression_AwardsOnceAndUnlocksSafetyGuides()
+        {
+            var profile = new PlayerProfile();
+            profile.ResetForChapterOne();
+
+            CampaignProgression.Complete(StoryRepository.LoadChapterOne().Chapter, profile);
+            CampaignProgression.Complete(StoryRepository.LoadChapterTwo().Chapter, profile);
+            profile.PrepareForChapterThree();
+            profile.Apply("trustSarah", 4);
+            profile.Apply("relationshipAwareness", 5);
+            profile.Apply("digitalSafety", 6);
+            profile.Apply("boundaryAwareness", 7);
+            profile.Apply("helpSeeking", 8);
+
+            int reward = CampaignProgression.Complete(StoryRepository.LoadChapterThree().Chapter, profile);
+            int repeatedReward = CampaignProgression.Complete(StoryRepository.LoadChapterThree().Chapter, profile);
+            MetricSnapshot snapshot = profile.Snapshot();
+
+            Assert.That(reward, Is.EqualTo(200));
+            Assert.That(repeatedReward, Is.Zero);
+            Assert.That(profile.xp, Is.EqualTo(450));
+            Assert.That(profile.TrustScore, Is.EqualTo(54));
+            Assert.That(snapshot.relationshipAwareness, Is.EqualTo(55));
+            Assert.That(snapshot.digitalSafetyAwareness, Is.EqualTo(56));
+            Assert.That(snapshot.boundaryAwareness, Is.EqualTo(57));
+            Assert.That(snapshot.helpSeekingTendency, Is.EqualTo(58));
+            Assert.That(profile.completedChapterThree, Is.True);
+            Assert.That(profile.healthyRelationshipArticleUnlocked, Is.True);
+            Assert.That(profile.digitalSafetyGuideUnlocked, Is.True);
+        }
+
+        [Test]
         public void Progression_MigratesCompletedChapterOneSave()
         {
             var profile = new PlayerProfile();
@@ -112,6 +169,31 @@ namespace YouthRise.Tests
             Assert.That(profile.completedChapterOne, Is.True);
             Assert.That(profile.safeZoneUnlocked, Is.True);
             Assert.That(CampaignProgression.CanStartChapterTwo(profile), Is.True);
+        }
+
+        [Test]
+        public void Progression_MigratesCompletedChapterThreeSaveAndPrerequisites()
+        {
+            var profile = new PlayerProfile();
+            profile.ResetForChapterOne();
+            var save = new PrototypeSave
+            {
+                chapterId = "chapter-3",
+                chapterCompleted = true,
+                profile = profile
+            };
+
+            CampaignProgression.Normalize(save);
+
+            Assert.That(profile.completedChapterOne, Is.True);
+            Assert.That(profile.completedChapterTwo, Is.True);
+            Assert.That(profile.completedChapterThree, Is.True);
+            Assert.That(profile.safeZoneUnlocked, Is.True);
+            Assert.That(profile.relationshipPathUnlocked, Is.True);
+            Assert.That(profile.bullyingSupportArticleUnlocked, Is.True);
+            Assert.That(profile.healthyRelationshipArticleUnlocked, Is.True);
+            Assert.That(profile.digitalSafetyGuideUnlocked, Is.True);
+            Assert.That(CampaignProgression.CanStartChapterThree(profile), Is.True);
         }
 
         [Test]
@@ -156,7 +238,7 @@ namespace YouthRise.Tests
         }
 
         [Test]
-        public void VisualArtCatalog_ContainsEveryChapterOneAsset()
+        public void VisualArtCatalog_ContainsEveryCampaignAsset()
         {
             string[] resourcePaths =
             {
@@ -169,13 +251,15 @@ namespace YouthRise.Tests
                 "YouthRise/Art/Backgrounds/bg_bedroom",
                 "YouthRise/Art/Backgrounds/bg_locker",
                 "YouthRise/Art/Backgrounds/bg_counselor",
+                "YouthRise/Art/Backgrounds/bg_cafeteria",
                 "YouthRise/Art/Characters/char_maya_chroma",
                 "YouthRise/Art/Characters/char_kevin_chroma",
                 "YouthRise/Art/Characters/char_rina_chroma",
                 "YouthRise/Art/Characters/char_ibu_chroma",
                 "YouthRise/Art/Characters/char_senior_chroma",
                 "YouthRise/Art/Characters/char_mr_daniel_chroma",
-                "YouthRise/Art/Characters/char_leo_chroma"
+                "YouthRise/Art/Characters/char_leo_chroma",
+                "YouthRise/Art/Characters/char_sarah_chroma"
             };
 
             foreach (string resourcePath in resourcePaths)

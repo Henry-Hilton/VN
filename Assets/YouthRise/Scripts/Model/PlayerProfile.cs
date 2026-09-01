@@ -12,6 +12,7 @@ namespace YouthRise
         public int trustMaya;
         public int trustRina;
         public int trustLeo;
+        public int trustSarah;
         public int trustTeacher;
         public int confidence;
         public int empathy;
@@ -19,15 +20,22 @@ namespace YouthRise
         public int socialSupport;
         public int anxiety;
         public int bystanderResponse;
+        public int relationshipAwareness;
+        public int digitalSafetyAwareness;
+        public int boundaryAwareness;
+        public int helpSeekingTendency;
         public int xp;
         public bool safeZoneUnlocked;
         public bool completedChapterOne;
         public bool completedChapterTwo;
+        public bool completedChapterThree;
         public bool relationshipPathUnlocked;
         public bool bullyingSupportArticleUnlocked;
+        public bool healthyRelationshipArticleUnlocked;
+        public bool digitalSafetyGuideUnlocked;
 
         public int TrustScore => Mathf.Clamp(
-            50 + trustParent + trustFriend + trustMaya + trustRina + trustLeo + trustTeacher,
+            50 + trustParent + trustFriend + trustMaya + trustRina + trustLeo + trustSarah + trustTeacher,
             0,
             100);
 
@@ -39,6 +47,7 @@ namespace YouthRise
             trustMaya = 0;
             trustRina = 0;
             trustLeo = 0;
+            trustSarah = 0;
             trustTeacher = 0;
             confidence = 50;
             empathy = 50;
@@ -46,17 +55,32 @@ namespace YouthRise
             socialSupport = 50;
             anxiety = 20;
             bystanderResponse = 50;
+            relationshipAwareness = 50;
+            digitalSafetyAwareness = 50;
+            boundaryAwareness = 50;
+            helpSeekingTendency = 50;
             xp = 0;
             safeZoneUnlocked = false;
             completedChapterOne = false;
             completedChapterTwo = false;
+            completedChapterThree = false;
             relationshipPathUnlocked = false;
             bullyingSupportArticleUnlocked = false;
+            healthyRelationshipArticleUnlocked = false;
+            digitalSafetyGuideUnlocked = false;
         }
 
         public void PrepareForChapterTwo()
         {
             bystanderResponse = 50;
+        }
+
+        public void PrepareForChapterThree()
+        {
+            relationshipAwareness = 50;
+            digitalSafetyAwareness = 50;
+            boundaryAwareness = 50;
+            helpSeekingTendency = 50;
         }
 
         public void Apply(StatDelta[] effects)
@@ -95,6 +119,9 @@ namespace YouthRise
                 case "trustleo":
                     trustLeo = Mathf.Clamp(trustLeo + amount, -50, 50);
                     break;
+                case "trustsarah":
+                    trustSarah = Mathf.Clamp(trustSarah + amount, -50, 50);
+                    break;
                 case "trustteacher":
                     trustTeacher = Mathf.Clamp(trustTeacher + amount, -50, 50);
                     break;
@@ -116,6 +143,21 @@ namespace YouthRise
                 case "bystander":
                 case "bystanderresponse":
                     bystanderResponse = Mathf.Clamp(bystanderResponse + amount, 0, 100);
+                    break;
+                case "relationshipawareness":
+                    relationshipAwareness = Mathf.Clamp(relationshipAwareness + amount, 0, 100);
+                    break;
+                case "digitalsafety":
+                case "digitalsafetyawareness":
+                    digitalSafetyAwareness = Mathf.Clamp(digitalSafetyAwareness + amount, 0, 100);
+                    break;
+                case "boundary":
+                case "boundaryawareness":
+                    boundaryAwareness = Mathf.Clamp(boundaryAwareness + amount, 0, 100);
+                    break;
+                case "helpseeking":
+                case "helpseekingtendency":
+                    helpSeekingTendency = Mathf.Clamp(helpSeekingTendency + amount, 0, 100);
                     break;
                 case "xp":
                     xp = Mathf.Max(0, xp + amount);
@@ -140,6 +182,7 @@ namespace YouthRise
                 case "trustmaya": return trustMaya;
                 case "trustrina": return trustRina;
                 case "trustleo": return trustLeo;
+                case "trustsarah": return trustSarah;
                 case "trustteacher": return trustTeacher;
                 case "confidence": return confidence;
                 case "empathy": return empathy;
@@ -148,6 +191,13 @@ namespace YouthRise
                 case "anxiety": return anxiety;
                 case "bystander": return bystanderResponse;
                 case "bystanderresponse": return bystanderResponse;
+                case "relationshipawareness": return relationshipAwareness;
+                case "digitalsafety": return digitalSafetyAwareness;
+                case "digitalsafetyawareness": return digitalSafetyAwareness;
+                case "boundary": return boundaryAwareness;
+                case "boundaryawareness": return boundaryAwareness;
+                case "helpseeking": return helpSeekingTendency;
+                case "helpseekingtendency": return helpSeekingTendency;
                 case "xp": return xp;
                 default: return 0;
             }
@@ -164,7 +214,11 @@ namespace YouthRise
                 knowledge = knowledge,
                 socialSupport = socialSupport,
                 anxiety = anxiety,
-                bystanderResponse = bystanderResponse
+                bystanderResponse = bystanderResponse,
+                relationshipAwareness = relationshipAwareness,
+                digitalSafetyAwareness = digitalSafetyAwareness,
+                boundaryAwareness = boundaryAwareness,
+                helpSeekingTendency = helpSeekingTendency
             };
         }
     }
@@ -180,5 +234,9 @@ namespace YouthRise
         public int socialSupport;
         public int anxiety;
         public int bystanderResponse;
+        public int relationshipAwareness;
+        public int digitalSafetyAwareness;
+        public int boundaryAwareness;
+        public int helpSeekingTendency;
     }
 }

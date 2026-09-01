@@ -43,6 +43,12 @@ namespace YouthRise.EditorTools
             InvokeButton("Article Tab");
         }
 
+        [MenuItem("YouthRise/QA/Start Chapter 3", false, 16)]
+        private static void StartChapterThree()
+        {
+            InvokeButton("Start Chapter 3");
+        }
+
         private static void InvokeButton(string objectName)
         {
             if (!EditorApplication.isPlaying)
