@@ -44,6 +44,7 @@ namespace YouthRise
         private Image sceneBackground;
         private Image nextSceneBackground;
         private Image characterPortrait;
+        private Image completionBackground;
         private Image riskFill;
         private Image trustFill;
         private Text riskValue;
@@ -53,6 +54,16 @@ namespace YouthRise
         private Text speakerInitials;
         private Text dialogueText;
         private Text toastText;
+        private Text menuTitleText;
+        private Text menuSubtitleText;
+        private Text menuFeatureText;
+        private Text storyChapterCaption;
+        private Text completionHeadingText;
+        private Text completionReflectionText;
+        private Text completionRewardText;
+        private Text completionPrimaryLabel;
+        private Text chapterTwoMenuLabel;
+        private Text bullyingArticleBody;
         private GameObject toastRoot;
         private GameObject speakerPlaceholder;
         private CanvasGroup dialogueGroup;
@@ -78,7 +89,9 @@ namespace YouthRise
         private readonly CanvasGroup[] choiceGroups = new CanvasGroup[3];
         private Button continueStoryButton;
         private Button continueMenuButton;
+        private Button chapterTwoMenuButton;
         private Button safeZoneMenuButton;
+        private Button completionPrimaryButton;
         private Text safeZoneMenuLabel;
 
         private InputField chatInput;
@@ -198,28 +211,32 @@ namespace YouthRise
             AddText(eyebrow, "YOUTHRise • INTERACTIVE STORY", 24, Cyan, TextAnchor.MiddleLeft, FontStyle.Bold);
 
             GameObject title = CreateRect("Title", root.transform, new Vector2(0.18f, 0.58f), new Vector2(0.79f, 0.80f));
-            Text titleText = AddText(title, "THE FIRST\nDAY", 96, White, TextAnchor.MiddleLeft, FontStyle.Bold);
-            titleText.resizeTextForBestFit = true;
-            titleText.resizeTextMinSize = 58;
-            titleText.resizeTextMaxSize = 96;
+            menuTitleText = AddText(title, "THE FIRST\nDAY", 96, White, TextAnchor.MiddleLeft, FontStyle.Bold);
+            menuTitleText.resizeTextForBestFit = true;
+            menuTitleText.resizeTextMinSize = 58;
+            menuTitleText.resizeTextMaxSize = 96;
 
             GameObject subtitle = CreateRect("Subtitle", root.transform, new Vector2(0.18f, 0.48f), new Vector2(0.68f, 0.59f));
-            AddText(subtitle, "Chapter 1 • Hari pertama Alex di sekolah baru", 30, Paper, TextAnchor.MiddleLeft);
+            menuSubtitleText = AddText(subtitle, "Chapter 1 • Hari pertama Alex di sekolah baru", 30, Paper, TextAnchor.MiddleLeft);
 
             GameObject feature = CreateRect("Features", root.transform, new Vector2(0.18f, 0.40f), new Vector2(0.75f, 0.48f));
-            AddText(feature, "DIALOG PCG LOKAL   •   PILIHAN BERCABANG   •   SAFE ZONE", 19, new Color(1f, 1f, 1f, 0.65f), TextAnchor.MiddleLeft, FontStyle.Bold);
+            menuFeatureText = AddText(feature, "DIALOG PCG LOKAL   •   PILIHAN BERCABANG   •   SAFE ZONE", 19, new Color(1f, 1f, 1f, 0.65f), TextAnchor.MiddleLeft, FontStyle.Bold);
 
-            Button start = CreateButton(root.transform, "Start", "MULAI CHAPTER", new Vector2(0.18f, 0.27f), new Vector2(0.39f, 0.36f), Blue, White, 24);
+            Button start = CreateButton(root.transform, "Start", "MULAI CHAPTER 1", new Vector2(0.18f, 0.30f), new Vector2(0.49f, 0.37f), Blue, White, 21);
             start.onClick.AddListener(StartNewGame);
 
-            continueMenuButton = CreateButton(root.transform, "Continue", "LANJUTKAN", new Vector2(0.41f, 0.27f), new Vector2(0.59f, 0.36f), Cyan, Navy, 22);
+            chapterTwoMenuButton = CreateButton(root.transform, "Start Chapter 2", "CHAPTER 2 • TERKUNCI", new Vector2(0.51f, 0.30f), new Vector2(0.82f, 0.37f), Coral, White, 21);
+            chapterTwoMenuLabel = chapterTwoMenuButton.GetComponentInChildren<Text>();
+            chapterTwoMenuButton.onClick.AddListener(StartChapterTwo);
+
+            continueMenuButton = CreateButton(root.transform, "Continue", "LANJUTKAN", new Vector2(0.18f, 0.22f), new Vector2(0.49f, 0.29f), Cyan, Navy, 20);
             continueMenuButton.onClick.AddListener(ContinueGame);
 
-            safeZoneMenuButton = CreateButton(root.transform, "Safe Zone", "SAFE ZONE • TERKUNCI", new Vector2(0.61f, 0.27f), new Vector2(0.82f, 0.36f), Mint, Navy, 20);
+            safeZoneMenuButton = CreateButton(root.transform, "Safe Zone", "SAFE ZONE • TERKUNCI", new Vector2(0.51f, 0.22f), new Vector2(0.82f, 0.29f), Mint, Navy, 20);
             safeZoneMenuLabel = safeZoneMenuButton.GetComponentInChildren<Text>();
             safeZoneMenuButton.onClick.AddListener(ShowSafeZone);
 
-            GameObject privacy = CreateRect("Privacy", root.transform, new Vector2(0.18f, 0.09f), new Vector2(0.82f, 0.21f));
+            GameObject privacy = CreateRect("Privacy", root.transform, new Vector2(0.18f, 0.06f), new Vector2(0.82f, 0.18f));
             AddImage(privacy, new Color(1f, 1f, 1f, 0.07f));
             Text privacyText = AddText(privacy,
                 "PROTOTYPE PRIVASI\nPilihan dan waktu respons disimpan secara pseudonim di perangkat ini. Draft bantuan tidak pernah dikirim otomatis.",
@@ -316,7 +333,7 @@ namespace YouthRise
             speakerName = AddText(name, "NARASI", 27, Blue, TextAnchor.MiddleLeft, FontStyle.Bold);
 
             GameObject cardCaption = CreateRect("Card Caption", dialogueCard.transform, new Vector2(0.69f, 0.82f), new Vector2(0.94f, 0.93f));
-            AddText(cardCaption, "CHAPTER 01  •  THE FIRST DAY", 15, new Color(Navy.r, Navy.g, Navy.b, 0.42f), TextAnchor.MiddleRight, FontStyle.Bold);
+            storyChapterCaption = AddText(cardCaption, "CHAPTER 01  •  THE FIRST DAY", 15, new Color(Navy.r, Navy.g, Navy.b, 0.42f), TextAnchor.MiddleRight, FontStyle.Bold);
 
             GameObject dialogue = CreateRect("Dialogue", dialogueCard.transform, new Vector2(0.055f, 0.18f), new Vector2(0.945f, 0.79f));
             dialogueText = AddText(dialogue, "", 32, Ink, TextAnchor.MiddleLeft);
@@ -352,7 +369,7 @@ namespace YouthRise
         private GameObject BuildCompletionScreen(RectTransform parent)
         {
             GameObject root = CreateRect("Completion Screen", parent, Vector2.zero, Vector2.one);
-            Image completionBackground = AddImage(root, Navy);
+            completionBackground = AddImage(root, Navy);
             completionBackground.sprite = LoadArtSprite("YouthRise/Art/Backgrounds/bg_bedroom");
             completionBackground.color = completionBackground.sprite != null ? White : Navy;
 
@@ -369,21 +386,28 @@ namespace YouthRise
             AddText(kicker, "TODAY REFLECTION", 22, Blue, TextAnchor.MiddleCenter, FontStyle.Bold);
 
             GameObject heading = CreateRect("Heading", card.transform, new Vector2(0.08f, 0.63f), new Vector2(0.92f, 0.82f));
-            AddText(heading, "HARI PERTAMA\nSELESAI", 55, Navy, TextAnchor.MiddleCenter, FontStyle.Bold);
+            completionHeadingText = AddText(heading, "HARI PERTAMA\nSELESAI", 55, Navy, TextAnchor.MiddleCenter, FontStyle.Bold);
 
             GameObject reflection = CreateRect("Reflection", card.transform, new Vector2(0.12f, 0.35f), new Vector2(0.88f, 0.62f));
-            AddText(reflection,
+            completionReflectionText = AddText(reflection,
                 "✓ Kamu bertemu teman baru\n✓ Kamu menghadapi tekanan teman sebaya\n✓ Kamu membuat pilihan yang sulit\n\nBesok adalah kesempatan baru.",
-                25,
+                23,
                 Ink,
                 TextAnchor.MiddleLeft);
+            completionReflectionText.resizeTextForBestFit = true;
+            completionReflectionText.resizeTextMinSize = 18;
+            completionReflectionText.resizeTextMaxSize = 23;
 
             GameObject reward = CreateRect("Reward", card.transform, new Vector2(0.18f, 0.24f), new Vector2(0.82f, 0.34f));
             AddImage(reward, new Color(Gold.r, Gold.g, Gold.b, 0.32f));
-            AddText(reward, "★ 100 XP   •   SAFE ZONE UNLOCKED", 23, Navy, TextAnchor.MiddleCenter, FontStyle.Bold);
+            completionRewardText = AddText(reward, "★ 100 XP   •   SAFE ZONE UNLOCKED", 21, Navy, TextAnchor.MiddleCenter, FontStyle.Bold);
+            completionRewardText.resizeTextForBestFit = true;
+            completionRewardText.resizeTextMinSize = 16;
+            completionRewardText.resizeTextMaxSize = 21;
 
-            Button safe = CreateButton(card.transform, "Enter Safe Zone", "MASUK SAFE ZONE", new Vector2(0.12f, 0.07f), new Vector2(0.55f, 0.18f), Blue, White, 22);
-            safe.onClick.AddListener(ShowSafeZone);
+            completionPrimaryButton = CreateButton(card.transform, "Completion Primary", "MULAI CHAPTER 2", new Vector2(0.12f, 0.07f), new Vector2(0.55f, 0.18f), Blue, White, 22);
+            completionPrimaryLabel = completionPrimaryButton.GetComponentInChildren<Text>();
+            completionPrimaryButton.onClick.AddListener(HandleCompletionPrimary);
 
             Button menu = CreateButton(card.transform, "Back to Menu", "KEMBALI KE MENU", new Vector2(0.57f, 0.07f), new Vector2(0.88f, 0.18f), Cyan, Navy, 20);
             menu.onClick.AddListener(ShowStartMenu);
@@ -464,9 +488,10 @@ namespace YouthRise
             GameObject panel = CreateRect("Articles Panel", parent, new Vector2(0.045f, 0.095f), new Vector2(0.955f, 0.71f));
             AddImage(panel, Paper);
 
-            CreateArticleCard(panel.transform, 0.05f, 0.31f, "TEKANAN TEMAN SEBAYA", "Kamu boleh menolak tanpa menjelaskan panjang. Cari teman atau orang dewasa yang mendukung keputusan amanmu.", Blue);
-            CreateArticleCard(panel.transform, 0.35f, 0.61f, "MENGELOLA CEMAS", "Tarik napas perlahan, beri nama pada perasaanmu, lalu pilih satu langkah kecil yang bisa dilakukan sekarang.", Cyan);
-            CreateArticleCard(panel.transform, 0.65f, 0.95f, "HUBUNGAN SEHAT", "Hubungan yang sehat menghormati batas, tidak memaksa, dan memberi ruang untuk berkata tidak.", Coral);
+            CreateArticleCard(panel.transform, 0.05f, 0.48f, 0.53f, 0.93f, "TEKANAN TEMAN SEBAYA", "Kamu boleh menolak tanpa menjelaskan panjang. Cari teman atau orang dewasa yang mendukung keputusan amanmu.", Blue);
+            CreateArticleCard(panel.transform, 0.52f, 0.95f, 0.53f, 0.93f, "MENGELOLA CEMAS", "Tarik napas perlahan, beri nama pada perasaanmu, lalu pilih satu langkah kecil yang bisa dilakukan sekarang.", Cyan);
+            CreateArticleCard(panel.transform, 0.05f, 0.48f, 0.07f, 0.47f, "HUBUNGAN SEHAT", "Hubungan yang sehat menghormati batas, tidak memaksa, dan memberi ruang untuk berkata tidak.", Coral);
+            bullyingArticleBody = CreateArticleCard(panel.transform, 0.52f, 0.95f, 0.07f, 0.47f, "DUKUNGAN BULLYING", "TERKUNCI • Selesaikan Chapter 2 untuk membuka artikel ini.", Gold);
 
             return panel;
         }
@@ -512,8 +537,16 @@ namespace YouthRise
 
         private void StartNewGame()
         {
-            if (story == null)
+            try
+            {
+                story = StoryRepository.LoadChapterOne();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                ShowToast("Chapter 1 gagal dimuat.", true);
                 return;
+            }
 
             PrototypeSaveService.Clear();
             profile = new PlayerProfile();
@@ -527,18 +560,66 @@ namespace YouthRise
             ShowNode(story.Chapter.startNodeId);
         }
 
+        private void StartChapterTwo()
+        {
+            if (PrototypeSaveService.TryLoad(out PrototypeSave saved) && saved.profile != null)
+            {
+                NormalizeLoadedProgress(saved);
+                profile = saved.profile;
+            }
+
+            if (!CampaignProgression.CanStartChapterTwo(profile))
+            {
+                ShowToast("Selesaikan Chapter 1 untuk membuka Chapter 2.", false);
+                return;
+            }
+
+            try
+            {
+                story = StoryRepository.LoadChapterTwo();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                ShowToast("Chapter 2 gagal dimuat.", true);
+                return;
+            }
+
+            profile.PrepareForChapterTwo();
+            ResetMeterAnimation();
+            branchPath = string.Empty;
+            chapterCompleted = false;
+            sessionSeed = Guid.NewGuid().GetHashCode();
+            telemetry = new DecisionTelemetry(story.Chapter.id);
+            telemetry.RecordSessionStarted(profile);
+            ShowNode(story.Chapter.startNodeId);
+        }
+
         private void ContinueGame()
         {
-            if (story == null || !PrototypeSaveService.TryLoad(out PrototypeSave save))
+            if (!PrototypeSaveService.TryLoad(out PrototypeSave save))
             {
                 StartNewGame();
                 return;
             }
 
+            NormalizeLoadedProgress(save);
             profile = save.profile;
             ResetMeterAnimation();
             branchPath = save.branchPath ?? string.Empty;
             chapterCompleted = save.chapterCompleted;
+
+            try
+            {
+                story = StoryRepository.LoadById(save.chapterId);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                ShowToast("Progress tersimpan, tetapi chapter gagal dimuat.", true);
+                return;
+            }
+
             telemetry = new DecisionTelemetry(story.Chapter.id);
             telemetry.RecordSessionStarted(profile);
 
@@ -546,6 +627,11 @@ namespace YouthRise
                 ShowCompletion(false);
             else
                 ShowNode(story.Contains(save.currentNodeId) ? save.currentNodeId : story.Chapter.startNodeId);
+        }
+
+        private static void NormalizeLoadedProgress(PrototypeSave save)
+        {
+            CampaignProgression.Normalize(save);
         }
 
         private void ShowNode(string nodeId)
@@ -682,6 +768,7 @@ namespace YouthRise
             locationText.text = (node.location ?? string.Empty).ToUpperInvariant();
             speakerName.text = (node.speaker ?? "Narasi").ToUpperInvariant();
             speakerInitials.text = GetInitials(node.speaker);
+            storyChapterCaption.text = $"CHAPTER {Mathf.Max(1, story.Chapter.number):00}  •  {(story.Chapter.title ?? string.Empty).ToUpperInvariant()}";
             dialogueText.text = conversationGenerator.Generate(node, profile, sessionSeed);
             bool hasChoices = node.choices != null && node.choices.Length > 0;
             for (int index = 0; index < choiceButtons.Length; index++)
@@ -761,6 +848,7 @@ namespace YouthRise
             if (normalized.StartsWith("maya")) return "YouthRise/Art/Characters/char_maya_chroma";
             if (normalized.StartsWith("kevin")) return "YouthRise/Art/Characters/char_kevin_chroma";
             if (normalized.StartsWith("rina")) return "YouthRise/Art/Characters/char_rina_chroma";
+            if (normalized.StartsWith("leo")) return "YouthRise/Art/Characters/char_leo_chroma";
             if (normalized.StartsWith("ibu")) return "YouthRise/Art/Characters/char_ibu_chroma";
             if (normalized.StartsWith("senior")) return "YouthRise/Art/Characters/char_senior_chroma";
             if (normalized.Contains("wali kelas") || normalized.Contains("daniel") || normalized.Contains("guru bk"))
@@ -821,8 +909,7 @@ namespace YouthRise
             if (!chapterCompleted)
             {
                 chapterCompleted = true;
-                profile.Apply("xp", 100);
-                profile.safeZoneUnlocked = true;
+                CampaignProgression.Complete(story.Chapter, profile);
                 telemetry?.RecordChapterCompleted(branchPath, profile);
                 SaveProgress("END", true);
             }
@@ -832,10 +919,59 @@ namespace YouthRise
 
         private void ShowCompletion(bool grantReward)
         {
+            if (toastTransition != null)
+            {
+                StopCoroutine(toastTransition);
+                toastTransition = null;
+            }
+            HideToast();
+
             if (grantReward && !chapterCompleted)
                 CompleteChapter();
             else
+            {
+                UpdateCompletionContent();
                 ShowScreenSmooth(completionScreen);
+            }
+        }
+
+        private void HandleCompletionPrimary()
+        {
+            if (IsChapterTwo())
+                ShowSafeZone();
+            else
+                StartChapterTwo();
+        }
+
+        private void UpdateCompletionContent()
+        {
+            if (story?.Chapter == null)
+                return;
+
+            StoryChapter chapter = story.Chapter;
+            completionHeadingText.text = string.IsNullOrWhiteSpace(chapter.completionHeading)
+                ? $"CHAPTER {chapter.number}\nSELESAI"
+                : chapter.completionHeading;
+
+            if (chapter.reflectionLines != null && chapter.reflectionLines.Length > 0)
+            {
+                string[] lines = new string[chapter.reflectionLines.Length];
+                for (int index = 0; index < chapter.reflectionLines.Length; index++)
+                    lines[index] = "✓ " + chapter.reflectionLines[index];
+                completionReflectionText.text = string.Join("\n", lines);
+            }
+
+            string unlocks = chapter.unlockLabels != null && chapter.unlockLabels.Length > 0
+                ? "   •   " + string.Join("   •   ", chapter.unlockLabels)
+                : string.Empty;
+            completionRewardText.text = $"★ {chapter.rewardXp} XP{unlocks}";
+
+            bool chapterTwo = IsChapterTwo();
+            completionPrimaryLabel.text = chapterTwo ? "MASUK SAFE ZONE" : "MULAI CHAPTER 2";
+            completionBackground.sprite = LoadArtSprite(chapterTwo
+                ? "YouthRise/Art/Backgrounds/bg_classroom"
+                : "YouthRise/Art/Backgrounds/bg_bedroom");
+            completionBackground.color = completionBackground.sprite != null ? White : Navy;
         }
 
         private void ShowStartMenu()
@@ -844,12 +980,38 @@ namespace YouthRise
 
             bool hasSave = PrototypeSaveService.TryLoad(out PrototypeSave save);
             if (hasSave && save.profile != null)
+            {
+                NormalizeLoadedProgress(save);
                 profile = save.profile;
+            }
 
             continueMenuButton.gameObject.SetActive(hasSave);
             bool unlocked = hasSave && save.profile != null && save.profile.safeZoneUnlocked;
             SetButtonEnabled(safeZoneMenuButton, unlocked);
             safeZoneMenuLabel.text = unlocked ? "SAFE ZONE • TERBUKA" : "SAFE ZONE • TERKUNCI";
+
+            bool chapterTwoUnlocked = hasSave && save.profile != null && save.profile.completedChapterOne;
+            SetButtonEnabled(chapterTwoMenuButton, chapterTwoUnlocked);
+            chapterTwoMenuLabel.text = !chapterTwoUnlocked
+                ? "CHAPTER 2 • TERKUNCI"
+                : save.profile.completedChapterTwo
+                    ? "ULANGI CHAPTER 2"
+                    : "MULAI CHAPTER 2";
+
+            if (chapterTwoUnlocked)
+            {
+                menuTitleText.text = "BEHIND THE\nSMILE";
+                menuSubtitleText.text = "Chapter 2 • Bullying, keberanian, dan mencari bantuan";
+            }
+            else
+            {
+                menuTitleText.text = "THE FIRST\nDAY";
+                menuSubtitleText.text = "Chapter 1 • Hari pertama Alex di sekolah baru";
+            }
+
+            menuFeatureText.text = hasSave && save.profile != null && save.profile.relationshipPathUnlocked
+                ? "RELATIONSHIP PATH • TERBUKA   •   SAFE ZONE   •   2 CHAPTER"
+                : "DIALOG PCG LOKAL   •   PILIHAN BERCABANG   •   SAFE ZONE";
         }
 
         private void ShowSafeZone()
@@ -866,14 +1028,31 @@ namespace YouthRise
 
             ShowScreenSmooth(safeZoneScreen);
             telemetry?.RecordSafeZoneOpened(profile);
+            UpdateSafeZoneArticles();
             ShowSafeTab("chat");
         }
 
         private void ShowSafeTab(string tab)
         {
+            UpdateSafeZoneArticles();
             safeChatPanel.SetActive(tab == "chat");
             safeArticlesPanel.SetActive(tab == "articles");
             safeReportPanel.SetActive(tab == "report");
+        }
+
+        private void UpdateSafeZoneArticles()
+        {
+            if (bullyingArticleBody == null)
+                return;
+
+            bullyingArticleBody.text = profile != null && profile.bullyingSupportArticleUnlocked
+                ? "Simpan bukti, dekati korban dengan aman, dan libatkan orang dewasa tepercaya. Diam juga merupakan sebuah pilihan."
+                : "TERKUNCI • Selesaikan Chapter 2 untuk membuka artikel ini.";
+        }
+
+        private bool IsChapterTwo()
+        {
+            return string.Equals(story?.Chapter?.id, "chapter-2", StringComparison.OrdinalIgnoreCase);
         }
 
         private void SendSafeZoneChat()
@@ -1208,19 +1387,28 @@ namespace YouthRise
             value = AddText(valueObject, "00%", 16, White, TextAnchor.MiddleRight, FontStyle.Bold);
         }
 
-        private void CreateArticleCard(Transform parent, float minX, float maxX, string title, string body, Color accent)
+        private Text CreateArticleCard(
+            Transform parent,
+            float minX,
+            float maxX,
+            float minY,
+            float maxY,
+            string title,
+            string body,
+            Color accent)
         {
-            GameObject card = CreateRect(title, parent, new Vector2(minX, 0.10f), new Vector2(maxX, 0.90f));
+            GameObject card = CreateRect(title, parent, new Vector2(minX, minY), new Vector2(maxX, maxY));
             AddImage(card, new Color(accent.r, accent.g, accent.b, 0.13f));
             GameObject stripe = CreateRect("Stripe", card.transform, new Vector2(0f, 0f), new Vector2(0.035f, 1f));
             AddImage(stripe, accent);
             GameObject titleObject = CreateRect("Title", card.transform, new Vector2(0.10f, 0.66f), new Vector2(0.90f, 0.90f));
-            AddText(titleObject, title, 21, Navy, TextAnchor.MiddleLeft, FontStyle.Bold);
+            AddText(titleObject, title, 19, Navy, TextAnchor.MiddleLeft, FontStyle.Bold);
             GameObject bodyObject = CreateRect("Body", card.transform, new Vector2(0.10f, 0.12f), new Vector2(0.90f, 0.64f));
-            Text bodyText = AddText(bodyObject, body, 20, Ink, TextAnchor.UpperLeft);
+            Text bodyText = AddText(bodyObject, body, 18, Ink, TextAnchor.UpperLeft);
             bodyText.resizeTextForBestFit = true;
-            bodyText.resizeTextMinSize = 16;
-            bodyText.resizeTextMaxSize = 20;
+            bodyText.resizeTextMinSize = 14;
+            bodyText.resizeTextMaxSize = 18;
+            return bodyText;
         }
 
         private InputField CreateInputField(Transform parent, string name, string placeholder, Vector2 min, Vector2 max, bool multiline)

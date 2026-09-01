@@ -9,6 +9,11 @@ namespace YouthRise
         public string id;
         public string title;
         public string subtitle;
+        public int number;
+        public int rewardXp;
+        public string completionHeading;
+        public string[] reflectionLines;
+        public string[] unlockLabels;
         public string startNodeId;
         public StoryNode[] nodes;
     }

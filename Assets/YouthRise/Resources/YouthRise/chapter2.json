@@ -1,0 +1,522 @@
+{
+  "id": "chapter-2",
+  "title": "Behind the Smile",
+  "subtitle": "Di Balik Senyum",
+  "number": 2,
+  "rewardXp": 150,
+  "completionHeading": "DI BALIK SENYUM\nSELESAI",
+  "reflectionLines": [
+    "Kamu melihat bagaimana sebuah candaan dapat melukai seseorang.",
+    "Kamu belajar bahwa diam juga merupakan sebuah pilihan.",
+    "Mencari bantuan bukanlah tanda kelemahan.",
+    "Satu tindakan kecil dapat membuat seseorang merasa tidak sendirian."
+  ],
+  "unlockLabels": [
+    "RELATIONSHIP PATH",
+    "ARTIKEL DUKUNGAN BULLYING"
+  ],
+  "startNodeId": "opening",
+  "nodes": [
+    {
+      "id": "opening",
+      "location": "Kelas XI-B • Pagi",
+      "background": "classroom",
+      "speaker": "Narasi",
+      "body": "Alex masuk ke kelas. Maya terlihat sedang berbicara dengan Rina.\n\n“Hari ini terasa seperti hari biasa. Tetapi sesuatu di kelas membuat suasana terasa berbeda.”",
+      "nextNodeId": "node-1",
+      "branch": "ordinary-morning",
+      "variants": [
+        {
+          "stat": "empathy",
+          "minInclusive": 0,
+          "maxInclusive": 54,
+          "text": "Alex masuk ke kelas. Maya terlihat sedang berbicara dengan Rina. Semuanya tampak biasa, tetapi suasana kelas terasa sedikit berbeda."
+        },
+        {
+          "stat": "empathy",
+          "minInclusive": 55,
+          "maxInclusive": 100,
+          "text": "Alex masuk ke kelas dan melihat Maya berbicara dengan Rina. Di balik percakapan pagi yang biasa, Alex menangkap kegelisahan kecil di ruangan itu."
+        }
+      ]
+    },
+    {
+      "id": "node-1",
+      "location": "Kelas XI-B • Pagi",
+      "background": "classroom",
+      "speaker": "Wali Kelas",
+      "body": "Semuanya, ini Leo. Mulai hari ini dia bergabung dengan kelas kita.\n\nLeo menarik napas pelan. “Hai... salam kenal.”",
+      "branch": "meet-leo",
+      "choices": [
+        {
+          "id": "1A",
+          "label": "“Selamat datang, Leo. Salam kenal.”",
+          "nextNodeId": "node-2",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "trustLeo", "amount": 4 },
+            { "stat": "empathy", "amount": 3 },
+            { "stat": "bystander", "amount": 3 }
+          ]
+        },
+        {
+          "id": "1B",
+          "label": "Tersenyum dan menyapa",
+          "nextNodeId": "node-2",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "trustLeo", "amount": 2 },
+            { "stat": "bystander", "amount": 1 }
+          ]
+        },
+        {
+          "id": "1C",
+          "label": "Tetap diam",
+          "nextNodeId": "node-2",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "trustLeo", "amount": -1 },
+            { "stat": "bystander", "amount": -1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-2",
+      "location": "Kelas XI-B • Istirahat",
+      "background": "classroom",
+      "speaker": "Kevin",
+      "body": "Beberapa siswa memperhatikan tas Leo.\n\n“Wah, tasnya jadul banget,” celetuk seseorang. Kevin tertawa. “Serius? Dapat dari mana?”\n\nLeo menunduk, terlihat malu.",
+      "branch": "first-teasing",
+      "choices": [
+        {
+          "id": "2A",
+          "label": "“Itu tidak lucu.”",
+          "nextNodeId": "node-3",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "empathy", "amount": 4 },
+            { "stat": "confidence", "amount": 2 },
+            { "stat": "bystander", "amount": 5 }
+          ]
+        },
+        {
+          "id": "2B",
+          "label": "Ikut tertawa",
+          "nextNodeId": "node-3",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "risk", "amount": 4 },
+            { "stat": "empathy", "amount": -3 },
+            { "stat": "bystander", "amount": -5 }
+          ]
+        },
+        {
+          "id": "2C",
+          "label": "Pergi dari sana",
+          "nextNodeId": "node-3",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "socialSupport", "amount": -2 },
+            { "stat": "bystander", "amount": -3 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-3",
+      "location": "Kelas XI-B",
+      "background": "classroom",
+      "speaker": "Leo",
+      "body": "Beberapa siswa mulai memanggil Leo dengan nama panggilan yang tidak ia sukai.\n\n“Tolong jangan panggil aku begitu,” katanya pelan.",
+      "branch": "hurtful-nickname",
+      "choices": [
+        {
+          "id": "3A",
+          "label": "Dukung Leo",
+          "nextNodeId": "node-4",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "empathy", "amount": 5 },
+            { "stat": "trustLeo", "amount": 4 },
+            { "stat": "bystander", "amount": 5 }
+          ]
+        },
+        {
+          "id": "3B",
+          "label": "Tidak mengatakan apa-apa",
+          "nextNodeId": "node-4",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "bystander", "amount": -1 }
+          ]
+        },
+        {
+          "id": "3C",
+          "label": "Ikut memakai nama panggilan itu",
+          "nextNodeId": "node-4",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "risk", "amount": 5 },
+            { "stat": "empathy", "amount": -5 },
+            { "stat": "trustLeo", "amount": -4 },
+            { "stat": "bystander", "amount": -6 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-4",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Grup Kelas",
+      "body": "Seseorang mengirim foto Leo yang sedang makan sendirian dengan caption: “Si penyendiri lagi.”\n\nEmoji tertawa mulai memenuhi layar.",
+      "branch": "cyberbullying",
+      "choices": [
+        {
+          "id": "4A",
+          "label": "Minta mereka menghapus fotonya",
+          "nextNodeId": "node-5",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "confidence", "amount": 4 },
+            { "stat": "empathy", "amount": 4 },
+            { "stat": "bystander", "amount": 5 }
+          ]
+        },
+        {
+          "id": "4B",
+          "label": "Abaikan pesan itu",
+          "nextNodeId": "node-5",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "socialSupport", "amount": -1 },
+            { "stat": "bystander", "amount": -2 }
+          ]
+        },
+        {
+          "id": "4C",
+          "label": "Tambahkan candaan lain",
+          "nextNodeId": "node-5",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "risk", "amount": 5 },
+            { "stat": "empathy", "amount": -5 },
+            { "stat": "bystander", "amount": -6 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-5",
+      "location": "Koridor Sekolah • Pagi",
+      "background": "hallway",
+      "speaker": "Maya",
+      "body": "Aku rasa Leo sedang dirundung. Aku khawatir padanya.",
+      "branch": "maya-concern",
+      "variants": [
+        {
+          "stat": "bystander",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Maya menatap Alex dengan serius. “Aku rasa Leo sedang dirundung. Kita tidak boleh terus menganggapnya cuma bercanda.”"
+        },
+        {
+          "stat": "bystander",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Maya mengangguk kecil kepada Alex. “Aku rasa Leo sedang dirundung. Aku senang kamu juga memperhatikannya.”"
+        }
+      ],
+      "choices": [
+        {
+          "id": "5A",
+          "label": "“Kita harus membantunya.”",
+          "nextNodeId": "node-6",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "trustMaya", "amount": 5 },
+            { "stat": "empathy", "amount": 4 },
+            { "stat": "socialSupport", "amount": 2 },
+            { "stat": "bystander", "amount": 3 }
+          ]
+        },
+        {
+          "id": "5B",
+          "label": "“Mungkin itu cuma bercanda.”",
+          "nextNodeId": "node-6",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "risk", "amount": 3 },
+            { "stat": "empathy", "amount": -3 },
+            { "stat": "bystander", "amount": -2 }
+          ]
+        },
+        {
+          "id": "5C",
+          "label": "“Kita lapor ke Pak Daniel.”",
+          "nextNodeId": "node-6",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "trustTeacher", "amount": 5 },
+            { "stat": "socialSupport", "amount": 4 },
+            { "stat": "bystander", "amount": 5 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-6",
+      "location": "Koridor Loker",
+      "background": "locker",
+      "speaker": "Kevin",
+      "body": "Alex melihat beberapa siswa menyembunyikan buku Leo.\n\n“Tenang saja. Kami cuma bersenang-senang,” kata Kevin.\n\n“Tolong kembalikan,” pinta Leo.",
+      "branch": "hidden-books",
+      "choices": [
+        {
+          "id": "6A",
+          "label": "Kembalikan buku Leo",
+          "nextNodeId": "node-7",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "confidence", "amount": 5 },
+            { "stat": "empathy", "amount": 4 },
+            { "stat": "trustLeo", "amount": 3 },
+            { "stat": "bystander", "amount": 6 }
+          ]
+        },
+        {
+          "id": "6B",
+          "label": "Minta Kevin berhenti",
+          "nextNodeId": "node-7",
+          "tendency": "assertive",
+          "effects": [
+            { "stat": "confidence", "amount": 4 },
+            { "stat": "trustLeo", "amount": 2 },
+            { "stat": "bystander", "amount": 5 }
+          ]
+        },
+        {
+          "id": "6C",
+          "label": "Tidak melakukan apa-apa",
+          "nextNodeId": "node-7",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "socialSupport", "amount": -3 },
+            { "stat": "risk", "amount": 3 },
+            { "stat": "bystander", "amount": -5 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-7",
+      "location": "Belakang Sekolah",
+      "background": "back-school",
+      "speaker": "Kevin",
+      "body": "Kevin menghampiri Alex. Senyumnya menghilang.\n\n“Kenapa kamu selalu membela dia?”",
+      "branch": "kevin-confrontation",
+      "choices": [
+        {
+          "id": "7A",
+          "label": "“Karena ini tidak benar.”",
+          "nextNodeId": "node-8",
+          "tendency": "assertive",
+          "effects": [
+            { "stat": "confidence", "amount": 5 },
+            { "stat": "trustLeo", "amount": 3 },
+            { "stat": "bystander", "amount": 5 }
+          ]
+        },
+        {
+          "id": "7B",
+          "label": "“Aku tidak mau cari masalah.”",
+          "nextNodeId": "node-8",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "anxiety", "amount": 3 },
+            { "stat": "bystander", "amount": -2 }
+          ]
+        },
+        {
+          "id": "7C",
+          "label": "“Kamu benar. Aku tidak akan ikut campur.”",
+          "nextNodeId": "node-8",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "empathy", "amount": -4 },
+            { "stat": "risk", "amount": 4 },
+            { "stat": "bystander", "amount": -5 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-8",
+      "location": "Depan Sekolah • Sore",
+      "background": "street",
+      "speaker": "Leo",
+      "body": "Kadang aku tidak ingin datang ke sekolah lagi.",
+      "branch": "leo-opens-up",
+      "variants": [
+        {
+          "stat": "trustLeo",
+          "minInclusive": -50,
+          "maxInclusive": 2,
+          "text": "Leo menatap lantai dan menjaga jarak. “Kadang aku tidak ingin datang ke sekolah lagi.”"
+        },
+        {
+          "stat": "trustLeo",
+          "minInclusive": 3,
+          "maxInclusive": 50,
+          "text": "Leo akhirnya menatap Alex. “Kadang aku tidak ingin datang ke sekolah lagi. Tapi... terima kasih sudah mau mendengarkan.”"
+        }
+      ],
+      "choices": [
+        {
+          "id": "8A",
+          "label": "“Aku ada kalau kamu ingin bicara.”",
+          "nextNodeId": "node-9",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "empathy", "amount": 6 },
+            { "stat": "socialSupport", "amount": 5 },
+            { "stat": "trustLeo", "amount": 4 },
+            { "stat": "bystander", "amount": 4 }
+          ]
+        },
+        {
+          "id": "8B",
+          "label": "“Abaikan saja mereka.”",
+          "nextNodeId": "node-9",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "empathy", "amount": -2 },
+            { "stat": "bystander", "amount": -1 }
+          ]
+        },
+        {
+          "id": "8C",
+          "label": "“Ceritakan kepada orang dewasa yang kamu percaya.”",
+          "nextNodeId": "node-9",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "trustTeacher", "amount": 4 },
+            { "stat": "socialSupport", "amount": 5 },
+            { "stat": "bystander", "amount": 4 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-9",
+      "location": "Ruang BK",
+      "background": "counselor",
+      "speaker": "Mr. Daniel",
+      "body": "Jika seseorang disakiti atau diancam, mencari bantuan bukanlah tanda kelemahan.",
+      "branch": "seeking-help",
+      "choices": [
+        {
+          "id": "9A",
+          "label": "Ceritakan apa yang terjadi",
+          "nextNodeId": "node-10",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "trustTeacher", "amount": 6 },
+            { "stat": "socialSupport", "amount": 6 },
+            { "stat": "bystander", "amount": 6 }
+          ]
+        },
+        {
+          "id": "9B",
+          "label": "Minta Leo bicara sendiri dengannya",
+          "nextNodeId": "node-10",
+          "tendency": "assertive",
+          "effects": [
+            { "stat": "trustTeacher", "amount": 3 },
+            { "stat": "confidence", "amount": 2 },
+            { "stat": "bystander", "amount": 2 }
+          ]
+        },
+        {
+          "id": "9C",
+          "label": "Tidak mengatakan apa-apa",
+          "nextNodeId": "node-10",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "anxiety", "amount": 3 },
+            { "stat": "socialSupport", "amount": -3 },
+            { "stat": "bystander", "amount": -4 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-10",
+      "location": "Ruang BK",
+      "background": "counselor",
+      "speaker": "Mr. Daniel",
+      "body": "Menurutmu, apa yang sebaiknya kita lakukan selanjutnya?",
+      "branch": "next-step",
+      "choices": [
+        {
+          "id": "10A",
+          "label": "Dukung Leo dan libatkan orang dewasa tepercaya",
+          "nextNodeId": "node-11",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "empathy", "amount": 5 },
+            { "stat": "socialSupport", "amount": 5 },
+            { "stat": "risk", "amount": -5 },
+            { "stat": "bystander", "amount": 6 }
+          ]
+        },
+        {
+          "id": "10B",
+          "label": "Coba selesaikan semuanya sendiri",
+          "nextNodeId": "node-11",
+          "tendency": "assertive",
+          "effects": [
+            { "stat": "confidence", "amount": 3 },
+            { "stat": "anxiety", "amount": 3 },
+            { "stat": "bystander", "amount": 1 }
+          ]
+        },
+        {
+          "id": "10C",
+          "label": "Lupakan masalahnya",
+          "nextNodeId": "node-11",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "empathy", "amount": -4 },
+            { "stat": "risk", "amount": 4 },
+            { "stat": "bystander", "amount": -5 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-11",
+      "location": "Kelas XI-B • Keesokan Hari",
+      "background": "classroom",
+      "speaker": "Leo",
+      "body": "Leo masuk ke kelas. Maya tersenyum, sementara Kevin terlihat diam.\n\n“Terima kasih, Alex.”\n\nKadang, satu orang yang berani bersuara dapat mengubah suasana di sekitarnya.",
+      "nextNodeId": "END",
+      "branch": "class-changes",
+      "variants": [
+        {
+          "stat": "bystander",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Leo masuk ke kelas. Maya tersenyum kecil, sementara Kevin terlihat diam. Alex sadar bahwa kesempatan untuk bersuara akan selalu datang lagi."
+        },
+        {
+          "stat": "bystander",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Leo masuk ke kelas. Maya tersenyum, sementara Kevin terlihat diam.\n\n“Terima kasih, Alex.”\n\nKadang, satu orang yang berani bersuara dapat mengubah suasana di sekitarnya."
+        }
+      ]
+    }
+  ]
+}

@@ -11,17 +11,23 @@ namespace YouthRise
         public int trustFriend;
         public int trustMaya;
         public int trustRina;
+        public int trustLeo;
         public int trustTeacher;
         public int confidence;
         public int empathy;
         public int knowledge;
         public int socialSupport;
         public int anxiety;
+        public int bystanderResponse;
         public int xp;
         public bool safeZoneUnlocked;
+        public bool completedChapterOne;
+        public bool completedChapterTwo;
+        public bool relationshipPathUnlocked;
+        public bool bullyingSupportArticleUnlocked;
 
         public int TrustScore => Mathf.Clamp(
-            50 + trustParent + trustFriend + trustMaya + trustRina + trustTeacher,
+            50 + trustParent + trustFriend + trustMaya + trustRina + trustLeo + trustTeacher,
             0,
             100);
 
@@ -32,14 +38,25 @@ namespace YouthRise
             trustFriend = 0;
             trustMaya = 0;
             trustRina = 0;
+            trustLeo = 0;
             trustTeacher = 0;
             confidence = 50;
             empathy = 50;
             knowledge = 50;
             socialSupport = 50;
             anxiety = 20;
+            bystanderResponse = 50;
             xp = 0;
             safeZoneUnlocked = false;
+            completedChapterOne = false;
+            completedChapterTwo = false;
+            relationshipPathUnlocked = false;
+            bullyingSupportArticleUnlocked = false;
+        }
+
+        public void PrepareForChapterTwo()
+        {
+            bystanderResponse = 50;
         }
 
         public void Apply(StatDelta[] effects)
@@ -75,6 +92,9 @@ namespace YouthRise
                 case "trustrina":
                     trustRina = Mathf.Clamp(trustRina + amount, -50, 50);
                     break;
+                case "trustleo":
+                    trustLeo = Mathf.Clamp(trustLeo + amount, -50, 50);
+                    break;
                 case "trustteacher":
                     trustTeacher = Mathf.Clamp(trustTeacher + amount, -50, 50);
                     break;
@@ -92,6 +112,10 @@ namespace YouthRise
                     break;
                 case "anxiety":
                     anxiety = Mathf.Clamp(anxiety + amount, 0, 100);
+                    break;
+                case "bystander":
+                case "bystanderresponse":
+                    bystanderResponse = Mathf.Clamp(bystanderResponse + amount, 0, 100);
                     break;
                 case "xp":
                     xp = Mathf.Max(0, xp + amount);
@@ -115,12 +139,15 @@ namespace YouthRise
                 case "trustfriend": return trustFriend;
                 case "trustmaya": return trustMaya;
                 case "trustrina": return trustRina;
+                case "trustleo": return trustLeo;
                 case "trustteacher": return trustTeacher;
                 case "confidence": return confidence;
                 case "empathy": return empathy;
                 case "knowledge": return knowledge;
                 case "socialsupport": return socialSupport;
                 case "anxiety": return anxiety;
+                case "bystander": return bystanderResponse;
+                case "bystanderresponse": return bystanderResponse;
                 case "xp": return xp;
                 default: return 0;
             }
@@ -136,7 +163,8 @@ namespace YouthRise
                 empathy = empathy,
                 knowledge = knowledge,
                 socialSupport = socialSupport,
-                anxiety = anxiety
+                anxiety = anxiety,
+                bystanderResponse = bystanderResponse
             };
         }
     }
@@ -151,5 +179,6 @@ namespace YouthRise
         public int knowledge;
         public int socialSupport;
         public int anxiety;
+        public int bystanderResponse;
     }
 }

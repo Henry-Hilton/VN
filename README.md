@@ -1,6 +1,6 @@
 # YouthRise
 
-**YouthRise** is a playable Indonesian high-school visual novel prototype built with Unity. Chapter 1, **“The First Day,”** follows Alex through a new school day where choices shape hidden traits, relationships, dialogue, and access to a supportive Safe Zone.
+**YouthRise** is a playable Indonesian high-school visual novel prototype built with Unity. Chapter 1, **“The First Day,”** introduces Alex's new school, while Chapter 2, **“Behind the Smile,”** explores bullying, cyberbullying, bystander choices, and reaching trusted support.
 
 ![YouthRise school setting](Assets/YouthRise/Resources/YouthRise/Art/Backgrounds/bg_school_gate.png)
 
@@ -9,13 +9,13 @@
 
 ## Highlights
 
-- A complete first chapter with 13 story nodes and 11 three-choice decisions.
-- Branching outcomes influenced by risk, trust, confidence, empathy, knowledge, social support, and anxiety.
+- Two complete chapters with 25 story nodes and 21 three-choice decisions.
+- Branching outcomes influenced by risk, trust, confidence, empathy, knowledge, social support, anxiety, and bystander response.
 - State-aware dialogue selected locally from bounded, authored variants.
 - Autosave, decision-latency tracking, tendency classification, and branch history.
-- A chapter-completion reflection, XP reward, and persistent Safe Zone unlock.
-- Safe Zone chat, short wellbeing articles, and a discreet reporting-draft flow.
-- Seven hand-painted environments and six illustrated characters.
+- Chapter-specific reflections, persistent XP rewards, Safe Zone access, and an unlockable Relationship Path.
+- Safe Zone chat, short wellbeing articles—including Chapter 2 bullying support—and a discreet reporting-draft flow.
+- Nine hand-painted environments and seven illustrated characters.
 - Crossfaded scenes, animated character entrances, dialogue fades, and staggered choice reveals.
 
 ## Getting started
@@ -64,7 +64,8 @@ Assets/
     ├── Editor/                           # Editor-only QA helpers
     ├── Resources/YouthRise/
     │   ├── Art/                          # Runtime backgrounds and characters
-    │   └── chapter1.json                 # Authored story graph
+    │   ├── chapter1.json                 # Chapter 1 story graph
+    │   └── chapter2.json                 # Chapter 2 story graph
     ├── Scripts/
     │   ├── Model/                        # Story and player-state models
     │   ├── Services/                     # Story, dialogue, saves, telemetry, safety
@@ -74,7 +75,7 @@ Assets/
 
 ## Content and architecture
 
-Chapter content is authored in `Assets/YouthRise/Resources/YouthRise/chapter1.json`. Each node can define a speaker, setting, dialogue, choices, stat effects, next-node references, and optional stat-gated dialogue variants. The repository validates the story graph when it loads.
+Chapter content is authored in `Assets/YouthRise/Resources/YouthRise/chapter1.json` and `chapter2.json`. Each node can define a speaker, setting, dialogue, choices, stat effects, next-node references, and optional stat-gated dialogue variants. The repository validates each story graph when it loads.
 
 Dynamic dialogue is intentionally offline and deterministic. `LocalConversationGenerator` implements `IConversationGenerator` by choosing among authored variants that match the player's hidden state. A future provider can replace it, but generated content should remain bounded by scene intent, moderated, resilient to timeouts, and unable to mutate player metrics directly.
 

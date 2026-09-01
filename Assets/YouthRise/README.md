@@ -1,22 +1,22 @@
-# YouthRise — Chapter 1 Prototype
+# YouthRise — Chapters 1 & 2 Prototype
 
 YouthRise is a playable Indonesian high-school visual novel prototype. Open the project in Unity 6000.5.10f1 and press Play in `Assets/Scenes/SampleScene.unity`; the runtime bootstrap builds the complete interface without requiring scene wiring.
 
 ## Implemented flow
 
-- Chapter 1, “The First Day,” with 11 three-choice decisions and authored branches.
-- Hidden baseline metrics: risk, trust, confidence, empathy, knowledge, social support, and anxiety.
+- Chapter 1, “The First Day,” and Chapter 2, “Behind the Smile,” with 21 three-choice decisions across 25 story nodes.
+- Hidden evolving metrics: risk, trust, confidence, empathy, knowledge, social support, anxiety, and bystander response.
 - Visible Risk and Trust meters, decision latency, tendency classification, branch history, and local autosave.
 - A bounded PCG conversation provider that selects authored dialogue variants from hidden player state. It is deterministic, offline, and replaceable through `IConversationGenerator`.
-- Chapter completion reflection, 100 XP reward, and persistent Safe Zone unlock.
-- Safe Zone chat, short wellbeing articles, and a discreet **Need Extra Help?** reporting tab.
+- Chapter-specific reflections, persistent 100/150 XP rewards, and progression from Safe Zone access into the Relationship Path.
+- Safe Zone chat, short wellbeing articles—including unlocked bullying support—and a discreet **Need Extra Help?** reporting tab.
 - Local, explainable report triage for prototype use, including immediate-safety guidance.
-- Seven hand-painted Indonesian school and home environments plus six illustrated cast portraits.
+- Nine hand-painted Indonesian school, home, and support environments plus seven illustrated cast portraits.
 - Crossfaded scene changes, sliding character entrances, dialogue fades, staggered choice reveals, and smooth screen transitions.
 
 ## Visual direction
 
-Chapter 1 uses a warm, hand-painted visual-novel style grounded in an Indonesian school setting. Runtime art lives under `Resources/YouthRise/Art/`. Character renders use a project-local chroma-key UI shader so their generated green backplates become transparent in game without destructive source-image processing.
+Both chapters use a warm, hand-painted visual-novel style grounded in an Indonesian school setting. Runtime art lives under `Resources/YouthRise/Art/`. Character renders use a project-local chroma-key UI shader so their generated green backplates become transparent in game without destructive source-image processing.
 
 The **YouthRise > QA** editor menu can start the chapter, continue dialogue, or choose the first option while the game is running. These controls are intended only for rapid visual review and are not included in player builds.
 
@@ -34,7 +34,7 @@ Production deployment needs authentication, encrypted transport and storage, con
 
 ## Content authoring
 
-Chapter content lives in `Resources/YouthRise/chapter1.json`. Each node contains speaker, scene, dialogue, choices, effects, and optional stat-gated variants. All next-node references are validated when the graph loads.
+Chapter content lives in `Resources/YouthRise/chapter1.json` and `chapter2.json`. Each node contains speaker, scene, dialogue, choices, effects, and optional stat-gated variants. All next-node references are validated when the graph loads.
 
 Core separation:
 

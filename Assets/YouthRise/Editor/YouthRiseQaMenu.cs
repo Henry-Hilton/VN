@@ -25,6 +25,24 @@ namespace YouthRise.EditorTools
             InvokeButton("Choice 1");
         }
 
+        [MenuItem("YouthRise/QA/Start Chapter 2", false, 13)]
+        private static void StartChapterTwo()
+        {
+            InvokeButton("Start Chapter 2");
+        }
+
+        [MenuItem("YouthRise/QA/Continue From Completion", false, 14)]
+        private static void ContinueFromCompletion()
+        {
+            InvokeButton("Completion Primary");
+        }
+
+        [MenuItem("YouthRise/QA/Open Safe Zone Articles", false, 15)]
+        private static void OpenSafeZoneArticles()
+        {
+            InvokeButton("Article Tab");
+        }
+
         private static void InvokeButton(string objectName)
         {
             if (!EditorApplication.isPlaying)

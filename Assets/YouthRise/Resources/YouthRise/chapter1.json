@@ -2,6 +2,18 @@
   "id": "chapter-1",
   "title": "The First Day",
   "subtitle": "Hari Pertama",
+  "number": 1,
+  "rewardXp": 100,
+  "completionHeading": "HARI PERTAMA\nSELESAI",
+  "reflectionLines": [
+    "Kamu bertemu teman baru.",
+    "Kamu menghadapi tekanan teman sebaya.",
+    "Kamu membuat pilihan yang sulit.",
+    "Besok adalah kesempatan baru."
+  ],
+  "unlockLabels": [
+    "SAFE ZONE"
+  ],
   "startNodeId": "opening",
   "nodes": [
     {
