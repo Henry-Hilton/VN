@@ -80,6 +80,31 @@ namespace YouthRise.Tests
         }
 
         [Test]
+        public void ChapterFour_IsValidAndContainsTenDecisionNodes()
+        {
+            StoryGraph graph = StoryRepository.LoadChapterFour();
+
+            Assert.That(graph.Chapter.id, Is.EqualTo("chapter-4"));
+            Assert.That(graph.Chapter.number, Is.EqualTo(4));
+            Assert.That(graph.Chapter.rewardXp, Is.EqualTo(300));
+            Assert.That(graph.Chapter.nodes, Has.Length.EqualTo(12));
+            Assert.That(graph.Chapter.startNodeId, Is.EqualTo("opening"));
+            Assert.That(graph.Get("node-11").nextNodeId, Is.EqualTo("END"));
+
+            int decisionNodes = 0;
+            foreach (StoryNode node in graph.Chapter.nodes)
+            {
+                if (node.choices == null || node.choices.Length == 0)
+                    continue;
+
+                decisionNodes++;
+                Assert.That(node.choices, Has.Length.EqualTo(3), node.id);
+            }
+
+            Assert.That(decisionNodes, Is.EqualTo(10));
+        }
+
+        [Test]
         public void Profile_AppliesHiddenRiskAndTrustEffects()
         {
             var profile = new PlayerProfile();
@@ -153,6 +178,37 @@ namespace YouthRise.Tests
         }
 
         [Test]
+        public void ChapterFourProgression_AwardsOnceAndCompletesSeasonOne()
+        {
+            var profile = new PlayerProfile();
+            profile.ResetForChapterOne();
+
+            CampaignProgression.Complete(StoryRepository.LoadChapterOne().Chapter, profile);
+            CampaignProgression.Complete(StoryRepository.LoadChapterTwo().Chapter, profile);
+            CampaignProgression.Complete(StoryRepository.LoadChapterThree().Chapter, profile);
+            profile.PrepareForChapterFour();
+            profile.Apply("emotionalAwareness", 5);
+            profile.Apply("coping", 6);
+            profile.Apply("helpSeeking", 7);
+            profile.Apply("resilience", 8);
+
+            int reward = CampaignProgression.Complete(StoryRepository.LoadChapterFour().Chapter, profile);
+            int repeatedReward = CampaignProgression.Complete(StoryRepository.LoadChapterFour().Chapter, profile);
+            MetricSnapshot snapshot = profile.Snapshot();
+
+            Assert.That(reward, Is.EqualTo(300));
+            Assert.That(repeatedReward, Is.Zero);
+            Assert.That(profile.xp, Is.EqualTo(750));
+            Assert.That(snapshot.emotionalAwareness, Is.EqualTo(55));
+            Assert.That(snapshot.copingTendency, Is.EqualTo(56));
+            Assert.That(snapshot.helpSeekingTendency, Is.EqualTo(57));
+            Assert.That(snapshot.resilienceIndicator, Is.EqualTo(58));
+            Assert.That(profile.completedChapterFour, Is.True);
+            Assert.That(profile.seasonOneCompleted, Is.True);
+            Assert.That(profile.safeZoneUnlocked, Is.True);
+        }
+
+        [Test]
         public void Progression_MigratesCompletedChapterOneSave()
         {
             var profile = new PlayerProfile();
@@ -194,6 +250,31 @@ namespace YouthRise.Tests
             Assert.That(profile.healthyRelationshipArticleUnlocked, Is.True);
             Assert.That(profile.digitalSafetyGuideUnlocked, Is.True);
             Assert.That(CampaignProgression.CanStartChapterThree(profile), Is.True);
+        }
+
+        [Test]
+        public void Progression_MigratesCompletedChapterFourSaveAndSeasonState()
+        {
+            var profile = new PlayerProfile();
+            profile.ResetForChapterOne();
+            var save = new PrototypeSave
+            {
+                chapterId = "chapter-4",
+                chapterCompleted = true,
+                profile = profile
+            };
+
+            CampaignProgression.Normalize(save);
+
+            Assert.That(profile.completedChapterOne, Is.True);
+            Assert.That(profile.completedChapterTwo, Is.True);
+            Assert.That(profile.completedChapterThree, Is.True);
+            Assert.That(profile.completedChapterFour, Is.True);
+            Assert.That(profile.seasonOneCompleted, Is.True);
+            Assert.That(profile.relationshipPathUnlocked, Is.True);
+            Assert.That(profile.healthyRelationshipArticleUnlocked, Is.True);
+            Assert.That(profile.digitalSafetyGuideUnlocked, Is.True);
+            Assert.That(CampaignProgression.CanStartChapterFour(profile), Is.True);
         }
 
         [Test]

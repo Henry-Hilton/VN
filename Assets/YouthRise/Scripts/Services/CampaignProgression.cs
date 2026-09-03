@@ -14,6 +14,11 @@ namespace YouthRise
             return profile != null && profile.completedChapterTwo;
         }
 
+        public static bool CanStartChapterFour(PlayerProfile profile)
+        {
+            return profile != null && profile.completedChapterThree;
+        }
+
         public static void Normalize(PrototypeSave save)
         {
             if (save?.profile == null)
@@ -21,24 +26,31 @@ namespace YouthRise
 
             bool chapterTwo = IsChapterTwo(save.chapterId);
             bool chapterThree = IsChapterThree(save.chapterId);
-            if ((!chapterTwo && !chapterThree && save.chapterCompleted) || chapterTwo || chapterThree)
+            bool chapterFour = IsChapterFour(save.chapterId);
+            if ((!chapterTwo && !chapterThree && !chapterFour && save.chapterCompleted) || chapterTwo || chapterThree || chapterFour)
             {
                 save.profile.completedChapterOne = true;
                 save.profile.safeZoneUnlocked = true;
             }
 
-            if ((chapterTwo && save.chapterCompleted) || chapterThree)
+            if ((chapterTwo && save.chapterCompleted) || chapterThree || chapterFour)
             {
                 save.profile.completedChapterTwo = true;
                 save.profile.relationshipPathUnlocked = true;
                 save.profile.bullyingSupportArticleUnlocked = true;
             }
 
-            if (chapterThree && save.chapterCompleted)
+            if ((chapterThree && save.chapterCompleted) || chapterFour)
             {
                 save.profile.completedChapterThree = true;
                 save.profile.healthyRelationshipArticleUnlocked = true;
                 save.profile.digitalSafetyGuideUnlocked = true;
+            }
+
+            if (chapterFour && save.chapterCompleted)
+            {
+                save.profile.completedChapterFour = true;
+                save.profile.seasonOneCompleted = true;
             }
         }
 
@@ -48,6 +60,25 @@ namespace YouthRise
                 return 0;
 
             int reward = Math.Max(0, chapter.rewardXp);
+            if (IsChapterFour(chapter.id))
+            {
+                profile.completedChapterOne = true;
+                profile.completedChapterTwo = true;
+                profile.completedChapterThree = true;
+                profile.safeZoneUnlocked = true;
+                profile.relationshipPathUnlocked = true;
+                profile.bullyingSupportArticleUnlocked = true;
+                profile.healthyRelationshipArticleUnlocked = true;
+                profile.digitalSafetyGuideUnlocked = true;
+                if (profile.completedChapterFour)
+                    return 0;
+
+                profile.Apply("xp", reward);
+                profile.completedChapterFour = true;
+                profile.seasonOneCompleted = true;
+                return reward;
+            }
+
             if (IsChapterThree(chapter.id))
             {
                 profile.completedChapterOne = true;
@@ -96,6 +127,11 @@ namespace YouthRise
         private static bool IsChapterThree(string chapterId)
         {
             return string.Equals(chapterId, "chapter-3", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsChapterFour(string chapterId)
+        {
+            return string.Equals(chapterId, "chapter-4", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

@@ -24,11 +24,16 @@ namespace YouthRise
         public int digitalSafetyAwareness;
         public int boundaryAwareness;
         public int helpSeekingTendency;
+        public int emotionalAwareness;
+        public int copingTendency;
+        public int resilienceIndicator;
         public int xp;
         public bool safeZoneUnlocked;
         public bool completedChapterOne;
         public bool completedChapterTwo;
         public bool completedChapterThree;
+        public bool completedChapterFour;
+        public bool seasonOneCompleted;
         public bool relationshipPathUnlocked;
         public bool bullyingSupportArticleUnlocked;
         public bool healthyRelationshipArticleUnlocked;
@@ -59,11 +64,16 @@ namespace YouthRise
             digitalSafetyAwareness = 50;
             boundaryAwareness = 50;
             helpSeekingTendency = 50;
+            emotionalAwareness = 50;
+            copingTendency = 50;
+            resilienceIndicator = 50;
             xp = 0;
             safeZoneUnlocked = false;
             completedChapterOne = false;
             completedChapterTwo = false;
             completedChapterThree = false;
+            completedChapterFour = false;
+            seasonOneCompleted = false;
             relationshipPathUnlocked = false;
             bullyingSupportArticleUnlocked = false;
             healthyRelationshipArticleUnlocked = false;
@@ -81,6 +91,14 @@ namespace YouthRise
             digitalSafetyAwareness = 50;
             boundaryAwareness = 50;
             helpSeekingTendency = 50;
+        }
+
+        public void PrepareForChapterFour()
+        {
+            emotionalAwareness = 50;
+            copingTendency = 50;
+            helpSeekingTendency = 50;
+            resilienceIndicator = 50;
         }
 
         public void Apply(StatDelta[] effects)
@@ -159,6 +177,17 @@ namespace YouthRise
                 case "helpseekingtendency":
                     helpSeekingTendency = Mathf.Clamp(helpSeekingTendency + amount, 0, 100);
                     break;
+                case "emotionalawareness":
+                    emotionalAwareness = Mathf.Clamp(emotionalAwareness + amount, 0, 100);
+                    break;
+                case "coping":
+                case "copingtendency":
+                    copingTendency = Mathf.Clamp(copingTendency + amount, 0, 100);
+                    break;
+                case "resilience":
+                case "resilienceindicator":
+                    resilienceIndicator = Mathf.Clamp(resilienceIndicator + amount, 0, 100);
+                    break;
                 case "xp":
                     xp = Mathf.Max(0, xp + amount);
                     break;
@@ -198,6 +227,11 @@ namespace YouthRise
                 case "boundaryawareness": return boundaryAwareness;
                 case "helpseeking": return helpSeekingTendency;
                 case "helpseekingtendency": return helpSeekingTendency;
+                case "emotionalawareness": return emotionalAwareness;
+                case "coping": return copingTendency;
+                case "copingtendency": return copingTendency;
+                case "resilience": return resilienceIndicator;
+                case "resilienceindicator": return resilienceIndicator;
                 case "xp": return xp;
                 default: return 0;
             }
@@ -218,7 +252,10 @@ namespace YouthRise
                 relationshipAwareness = relationshipAwareness,
                 digitalSafetyAwareness = digitalSafetyAwareness,
                 boundaryAwareness = boundaryAwareness,
-                helpSeekingTendency = helpSeekingTendency
+                helpSeekingTendency = helpSeekingTendency,
+                emotionalAwareness = emotionalAwareness,
+                copingTendency = copingTendency,
+                resilienceIndicator = resilienceIndicator
             };
         }
     }
@@ -238,5 +275,8 @@ namespace YouthRise
         public int digitalSafetyAwareness;
         public int boundaryAwareness;
         public int helpSeekingTendency;
+        public int emotionalAwareness;
+        public int copingTendency;
+        public int resilienceIndicator;
     }
 }

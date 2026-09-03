@@ -1,0 +1,537 @@
+{
+  "id": "chapter-4",
+  "title": "You Don't Have to Be Strong",
+  "subtitle": "Kamu Tidak Harus Selalu Kuat",
+  "number": 4,
+  "rewardXp": 300,
+  "completionHeading": "YOUR JOURNEY\nSEASON 1 SELESAI",
+  "reflectionLines": [
+    "Kamu membuat pilihan.",
+    "Kamu menghadapi tekanan.",
+    "Kamu membantu teman-temanmu.",
+    "Kamu belajar tentang batas pribadi.",
+    "Kamu mengalami emosi yang sulit.",
+    "Yang terpenting, kamu belajar bahwa mencari bantuan bukan kelemahan."
+  ],
+  "unlockLabels": [],
+  "startNodeId": "opening",
+  "nodes": [
+    {
+      "id": "opening",
+      "location": "Kelas XI-B • Pagi",
+      "background": "classroom",
+      "speaker": "Narasi",
+      "body": "Guru memberikan sebuah tugas besar kepada kelas.\n\nAda begitu banyak yang harus dilakukan. Sekolah, teman, harapan... semuanya terasa datang bersamaan.",
+      "nextNodeId": "node-1",
+      "branch": "everything-at-once",
+      "variants": [
+        {
+          "stat": "anxiety",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Guru memberikan sebuah tugas besar kepada kelas. Sekolah, teman, dan harapan datang bersamaan. Alex menarik napas dan mencoba melihat semuanya satu per satu."
+        },
+        {
+          "stat": "anxiety",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Guru memberikan sebuah tugas besar kepada kelas. Sekolah, teman, harapan... semuanya terasa datang bersamaan dan memenuhi kepala Alex."
+        }
+      ]
+    },
+    {
+      "id": "node-1",
+      "location": "Kelas XI-B • Pagi",
+      "background": "classroom",
+      "speaker": "Wali Kelas",
+      "body": "Tugas ini harus dikumpulkan besok.",
+      "branch": "school-pressure",
+      "choices": [
+        {
+          "id": "1A",
+          "label": "Buat rencana",
+          "nextNodeId": "node-2",
+          "tendency": "reflective",
+          "effects": [
+            { "stat": "confidence", "amount": 4 },
+            { "stat": "anxiety", "amount": -2 },
+            { "stat": "emotionalAwareness", "amount": 2 },
+            { "stat": "coping", "amount": 5 },
+            { "stat": "resilience", "amount": 4 }
+          ]
+        },
+        {
+          "id": "1B",
+          "label": "Panik dan kerjakan semuanya sekaligus",
+          "nextNodeId": "node-2",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "anxiety", "amount": 5 },
+            { "stat": "coping", "amount": -4 },
+            { "stat": "resilience", "amount": -2 }
+          ]
+        },
+        {
+          "id": "1C",
+          "label": "Abaikan tugas itu",
+          "nextNodeId": "node-2",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "risk", "amount": 3 },
+            { "stat": "anxiety", "amount": 3 },
+            { "stat": "coping", "amount": -4 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-2",
+      "location": "Koridor Sekolah",
+      "background": "hallway",
+      "speaker": "Maya",
+      "body": "Alex, kamu terlihat berbeda hari ini. Kamu baik-baik saja?",
+      "branch": "maya-notices",
+      "variants": [
+        {
+          "stat": "emotionalAwareness",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Maya memperhatikan Alex cukup lama. “Alex, kamu terlihat berbeda hari ini. Kamu baik-baik saja?”"
+        },
+        {
+          "stat": "emotionalAwareness",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Maya mendekat dengan tenang. “Alex, kamu terlihat berbeda hari ini. Kamu tidak perlu berpura-pura baik-baik saja di depanku.”"
+        }
+      ],
+      "choices": [
+        {
+          "id": "2A",
+          "label": "“Sejujurnya, aku sedang stres.”",
+          "nextNodeId": "node-3",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "trustMaya", "amount": 5 },
+            { "stat": "socialSupport", "amount": 4 },
+            { "stat": "emotionalAwareness", "amount": 5 },
+            { "stat": "helpSeeking", "amount": 4 }
+          ]
+        },
+        {
+          "id": "2B",
+          "label": "“Aku baik-baik saja.”",
+          "nextNodeId": "node-3",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "trustMaya", "amount": 1 },
+            { "stat": "emotionalAwareness", "amount": -1 }
+          ]
+        },
+        {
+          "id": "2C",
+          "label": "“Tinggalkan aku sendiri.”",
+          "nextNodeId": "node-3",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "trustMaya", "amount": -4 },
+            { "stat": "anxiety", "amount": 3 },
+            { "stat": "emotionalAwareness", "amount": -3 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-3",
+      "location": "Koridor Sekolah • Istirahat",
+      "background": "hallway",
+      "speaker": "Rina",
+      "body": "Keadaan di rumah sedang sulit lagi.",
+      "branch": "rina-story",
+      "choices": [
+        {
+          "id": "3A",
+          "label": "Dengarkan Rina",
+          "nextNodeId": "node-4",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "empathy", "amount": 6 },
+            { "stat": "trustRina", "amount": 5 },
+            { "stat": "emotionalAwareness", "amount": 4 },
+            { "stat": "resilience", "amount": 2 }
+          ]
+        },
+        {
+          "id": "3B",
+          "label": "Berikan saran singkat",
+          "nextNodeId": "node-4",
+          "tendency": "assertive",
+          "effects": [
+            { "stat": "empathy", "amount": 2 },
+            { "stat": "emotionalAwareness", "amount": 1 }
+          ]
+        },
+        {
+          "id": "3C",
+          "label": "Ganti topik pembicaraan",
+          "nextNodeId": "node-4",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "empathy", "amount": -3 },
+            { "stat": "emotionalAwareness", "amount": -2 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-4",
+      "location": "Kantin Sekolah",
+      "background": "cafeteria",
+      "speaker": "Kevin",
+      "body": "Kevin terlihat tidak seperti biasanya.\n\n“Kamu belakangan ini berbeda,” kata Alex.\n\nKevin memaksakan senyum. “Aku cuma lelah.”",
+      "branch": "kevin-vulnerable",
+      "variants": [
+        {
+          "stat": "trustFriend",
+          "minInclusive": -50,
+          "maxInclusive": 4,
+          "text": "Kevin memaksakan senyum dan menghindari tatapan Alex. “Aku cuma lelah.”"
+        },
+        {
+          "stat": "trustFriend",
+          "minInclusive": 5,
+          "maxInclusive": 50,
+          "text": "Kevin terdiam sebelum menatap Alex. “Aku cuma lelah. Akhir-akhir ini semuanya terasa berat.”"
+        }
+      ],
+      "choices": [
+        {
+          "id": "4A",
+          "label": "“Kamu bisa bicara denganku kalau mau.”",
+          "nextNodeId": "node-5",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "empathy", "amount": 5 },
+            { "stat": "trustFriend", "amount": 4 },
+            { "stat": "emotionalAwareness", "amount": 5 },
+            { "stat": "helpSeeking", "amount": 3 }
+          ]
+        },
+        {
+          "id": "4B",
+          "label": "“Kamu pasti akan baik-baik saja.”",
+          "nextNodeId": "node-5",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "empathy", "amount": -2 },
+            { "stat": "emotionalAwareness", "amount": -2 }
+          ]
+        },
+        {
+          "id": "4C",
+          "label": "“Semua orang juga merasa lelah.”",
+          "nextNodeId": "node-5",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "empathy", "amount": -3 },
+            { "stat": "emotionalAwareness", "amount": -3 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-5",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Narasi",
+      "body": "Alex melihat unggahan teman-temannya. Semua orang terlihat bahagia.\n\nSepertinya semua orang memiliki hidup yang sempurna... kecuali aku.",
+      "branch": "social-media-pressure",
+      "variants": [
+        {
+          "stat": "anxiety",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Unggahan teman-teman Alex terlihat sempurna. Alex mengingatkan diri bahwa satu unggahan tidak menunjukkan seluruh hidup seseorang."
+        },
+        {
+          "stat": "anxiety",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Alex terus melihat unggahan teman-temannya. Semua orang terlihat bahagia. Sepertinya semua orang memiliki hidup yang sempurna... kecuali aku."
+        }
+      ],
+      "choices": [
+        {
+          "id": "5A",
+          "label": "Letakkan ponsel dan beristirahat",
+          "nextNodeId": "node-6",
+          "tendency": "reflective",
+          "effects": [
+            { "stat": "anxiety", "amount": -4 },
+            { "stat": "coping", "amount": 5 },
+            { "stat": "resilience", "amount": 3 }
+          ]
+        },
+        {
+          "id": "5B",
+          "label": "Terus melihat unggahan",
+          "nextNodeId": "node-6",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "anxiety", "amount": 4 },
+            { "stat": "coping", "amount": -3 }
+          ]
+        },
+        {
+          "id": "5C",
+          "label": "Bandingkan dirimu dengan orang lain",
+          "nextNodeId": "node-6",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "anxiety", "amount": 6 },
+            { "stat": "confidence", "amount": -3 },
+            { "stat": "coping", "amount": -5 },
+            { "stat": "resilience", "amount": -3 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-6",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Narasi",
+      "body": "Pesan terus berdatangan.\n\nPR. Grup kelas. Pesan keluarga. Tugas sekolah. Masalah teman.\n\nSemuanya meminta perhatian pada saat yang sama.",
+      "branch": "emotional-overload",
+      "choices": [
+        {
+          "id": "6A",
+          "label": "Hadapi satu masalah dalam satu waktu",
+          "nextNodeId": "node-7",
+          "tendency": "reflective",
+          "effects": [
+            { "stat": "confidence", "amount": 4 },
+            { "stat": "anxiety", "amount": -3 },
+            { "stat": "coping", "amount": 6 },
+            { "stat": "resilience", "amount": 4 }
+          ]
+        },
+        {
+          "id": "6B",
+          "label": "Coba selesaikan semuanya sekarang",
+          "nextNodeId": "node-7",
+          "tendency": "impulsive",
+          "effects": [
+            { "stat": "anxiety", "amount": 5 },
+            { "stat": "coping", "amount": -4 }
+          ]
+        },
+        {
+          "id": "6C",
+          "label": "Abaikan semua orang",
+          "nextNodeId": "node-7",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "socialSupport", "amount": -3 },
+            { "stat": "coping", "amount": -4 },
+            { "stat": "helpSeeking", "amount": -2 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-7",
+      "location": "Safe Zone • Ruang Tenang",
+      "background": "counselor",
+      "speaker": "Mr. Daniel",
+      "body": "Alex membuka Safe Zone.\n\n“Kamu tidak harus menangani semuanya sendirian,” kata Mr. Daniel.",
+      "branch": "safe-zone",
+      "choices": [
+        {
+          "id": "7A",
+          "label": "Bicarakan perasaanmu",
+          "nextNodeId": "node-8",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "socialSupport", "amount": 6 },
+            { "stat": "anxiety", "amount": -3 },
+            { "stat": "emotionalAwareness", "amount": 5 },
+            { "stat": "helpSeeking", "amount": 6 },
+            { "stat": "resilience", "amount": 3 }
+          ]
+        },
+        {
+          "id": "7B",
+          "label": "Baca artikel terlebih dahulu",
+          "nextNodeId": "node-8",
+          "tendency": "reflective",
+          "effects": [
+            { "stat": "knowledge", "amount": 4 },
+            { "stat": "emotionalAwareness", "amount": 3 },
+            { "stat": "coping", "amount": 4 }
+          ]
+        },
+        {
+          "id": "7C",
+          "label": "Tutup Safe Zone",
+          "nextNodeId": "node-8",
+          "tendency": "avoidant",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "node-8",
+      "location": "Koridor Sekolah • Pagi",
+      "background": "hallway",
+      "speaker": "Maya",
+      "body": "Kadang orang tidak meminta bantuan karena takut dihakimi.",
+      "branch": "warning-signs",
+      "choices": [
+        {
+          "id": "8A",
+          "label": "“Meminta bantuan itu tidak apa-apa.”",
+          "nextNodeId": "node-9",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "knowledge", "amount": 5 },
+            { "stat": "socialSupport", "amount": 5 },
+            { "stat": "emotionalAwareness", "amount": 4 },
+            { "stat": "helpSeeking", "amount": 5 }
+          ]
+        },
+        {
+          "id": "8B",
+          "label": "“Orang harus menyelesaikan masalahnya sendiri.”",
+          "nextNodeId": "node-9",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "empathy", "amount": -4 },
+            { "stat": "emotionalAwareness", "amount": -2 },
+            { "stat": "helpSeeking", "amount": -4 }
+          ]
+        },
+        {
+          "id": "8C",
+          "label": "“Mungkin mereka hanya butuh waktu.”",
+          "nextNodeId": "node-9",
+          "tendency": "reflective",
+          "effects": [
+            { "stat": "empathy", "amount": 1 },
+            { "stat": "emotionalAwareness", "amount": 2 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-9",
+      "location": "Ruang BK",
+      "background": "counselor",
+      "speaker": "Mr. Daniel",
+      "body": "Apa yang akan kamu katakan kepada teman yang merasa kewalahan?",
+      "branch": "support-a-friend",
+      "choices": [
+        {
+          "id": "9A",
+          "label": "“Aku akan mendengarkan dan membantunya mencari dukungan.”",
+          "nextNodeId": "node-10",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "empathy", "amount": 5 },
+            { "stat": "socialSupport", "amount": 5 },
+            { "stat": "emotionalAwareness", "amount": 4 },
+            { "stat": "helpSeeking", "amount": 5 }
+          ]
+        },
+        {
+          "id": "9B",
+          "label": "“Aku akan menyuruhnya menjadi lebih kuat.”",
+          "nextNodeId": "node-10",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "empathy", "amount": -5 },
+            { "stat": "emotionalAwareness", "amount": -3 },
+            { "stat": "helpSeeking", "amount": -2 }
+          ]
+        },
+        {
+          "id": "9C",
+          "label": "“Aku tidak tahu harus berkata apa.”",
+          "nextNodeId": "node-10",
+          "tendency": "reflective",
+          "effects": [
+            { "stat": "confidence", "amount": -2 },
+            { "stat": "emotionalAwareness", "amount": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-10",
+      "location": "Ruang BK",
+      "background": "counselor",
+      "speaker": "Mr. Daniel",
+      "body": "Dan apa yang akan kamu lakukan jika kamulah yang merasa kewalahan?",
+      "branch": "big-question",
+      "choices": [
+        {
+          "id": "10A",
+          "label": "Minta bantuan seseorang yang aku percaya",
+          "nextNodeId": "node-11",
+          "tendency": "prosocial",
+          "effects": [
+            { "stat": "socialSupport", "amount": 8 },
+            { "stat": "confidence", "amount": 3 },
+            { "stat": "helpSeeking", "amount": 8 },
+            { "stat": "resilience", "amount": 5 }
+          ]
+        },
+        {
+          "id": "10B",
+          "label": "Simpan semuanya sendiri",
+          "nextNodeId": "node-11",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "anxiety", "amount": 6 },
+            { "stat": "helpSeeking", "amount": -6 },
+            { "stat": "coping", "amount": -4 }
+          ]
+        },
+        {
+          "id": "10C",
+          "label": "Alihkan perhatian dan berharap semuanya hilang",
+          "nextNodeId": "node-11",
+          "tendency": "avoidant",
+          "effects": [
+            { "stat": "anxiety", "amount": 3 },
+            { "stat": "helpSeeking", "amount": -2 },
+            { "stat": "coping", "amount": -2 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-11",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Narasi",
+      "body": "Alex melihat kembali perjalanan selama beberapa hari terakhir.\n\nDulu aku pikir menjadi kuat berarti menangani semuanya sendirian. Mungkin menjadi kuat juga berarti tahu kapan harus meminta bantuan.",
+      "nextNodeId": "END",
+      "branch": "season-reflection",
+      "variants": [
+        {
+          "stat": "helpSeeking",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Alex melihat kembali perjalanan selama beberapa hari terakhir. Tidak semua beban harus langsung selesai. Besok masih ada kesempatan untuk membuka diri dan mencari dukungan."
+        },
+        {
+          "stat": "helpSeeking",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Alex melihat kembali perjalanan selama beberapa hari terakhir.\n\nDulu aku pikir menjadi kuat berarti menangani semuanya sendirian. Mungkin menjadi kuat juga berarti tahu kapan harus meminta bantuan."
+        }
+      ]
+    }
+  ]
+}
