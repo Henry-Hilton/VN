@@ -55,6 +55,30 @@ namespace YouthRise.EditorTools
             InvokeButton("Start Chapter 4");
         }
 
+        [MenuItem("YouthRise/QA/Start Chapter 5", false, 18)]
+        private static void StartChapterFive() => InvokeButton("Start Chapter 5");
+
+        [MenuItem("YouthRise/QA/Open Financial Guides", false, 19)]
+        private static void OpenFinancialGuides() => InvokeButton("Financial Tab");
+
+        [MenuItem("YouthRise/QA/Continue Saved Game", false, 20)]
+        private static void ContinueSavedGame() => InvokeButton("Continue");
+
+        [MenuItem("YouthRise/QA/Choose Second Option", false, 21)]
+        private static void ChooseSecondOption() => InvokeButton("Choice 2");
+
+        [MenuItem("YouthRise/QA/Choose Third Option", false, 22)]
+        private static void ChooseThirdOption() => InvokeButton("Choice 3");
+
+        [MenuItem("YouthRise/QA/Return From Safe Zone", false, 23)]
+        private static void ReturnFromSafeZone() => InvokeButton("Close");
+
+        [MenuItem("YouthRise/QA/Open Safe Zone", false, 24)]
+        private static void OpenSafeZone() => InvokeButton("Safe Zone");
+
+        [MenuItem("YouthRise/QA/Return From Completion", false, 25)]
+        private static void ReturnFromCompletion() => InvokeButton("Back to Menu");
+
         private static void InvokeButton(string objectName)
         {
             if (!EditorApplication.isPlaying)
@@ -63,9 +87,7 @@ namespace YouthRise.EditorTools
                 return;
             }
 
-            Button[] buttons = Object.FindObjectsByType<Button>(
-                FindObjectsInactive.Exclude,
-                FindObjectsSortMode.None);
+            Button[] buttons = Object.FindObjectsByType<Button>(FindObjectsInactive.Exclude);
 
             foreach (Button button in buttons)
             {

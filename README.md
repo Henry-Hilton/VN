@@ -1,6 +1,6 @@
 # YouthRise
 
-**YouthRise** is a playable Indonesian high-school visual novel prototype built with Unity. Its four-chapter Season 1 follows Alex from a first day at school through bullying intervention, healthy relationships, digital safety, emotional overload, healthy coping, and seeking trusted support.
+**YouthRise** is a playable Indonesian high-school visual novel prototype built with Unity. Its four-chapter Season 1 follows Alex from a first day at school through bullying intervention, healthy relationships, digital safety, emotional overload, healthy coping, and seeking trusted support. Chapter 5, “Easy Money?”, continues the journey with budgeting, online-loan risks, and scam awareness.
 
 ![YouthRise school setting](Assets/YouthRise/Resources/YouthRise/Art/Backgrounds/bg_school_gate.png)
 
@@ -9,13 +9,13 @@
 
 ## Highlights
 
-- Four complete chapters with 49 story nodes and 41 three-choice decisions.
-- Branching outcomes influenced by risk, trust, confidence, empathy, knowledge, social support, anxiety, bystander response, relationship awareness, digital safety, boundaries, emotional awareness, coping, help-seeking, and resilience.
+- Five complete chapters with 61 story nodes and 51 three-choice decisions.
+- Branching outcomes and hidden indicators cover risk, trust, confidence, empathy, knowledge, social support, anxiety, bystander response, relationships, digital safety, boundaries, emotional awareness, coping, help-seeking, resilience, financial awareness, spending control, impulse control, and scam awareness.
 - State-aware dialogue selected locally from bounded, authored variants.
 - Autosave, decision-latency tracking, tendency classification, and branch history.
 - Chapter-specific reflections, persistent XP rewards, Safe Zone access, the Relationship Path, and a Season 1 finale state.
-- Safe Zone chat, unlockable bullying, healthy-relationship, and digital-safety guidance, plus a discreet reporting-draft flow.
-- Ten hand-painted environments and eight illustrated characters.
+- Safe Zone chat, unlockable bullying, healthy-relationship, digital-safety, Financial Safety and Money Smart guidance, plus a discreet reporting-draft flow.
+- Ten hand-painted environments and nine illustrated characters, including financial mentor Mr. Arman.
 - Crossfaded scenes, animated character entrances, dialogue fades, and staggered choice reveals.
 
 ## Getting started
@@ -67,7 +67,8 @@ Assets/
     │   ├── chapter1.json                 # Chapter 1 story graph
     │   ├── chapter2.json                 # Chapter 2 story graph
     │   ├── chapter3.json                 # Chapter 3 story graph
-    │   └── chapter4.json                 # Chapter 4 story graph
+    │   ├── chapter4.json                 # Season 1 finale
+    │   └── chapter5.json                 # Financial literacy continuation
     ├── Scripts/
     │   ├── Model/                        # Story and player-state models
     │   ├── Services/                     # Story, dialogue, saves, telemetry, safety
@@ -77,7 +78,9 @@ Assets/
 
 ## Content and architecture
 
-Chapter content is authored in `Assets/YouthRise/Resources/YouthRise/chapter1.json` through `chapter4.json`. Each node can define a speaker, setting, dialogue, choices, stat effects, next-node references, and optional stat-gated dialogue variants. The repository validates each story graph when it loads.
+Chapter content is authored in `Assets/YouthRise/Resources/YouthRise/chapter1.json` through `chapter5.json`. Each node can define a speaker, setting, dialogue, choices, stat effects, next-node references, and optional stat-gated dialogue variants. The repository validates each story graph when it loads.
+
+Complete Chapter 4 to unlock Chapter 5; earlier saves remain compatible. First-time chapter rewards are 100/150/200/300/250 XP, totaling 1,000 XP. Chapter 5 adds Financial Awareness, Spending Control, Impulse Control and Scam Awareness to local snapshots while retaining earlier support and relationship progress. Its two guides unlock under **Safe Zone > Finansial**. See [Chapter 5 notes](Assets/YouthRise/Chapter5-Notes.md) for the scoring rubric, financial-education sources and artwork prompt.
 
 Dynamic dialogue is intentionally offline and deterministic. `LocalConversationGenerator` implements `IConversationGenerator` by choosing among authored variants that match the player's hidden state. A future provider can replace it, but generated content should remain bounded by scene intent, moderated, resilient to timeouts, and unable to mutate player metrics directly.
 

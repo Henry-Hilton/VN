@@ -340,7 +340,8 @@ namespace YouthRise.Tests
                 "YouthRise/Art/Characters/char_senior_chroma",
                 "YouthRise/Art/Characters/char_mr_daniel_chroma",
                 "YouthRise/Art/Characters/char_leo_chroma",
-                "YouthRise/Art/Characters/char_sarah_chroma"
+                "YouthRise/Art/Characters/char_sarah_chroma",
+                "YouthRise/Art/Characters/char_mr_arman_chroma"
             };
 
             foreach (string resourcePath in resourcePaths)

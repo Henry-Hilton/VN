@@ -1,0 +1,764 @@
+{
+  "id": "chapter-5",
+  "title": "Easy Money?",
+  "subtitle": "Uang Mudah?",
+  "number": 5,
+  "rewardXp": 250,
+  "completionHeading": "EASY MONEY?\nCHAPTER 5 SELESAI",
+  "reflectionLines": [
+    "Bedakan kebutuhan dengan keinginan.",
+    "Buat anggaran dan beri waktu sebelum membeli.",
+    "Pahami seluruh biaya, bukan hanya uang yang diterima.",
+    "Periksa tawaran mencurigakan sebelum mengirim uang atau data.",
+    "Meminta bantuan saat menghadapi masalah uang bukan sesuatu yang memalukan."
+  ],
+  "unlockLabels": [
+    "Financial Safety",
+    "Money Smart Guide"
+  ],
+  "startNodeId": "opening",
+  "nodes": [
+    {
+      "id": "opening",
+      "location": "Kantin • Siang",
+      "background": "cafeteria",
+      "speaker": "Kevin",
+      "body": "“Lihat! Ada HP baru yang sedang diskon. Aku ingin sekali membelinya.”\n\n“Berapa harganya?” tanya Alex.\n\n“Mahal. Tapi ada pilihan pembayaran yang mudah.”\n\nTerkadang, mendapatkan apa yang kita inginkan terasa lebih penting daripada memikirkan kemampuan kita untuk membayarnya.",
+      "nextNodeId": "node-1",
+      "branch": "easy-money"
+    },
+    {
+      "id": "node-1",
+      "location": "Kantin • Istirahat",
+      "background": "cafeteria",
+      "speaker": "Kevin",
+      "body": "Aku butuh HP ini. Yang lama masih bisa dipakai, sih... tapi yang ini lagi diskon.",
+      "branch": "need-or-want",
+      "choices": [
+        {
+          "id": "1A",
+          "label": "Kamu benar-benar membutuhkannya?",
+          "nextNodeId": "node-2",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "knowledge",
+              "amount": 4
+            },
+            {
+              "stat": "confidence",
+              "amount": 2
+            },
+            {
+              "stat": "spendingControl",
+              "amount": 3
+            },
+            {
+              "stat": "impulseControl",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "1B",
+          "label": "Kalau ingin, beli saja.",
+          "nextNodeId": "node-2",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 3
+            },
+            {
+              "stat": "spendingControl",
+              "amount": -3
+            },
+            {
+              "stat": "impulseControl",
+              "amount": -3
+            }
+          ]
+        },
+        {
+          "id": "1C",
+          "label": "Bagaimana kalau tunggu dan menabung dulu?",
+          "nextNodeId": "node-2",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "financialAwareness",
+              "amount": 5
+            },
+            {
+              "stat": "spendingControl",
+              "amount": 5
+            },
+            {
+              "stat": "impulseControl",
+              "amount": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-2",
+      "location": "Kantin • Istirahat",
+      "background": "cafeteria",
+      "speaker": "Kevin",
+      "body": "Semua orang punya sepatu itu. Aku tidak mau ketinggalan tren.",
+      "branch": "spending-pressure",
+      "choices": [
+        {
+          "id": "2A",
+          "label": "Kamu tidak harus mengikuti setiap tren.",
+          "nextNodeId": "node-3",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "confidence",
+              "amount": 3
+            },
+            {
+              "stat": "financialAwareness",
+              "amount": 4
+            },
+            {
+              "stat": "spendingControl",
+              "amount": 4
+            },
+            {
+              "stat": "impulseControl",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "2B",
+          "label": "Iya, sebaiknya kamu beli juga.",
+          "nextNodeId": "node-3",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 4
+            },
+            {
+              "stat": "spendingControl",
+              "amount": -4
+            },
+            {
+              "stat": "impulseControl",
+              "amount": -3
+            }
+          ]
+        },
+        {
+          "id": "2C",
+          "label": "Periksa anggaranmu dulu.",
+          "nextNodeId": "node-3",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "financialAwareness",
+              "amount": 5
+            },
+            {
+              "stat": "spendingControl",
+              "amount": 5
+            },
+            {
+              "stat": "impulseControl",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-3",
+      "location": "Kelas XI-B • Siang",
+      "background": "classroom",
+      "speaker": "Mr. Arman",
+      "body": "Maya menyiapkan catatan pengeluarannya. Mr. Arman memberi tugas sederhana.\n\n“Uang kalian terbatas. Apa yang harus didahulukan?”",
+      "branch": "budget-priorities",
+      "choices": [
+        {
+          "id": "3A",
+          "label": "Makanan dan transportasi.",
+          "nextNodeId": "node-4",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "financialAwareness",
+              "amount": 5
+            },
+            {
+              "stat": "spendingControl",
+              "amount": 5
+            }
+          ]
+        },
+        {
+          "id": "3B",
+          "label": "Item game baru.",
+          "nextNodeId": "node-4",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 3
+            },
+            {
+              "stat": "spendingControl",
+              "amount": -4
+            },
+            {
+              "stat": "impulseControl",
+              "amount": -2
+            }
+          ]
+        },
+        {
+          "id": "3C",
+          "label": "Jajanan dan barang yang sedang tren.",
+          "nextNodeId": "node-4",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 2
+            },
+            {
+              "stat": "spendingControl",
+              "amount": -3
+            },
+            {
+              "stat": "impulseControl",
+              "amount": -2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-4",
+      "location": "Kamar Alex • Sore",
+      "background": "bedroom",
+      "speaker": "Iklan Online",
+      "body": "DAPATKAN UANG SEKARANG!\nTANPA PROSES RUMIT! CEPAT DISETUJUI!\n\nIklan pinjaman muncul di layar Alex. Tidak ada rincian biaya yang jelas.",
+      "branch": "loan-advertisement",
+      "choices": [
+        {
+          "id": "4A",
+          "label": "Periksa penyedia dan syaratnya dulu.",
+          "nextNodeId": "node-5",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "financialAwareness",
+              "amount": 6
+            },
+            {
+              "stat": "risk",
+              "amount": -3
+            },
+            {
+              "stat": "scamAwareness",
+              "amount": 4
+            },
+            {
+              "stat": "impulseControl",
+              "amount": 4
+            }
+          ]
+        },
+        {
+          "id": "4B",
+          "label": "Langsung ajukan pinjaman.",
+          "nextNodeId": "node-5",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 10
+            },
+            {
+              "stat": "scamAwareness",
+              "amount": -4
+            },
+            {
+              "stat": "impulseControl",
+              "amount": -5
+            }
+          ]
+        },
+        {
+          "id": "4C",
+          "label": "Tanya orang dewasa tepercaya dulu.",
+          "nextNodeId": "node-5",
+          "tendency": "prosocial",
+          "effects": [
+            {
+              "stat": "socialSupport",
+              "amount": 5
+            },
+            {
+              "stat": "financialAwareness",
+              "amount": 4
+            },
+            {
+              "stat": "helpSeeking",
+              "amount": 5
+            },
+            {
+              "stat": "impulseControl",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-5",
+      "location": "Koridor • Keesokan Pagi",
+      "background": "hallway",
+      "speaker": "Kevin",
+      "body": "Aku sudah meminjam uang. Kupikir bisa kubayar nanti.\n\nSekarang aku belum yakin berapa jumlah yang harus kukembalikan.",
+      "branch": "kevin-debt",
+      "choices": [
+        {
+          "id": "5A",
+          "label": "Mari lihat syarat pembayarannya.",
+          "nextNodeId": "node-6",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "financialAwareness",
+              "amount": 5
+            },
+            {
+              "stat": "spendingControl",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "5B",
+          "label": "Pinjam lagi saja.",
+          "nextNodeId": "node-6",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 8
+            },
+            {
+              "stat": "spendingControl",
+              "amount": -5
+            },
+            {
+              "stat": "impulseControl",
+              "amount": -4
+            }
+          ]
+        },
+        {
+          "id": "5C",
+          "label": "Bicaralah dengan seseorang yang kamu percaya.",
+          "nextNodeId": "node-6",
+          "tendency": "prosocial",
+          "effects": [
+            {
+              "stat": "socialSupport",
+              "amount": 5
+            },
+            {
+              "stat": "helpSeeking",
+              "amount": 5
+            }
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "stat": "financialAwareness",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Aku sudah meminjam uang. Kupikir bisa kubayar nanti.\n\nKevin membuka rincian pembayaran yang belum pernah ia baca. “Aku cuma melihat uang yang masuk. Sekarang aku bingung.”"
+        },
+        {
+          "stat": "financialAwareness",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Aku sudah meminjam uang. Kupikir bisa kubayar nanti.\n\nKevin menunjukkan rincian pembayaran. “Kamu tadi membahas anggaran. Bisa temani aku memahami ini?”"
+        }
+      ]
+    },
+    {
+      "id": "node-6",
+      "location": "Kelas XI-B • Pelajaran Finansial",
+      "background": "classroom",
+      "speaker": "Mr. Arman",
+      "body": "Sebelum meminjam, pahami seluruh jumlah yang harus dikembalikan: pokok pinjaman, bunga, biaya, serta kemungkinan denda.\n\nContoh fiktif untuk belajar: pokok Rp100.000 + bunga Rp10.000 + biaya Rp5.000 = Rp115.000, sebelum denda jika ada. Ini bukan tawaran pinjaman.\n\nUntuk pelajar, rencanakan kebutuhan dan tabung uangmu; jangan terburu-buru berutang.",
+      "branch": "total-repayment",
+      "choices": [
+        {
+          "id": "6A",
+          "label": "Hitung seluruh jumlah yang harus dibayar.",
+          "nextNodeId": "node-7",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "financialAwareness",
+              "amount": 6
+            },
+            {
+              "stat": "spendingControl",
+              "amount": 4
+            },
+            {
+              "stat": "impulseControl",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "6B",
+          "label": "Lihat jumlah uang yang diterima saja.",
+          "nextNodeId": "node-7",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 4
+            },
+            {
+              "stat": "spendingControl",
+              "amount": -3
+            }
+          ]
+        },
+        {
+          "id": "6C",
+          "label": "Abaikan rinciannya.",
+          "nextNodeId": "node-7",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 6
+            },
+            {
+              "stat": "spendingControl",
+              "amount": -4
+            },
+            {
+              "stat": "impulseControl",
+              "amount": -3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-7",
+      "location": "Ruang BK • Depan Pintu",
+      "background": "counselor",
+      "speaker": "Kevin",
+      "body": "Jangan bilang siapa-siapa. Aku akan mengatasinya sendiri.\n\nMr. Daniel ada di ruang BK. Kevin berhenti di depan pintu, ragu untuk masuk.",
+      "branch": "debt-secrecy",
+      "choices": [
+        {
+          "id": "7A",
+          "label": "Kamu tidak harus menghadapi ini sendirian.",
+          "nextNodeId": "node-8",
+          "tendency": "prosocial",
+          "effects": [
+            {
+              "stat": "socialSupport",
+              "amount": 5
+            },
+            {
+              "stat": "empathy",
+              "amount": 4
+            },
+            {
+              "stat": "helpSeeking",
+              "amount": 4
+            }
+          ]
+        },
+        {
+          "id": "7B",
+          "label": "Oke, itu masalahmu.",
+          "nextNodeId": "node-8",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "empathy",
+              "amount": -3
+            },
+            {
+              "stat": "helpSeeking",
+              "amount": -3
+            }
+          ]
+        },
+        {
+          "id": "7C",
+          "label": "Ayo cari orang dewasa yang bisa dipercaya.",
+          "nextNodeId": "node-8",
+          "tendency": "prosocial",
+          "effects": [
+            {
+              "stat": "socialSupport",
+              "amount": 6
+            },
+            {
+              "stat": "helpSeeking",
+              "amount": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-8",
+      "location": "Kantin • Istirahat",
+      "background": "cafeteria",
+      "speaker": "Leo",
+      "body": "Aku dapat pesan!\n\n“Selamat! Kamu memenangkan hadiah. Bayar sedikit biaya untuk mengambilnya.”\n\nLeo menunjukkan tautan dari pengirim yang tidak dikenal. “Kelihatannya menggiurkan...”",
+      "branch": "prize-fee-scam",
+      "choices": [
+        {
+          "id": "8A",
+          "label": "Jangan kirim uang; periksa kebenarannya.",
+          "nextNodeId": "node-9",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "financialAwareness",
+              "amount": 6
+            },
+            {
+              "stat": "risk",
+              "amount": -5
+            },
+            {
+              "stat": "scamAwareness",
+              "amount": 7
+            },
+            {
+              "stat": "impulseControl",
+              "amount": 4
+            }
+          ]
+        },
+        {
+          "id": "8B",
+          "label": "Bayar biayanya.",
+          "nextNodeId": "node-9",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 10
+            },
+            {
+              "stat": "scamAwareness",
+              "amount": -6
+            },
+            {
+              "stat": "impulseControl",
+              "amount": -5
+            }
+          ]
+        },
+        {
+          "id": "8C",
+          "label": "Teruskan pesannya ke teman-teman.",
+          "nextNodeId": "node-9",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 5
+            },
+            {
+              "stat": "scamAwareness",
+              "amount": -4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-9",
+      "location": "Koridor • Sepulang Sekolah",
+      "background": "hallway",
+      "speaker": "Rina",
+      "body": "Keluargaku mengajariku bahwa meminta bantuan saat ada masalah uang lebih baik daripada menyembunyikannya.\n\nKamu bisa memilih orang yang tepercaya, tanpa menceritakannya ke semua orang.",
+      "branch": "financial-support",
+      "choices": [
+        {
+          "id": "9A",
+          "label": "Aku setuju.",
+          "nextNodeId": "node-10",
+          "tendency": "prosocial",
+          "effects": [
+            {
+              "stat": "socialSupport",
+              "amount": 4
+            },
+            {
+              "stat": "empathy",
+              "amount": 3
+            },
+            {
+              "stat": "helpSeeking",
+              "amount": 4
+            }
+          ]
+        },
+        {
+          "id": "9B",
+          "label": "Masalah uang sebaiknya disimpan sendiri.",
+          "nextNodeId": "node-10",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "socialSupport",
+              "amount": -2
+            },
+            {
+              "stat": "helpSeeking",
+              "amount": -3
+            }
+          ]
+        },
+        {
+          "id": "9C",
+          "label": "Tergantung situasinya.",
+          "nextNodeId": "node-10",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "knowledge",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "stat": "helpSeeking",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Keluargaku mengajariku bahwa meminta bantuan saat ada masalah uang lebih baik daripada menyembunyikannya.\n\n“Aku dulu malu untuk cerita,” kata Rina. “Mulai dari satu orang yang tepercaya saja.”"
+        },
+        {
+          "stat": "helpSeeking",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Keluargaku mengajariku bahwa meminta bantuan saat ada masalah uang lebih baik daripada menyembunyikannya.\n\nRina mengangguk. “Seperti saat kita saling mendukung. Kita tidak harus bercerita ke semua orang, cukup orang yang bisa membantu.”"
+        }
+      ]
+    },
+    {
+      "id": "node-10",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Pesan Online",
+      "body": "UANG TUNAI INSTAN. MUDAH DISETUJUI. AJUKAN SEKARANG.\n\nTawaran pinjaman lain muncul. Jari Alex berhenti di atas layar. Apa langkah berikutnya?",
+      "branch": "final-financial-choice",
+      "choices": [
+        {
+          "id": "10A",
+          "label": "Berhenti sejenak dan periksa sebelum memutuskan.",
+          "nextNodeId": "node-11",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "financialAwareness",
+              "amount": 7
+            },
+            {
+              "stat": "risk",
+              "amount": -5
+            },
+            {
+              "stat": "spendingControl",
+              "amount": 4
+            },
+            {
+              "stat": "impulseControl",
+              "amount": 6
+            },
+            {
+              "stat": "scamAwareness",
+              "amount": 5
+            }
+          ]
+        },
+        {
+          "id": "10B",
+          "label": "Ajukan karena kelihatannya mudah.",
+          "nextNodeId": "node-11",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 10
+            },
+            {
+              "stat": "spendingControl",
+              "amount": -5
+            },
+            {
+              "stat": "impulseControl",
+              "amount": -6
+            },
+            {
+              "stat": "scamAwareness",
+              "amount": -4
+            }
+          ]
+        },
+        {
+          "id": "10C",
+          "label": "Minta saran orang dewasa tepercaya.",
+          "nextNodeId": "node-11",
+          "tendency": "prosocial",
+          "effects": [
+            {
+              "stat": "socialSupport",
+              "amount": 5
+            },
+            {
+              "stat": "financialAwareness",
+              "amount": 5
+            },
+            {
+              "stat": "helpSeeking",
+              "amount": 6
+            },
+            {
+              "stat": "impulseControl",
+              "amount": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-11",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Narasi",
+      "body": "Uang bisa menyelesaikan sebagian masalah. Namun, keputusan yang terburu-buru bisa menciptakan masalah yang jauh lebih besar.\n\nAlex meletakkan ponselnya. Ada waktu untuk berpikir, memeriksa, dan meminta bantuan sebelum memutuskan.",
+      "nextNodeId": "END",
+      "branch": "financial-reflection"
+    }
+  ]
+}

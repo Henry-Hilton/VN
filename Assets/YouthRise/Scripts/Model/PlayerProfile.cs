@@ -27,17 +27,24 @@ namespace YouthRise
         public int emotionalAwareness;
         public int copingTendency;
         public int resilienceIndicator;
+        public int financialAwareness;
+        public int spendingControl;
+        public int impulseControl;
+        public int scamAwareness;
         public int xp;
         public bool safeZoneUnlocked;
         public bool completedChapterOne;
         public bool completedChapterTwo;
         public bool completedChapterThree;
         public bool completedChapterFour;
+        public bool completedChapterFive;
         public bool seasonOneCompleted;
         public bool relationshipPathUnlocked;
         public bool bullyingSupportArticleUnlocked;
         public bool healthyRelationshipArticleUnlocked;
         public bool digitalSafetyGuideUnlocked;
+        public bool financialSafetyArticleUnlocked;
+        public bool moneySmartGuideUnlocked;
 
         public int TrustScore => Mathf.Clamp(
             50 + trustParent + trustFriend + trustMaya + trustRina + trustLeo + trustSarah + trustTeacher,
@@ -67,17 +74,21 @@ namespace YouthRise
             emotionalAwareness = 50;
             copingTendency = 50;
             resilienceIndicator = 50;
+            PrepareForChapterFive();
             xp = 0;
             safeZoneUnlocked = false;
             completedChapterOne = false;
             completedChapterTwo = false;
             completedChapterThree = false;
             completedChapterFour = false;
+            completedChapterFive = false;
             seasonOneCompleted = false;
             relationshipPathUnlocked = false;
             bullyingSupportArticleUnlocked = false;
             healthyRelationshipArticleUnlocked = false;
             digitalSafetyGuideUnlocked = false;
+            financialSafetyArticleUnlocked = false;
+            moneySmartGuideUnlocked = false;
         }
 
         public void PrepareForChapterTwo()
@@ -99,6 +110,16 @@ namespace YouthRise
             copingTendency = 50;
             helpSeekingTendency = 50;
             resilienceIndicator = 50;
+        }
+
+        public void PrepareForChapterFive()
+        {
+            // Initialize only the new chapter indicators, including on legacy saves.
+            // Existing support, trust, and help-seeking progress carries forward.
+            financialAwareness = 50;
+            spendingControl = 50;
+            impulseControl = 50;
+            scamAwareness = 50;
         }
 
         public void Apply(StatDelta[] effects)
@@ -188,6 +209,18 @@ namespace YouthRise
                 case "resilienceindicator":
                     resilienceIndicator = Mathf.Clamp(resilienceIndicator + amount, 0, 100);
                     break;
+                case "financialawareness":
+                    financialAwareness = Mathf.Clamp(financialAwareness + amount, 0, 100);
+                    break;
+                case "spendingcontrol":
+                    spendingControl = Mathf.Clamp(spendingControl + amount, 0, 100);
+                    break;
+                case "impulsecontrol":
+                    impulseControl = Mathf.Clamp(impulseControl + amount, 0, 100);
+                    break;
+                case "scamawareness":
+                    scamAwareness = Mathf.Clamp(scamAwareness + amount, 0, 100);
+                    break;
                 case "xp":
                     xp = Mathf.Max(0, xp + amount);
                     break;
@@ -233,6 +266,10 @@ namespace YouthRise
                 case "resilience": return resilienceIndicator;
                 case "resilienceindicator": return resilienceIndicator;
                 case "xp": return xp;
+                case "financialawareness": return financialAwareness;
+                case "spendingcontrol": return spendingControl;
+                case "impulsecontrol": return impulseControl;
+                case "scamawareness": return scamAwareness;
                 default: return 0;
             }
         }
@@ -255,7 +292,11 @@ namespace YouthRise
                 helpSeekingTendency = helpSeekingTendency,
                 emotionalAwareness = emotionalAwareness,
                 copingTendency = copingTendency,
-                resilienceIndicator = resilienceIndicator
+                resilienceIndicator = resilienceIndicator,
+                financialAwareness = financialAwareness,
+                spendingControl = spendingControl,
+                impulseControl = impulseControl,
+                scamAwareness = scamAwareness
             };
         }
     }
@@ -278,5 +319,9 @@ namespace YouthRise
         public int emotionalAwareness;
         public int copingTendency;
         public int resilienceIndicator;
+        public int financialAwareness;
+        public int spendingControl;
+        public int impulseControl;
+        public int scamAwareness;
     }
 }
