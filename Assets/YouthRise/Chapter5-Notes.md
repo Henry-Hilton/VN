@@ -1,6 +1,6 @@
 # Chapter 5: Easy Money?
 
-Chapter 5 continues after the existing four-chapter Season 1 milestone. It contains an opening, ten three-choice decisions, and a closing reflection. First completion grants 250 XP (1,000 XP across Chapters 1–5) and unlocks Safe Zone > Finansial: Financial Safety and Money Smart Guide.
+Chapter 5 follows Chapter 4 within the expanded eight-chapter Season 1. It contains an opening, ten three-choice decisions, and a closing reflection. First completion grants 250 XP (1,000 XP across Chapters 1–5) and unlocks Safe Zone > Finansial: Financial Safety and Money Smart Guide.
 
 ## Assessment and saves
 

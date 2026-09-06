@@ -1,0 +1,874 @@
+{
+  "id": "chapter-8",
+  "title": "Home Is Complicated",
+  "subtitle": "Rumah Tidak Selalu Sederhana",
+  "number": 8,
+  "rewardXp": 300,
+  "completionHeading": "HOME IS COMPLICATED\nSEASON 1 SELESAI",
+  "reflectionLines": [
+    "Keluarga tidak selalu sempurna.",
+    "Kadang orang berbeda pendapat.",
+    "Kadang orang tua juga berada di bawah tekanan.",
+    "Dan kadang anak muda merasa tidak didengar.",
+    "Kamu tidak bertanggung jawab memperbaiki setiap masalah keluarga.",
+    "Berbicara dengan orang yang kamu percaya bisa menjadi langkah pertama."
+  ],
+  "unlockLabels": [
+    "Family & Support"
+  ],
+  "endingLines": [
+    "Some problems take time.",
+    "You don't have to solve everything today.",
+    "You just need to know that you don't have to face it alone."
+  ],
+  "endingHeading": "YOUR JOURNEY\nIS JUST BEGINNING.",
+  "startNodeId": "opening",
+  "nodes": [
+    {
+      "id": "opening",
+      "location": "Rumah Alex • Sore",
+      "background": "home",
+      "speaker": "Narasi",
+      "body": "Sekolah terasa berat hari ini. Kukira di rumah akan lebih mudah.\n\nAlex membuka pintu. Dari ruangan lain terdengar suara orang tuanya.\n\nIbu: Kita perlu membicarakan ini.\nAyah: Jangan sekarang. Ayah lelah.\n\nMungkin lebih baik aku di kamar saja.",
+      "nextNodeId": "node-1",
+      "branch": "home-is-complicated"
+    },
+    {
+      "id": "node-1",
+      "location": "Rumah Alex • Sore",
+      "background": "home",
+      "speaker": "Alex",
+      "body": "Suara perdebatan terdengar dari ruang keluarga. Aku berhenti di dekat pintu kamar.\n\nAku tidak harus menjadi penengah. Jika merasa terancam, aku boleh menjauh ke tempat yang aman dan mencari bantuan orang dewasa yang aman.",
+      "branch": "family-conflict",
+      "choices": [
+        {
+          "id": "1A",
+          "label": "Menjauh sebentar dan beri mereka ruang.",
+          "nextNodeId": "node-2",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": 3
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": 4
+            }
+          ]
+        },
+        {
+          "id": "1B",
+          "label": "Menyela perdebatan.",
+          "nextNodeId": "node-2",
+          "tendency": "reactive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 3
+            },
+            {
+              "stat": "anxiety",
+              "amount": 2
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": -2
+            }
+          ]
+        },
+        {
+          "id": "1C",
+          "label": "Mendengarkan dari luar ruangan.",
+          "nextNodeId": "node-2",
+          "tendency": "listen",
+          "effects": [
+            {
+              "stat": "anxiety",
+              "amount": 3
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-2",
+      "location": "Kamar Alex • Sore",
+      "background": "bedroom_morning",
+      "speaker": "Ibu",
+      "body": "Ibu mengetuk pintu setelah suasana lebih tenang.\n\nKamu baik-baik saja? Hari ini kelihatannya diam sekali.\n\nAlex menimbang apa yang ingin ia ceritakan.",
+      "branch": "mom-checks-in",
+      "choices": [
+        {
+          "id": "2A",
+          "label": "Hari ini terasa berat bagiku.",
+          "nextNodeId": "node-3",
+          "tendency": "communicate",
+          "effects": [
+            {
+              "stat": "trustParent",
+              "amount": 5
+            },
+            {
+              "stat": "socialSupport",
+              "amount": 4
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": 5
+            },
+            {
+              "stat": "familySupport",
+              "amount": 4
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": 2
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "2B",
+          "label": "Aku baik-baik saja.",
+          "nextNodeId": "node-3",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "trustParent",
+              "amount": 1
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -1
+            },
+            {
+              "stat": "familySupport",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "2C",
+          "label": "Itu bukan urusan Ibu.",
+          "nextNodeId": "node-3",
+          "tendency": "reactive",
+          "effects": [
+            {
+              "stat": "trustParent",
+              "amount": -4
+            },
+            {
+              "stat": "anxiety",
+              "amount": 3
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -3
+            },
+            {
+              "stat": "familySupport",
+              "amount": -2
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": -2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-3",
+      "location": "Rumah Alex • Malam",
+      "background": "home",
+      "speaker": "Ayah",
+      "body": "Nilaimu perlu ditingkatkan. Kamu seharusnya lebih banyak belajar.\n\nAlex tahu sekolah penting. Namun, mendengar itu setelah hari yang berat membuatnya semakin tertekan.",
+      "branch": "school-pressure-at-home",
+      "choices": [
+        {
+          "id": "3A",
+          "label": "Aku mengerti. Bisa kita buat rencana bersama?",
+          "nextNodeId": "node-4",
+          "tendency": "communicate",
+          "effects": [
+            {
+              "stat": "confidence",
+              "amount": 4
+            },
+            {
+              "stat": "trustParent",
+              "amount": 4
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": 4
+            },
+            {
+              "stat": "familySupport",
+              "amount": 3
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": 3
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "3B",
+          "label": "Ayah tidak pernah mengerti aku!",
+          "nextNodeId": "node-4",
+          "tendency": "reactive",
+          "effects": [
+            {
+              "stat": "anxiety",
+              "amount": 4
+            },
+            {
+              "stat": "trustParent",
+              "amount": -3
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -3
+            },
+            {
+              "stat": "familySupport",
+              "amount": -2
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": -3
+            }
+          ]
+        },
+        {
+          "id": "3C",
+          "label": "Tetap diam.",
+          "nextNodeId": "node-4",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "anxiety",
+              "amount": 2
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-4",
+      "location": "Rumah Alex • Malam",
+      "background": "home",
+      "speaker": "Ayah",
+      "body": "Lihat nilai temanmu. Kenapa kamu tidak bisa seperti dia?\n\nPerbandingan itu terasa menyakitkan. Alex ingin didengar sebagai dirinya sendiri.",
+      "branch": "comparison",
+      "variants": [
+        {
+          "stat": "familyCommunication",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Lihat nilai temanmu. Kenapa kamu tidak bisa seperti dia?\n\nPerbandingan itu terasa menyakitkan. Alex ingin didengar sebagai dirinya sendiri.\n\nSetelah percakapan yang sulit, Alex belum tahu bagaimana memulai. Ia boleh mengambil jeda sebelum bicara lagi."
+        },
+        {
+          "stat": "familyCommunication",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Lihat nilai temanmu. Kenapa kamu tidak bisa seperti dia?\n\nPerbandingan itu terasa menyakitkan. Alex ingin didengar sebagai dirinya sendiri.\n\nAlex mencoba mengingat cara menyampaikan perasaan tanpa menyerang. Ia berharap percakapan bisa berjalan lebih tenang."
+        }
+      ],
+      "choices": [
+        {
+          "id": "4A",
+          "label": "Jelaskan perasaanmu saat dibandingkan.",
+          "nextNodeId": "node-5",
+          "tendency": "communicate",
+          "effects": [
+            {
+              "stat": "confidence",
+              "amount": 5
+            },
+            {
+              "stat": "trustParent",
+              "amount": 3
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": 5
+            },
+            {
+              "stat": "familySupport",
+              "amount": 3
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": 4
+            }
+          ]
+        },
+        {
+          "id": "4B",
+          "label": "Terima tanpa bicara.",
+          "nextNodeId": "node-5",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "anxiety",
+              "amount": 4
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -2
+            }
+          ]
+        },
+        {
+          "id": "4C",
+          "label": "Balas dengan berteriak.",
+          "nextNodeId": "node-5",
+          "tendency": "reactive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 4
+            },
+            {
+              "stat": "trustParent",
+              "amount": -4
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -4
+            },
+            {
+              "stat": "familySupport",
+              "amount": -3
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": -4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-5",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Maya",
+      "body": "Hei, kamu jarang online. Semuanya baik-baik saja?\n\nPesan Maya muncul di layar. Alex teringat bahwa menjaga jeda dari ponsel tidak berarti harus menutup diri dari dukungan.",
+      "branch": "maya-message",
+      "choices": [
+        {
+          "id": "5A",
+          "label": "Keadaan di rumah sedang sulit.",
+          "nextNodeId": "node-6",
+          "tendency": "communicate",
+          "effects": [
+            {
+              "stat": "trustMaya",
+              "amount": 5
+            },
+            {
+              "stat": "socialSupport",
+              "amount": 5
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": 3
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": 4
+            }
+          ]
+        },
+        {
+          "id": "5B",
+          "label": "Tidak ada apa-apa.",
+          "nextNodeId": "node-6",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "trustMaya",
+              "amount": 1
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -1
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": -1
+            }
+          ]
+        },
+        {
+          "id": "5C",
+          "label": "Abaikan pesannya.",
+          "nextNodeId": "node-6",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "socialSupport",
+              "amount": -3
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -3
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": -2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-6",
+      "location": "Koridor Sekolah • Pagi",
+      "background": "hallway",
+      "speaker": "Rina",
+      "body": "Kadang orang mengira masalah keluarga harus disembunyikan.\n\nIya... mungkin, jawab Alex.\n\nTapi bicara dengan orang yang kamu percaya bisa membantu.\n\nKevin pernah bilang keluarganya juga tidak selalu baik-baik saja. Leo menyarankan memilih waktu tenang saat ingin bicara.",
+      "branch": "rina-understands",
+      "choices": [
+        {
+          "id": "6A",
+          "label": "Sepertinya aku perlu seseorang untuk diajak bicara.",
+          "nextNodeId": "node-7",
+          "tendency": "communicate",
+          "effects": [
+            {
+              "stat": "socialSupport",
+              "amount": 6
+            },
+            {
+              "stat": "anxiety",
+              "amount": -3
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": 4
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": 3
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": 5
+            }
+          ]
+        },
+        {
+          "id": "6B",
+          "label": "Aku akan menghadapinya sendiri.",
+          "nextNodeId": "node-7",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "anxiety",
+              "amount": 3
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -2
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": -2
+            }
+          ]
+        },
+        {
+          "id": "6C",
+          "label": "Tidak ada yang akan mengerti.",
+          "nextNodeId": "node-7",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "anxiety",
+              "amount": 4
+            },
+            {
+              "stat": "socialSupport",
+              "amount": -2
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -3
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": -2
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": -3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-7",
+      "location": "Rumah Alex • Sore",
+      "background": "home",
+      "speaker": "Ibu",
+      "body": "Ibu menghitung pengeluaran rumah. Wajahnya terlihat khawatir.\n\nKeuangan kita sedang sedikit sulit.\n\nIbu menambahkan bahwa urusan biaya tetap tanggung jawab orang dewasa. Alex tidak harus berutang atau mencari uang untuk menyelesaikannya.",
+      "branch": "family-finances",
+      "choices": [
+        {
+          "id": "7A",
+          "label": "Adakah hal kecil yang bisa kubantu?",
+          "nextNodeId": "node-8",
+          "tendency": "prosocial",
+          "effects": [
+            {
+              "stat": "empathy",
+              "amount": 5
+            },
+            {
+              "stat": "trustParent",
+              "amount": 4
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": 3
+            },
+            {
+              "stat": "familySupport",
+              "amount": 4
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "7B",
+          "label": "Kenapa tidak mengurangi belanja saja?",
+          "nextNodeId": "node-8",
+          "tendency": "reactive",
+          "effects": [
+            {
+              "stat": "empathy",
+              "amount": -3
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -3
+            },
+            {
+              "stat": "familySupport",
+              "amount": -2
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": -2
+            }
+          ]
+        },
+        {
+          "id": "7C",
+          "label": "Pura-pura tidak melihat.",
+          "nextNodeId": "node-8",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "empathy",
+              "amount": -1
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-8",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Alex",
+      "body": "Mungkin aku justru membuat semuanya semakin sulit bagi mereka.\n\nPikiran itu terus muncul. Namun perasaan bersalah bukan bukti bahwa masalah keluarga adalah salahku.\n\nAku tidak bertanggung jawab memperbaiki semua masalah keluarga.",
+      "branch": "self-blame",
+      "choices": [
+        {
+          "id": "8A",
+          "label": "Bicarakan perasaan itu dengan orang dewasa tepercaya.",
+          "nextNodeId": "node-9",
+          "tendency": "communicate",
+          "effects": [
+            {
+              "stat": "socialSupport",
+              "amount": 6
+            },
+            {
+              "stat": "anxiety",
+              "amount": -5
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": 3
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": 4
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": 6
+            }
+          ]
+        },
+        {
+          "id": "8B",
+          "label": "Simpan perasaan itu sendiri.",
+          "nextNodeId": "node-9",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "anxiety",
+              "amount": 5
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -2
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": -2
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": -3
+            }
+          ]
+        },
+        {
+          "id": "8C",
+          "label": "Coba atasi keuangan keluarga sendirian.",
+          "nextNodeId": "node-9",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "confidence",
+              "amount": 2
+            },
+            {
+              "stat": "anxiety",
+              "amount": 4
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": -2
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": -4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-9",
+      "location": "Ruang BK • Hari Berikutnya",
+      "background": "counselor",
+      "speaker": "Mr. Daniel",
+      "body": "Dalam percakapan di sekolah, Pak Daniel bertanya:\n\nSaat keluargamu punya masalah, menurutmu apa yang membantu?\n\nBerbicara perlu dilakukan saat aman. Menghadapi ancaman atau kekerasan bukan tugasmu, dan kamu tidak harus menghadapi orang yang membuatmu takut sendirian.",
+      "branch": "family-communication",
+      "choices": [
+        {
+          "id": "9A",
+          "label": "Komunikasi yang tenang dan jujur.",
+          "nextNodeId": "node-10",
+          "tendency": "communicate",
+          "effects": [
+            {
+              "stat": "knowledge",
+              "amount": 5
+            },
+            {
+              "stat": "confidence",
+              "amount": 3
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": 5
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": 4
+            }
+          ]
+        },
+        {
+          "id": "9B",
+          "label": "Menghindari pembicaraan tentang itu.",
+          "nextNodeId": "node-10",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "knowledge",
+              "amount": -2
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -3
+            }
+          ]
+        },
+        {
+          "id": "9C",
+          "label": "Yang paling kuat harus menentukan semuanya.",
+          "nextNodeId": "node-10",
+          "tendency": "reactive",
+          "effects": [
+            {
+              "stat": "empathy",
+              "amount": -4
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -4
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": -3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-10",
+      "location": "Ruang BK • Siang",
+      "background": "counselor",
+      "speaker": "Mr. Daniel",
+      "body": "Ingat, masalah keluarga tidak selalu bisa kamu selesaikan sendiri.\n\nKamu boleh bicara dengan orang dewasa tepercaya, termasuk orang di luar keluarga. Pilih yang mendengarkan dan membantu menjaga keselamatanmu.\n\nKalau orang pertama tidak membantu, kamu boleh mencari orang dewasa aman lainnya.",
+      "branch": "asking-for-help",
+      "choices": [
+        {
+          "id": "10A",
+          "label": "Sepertinya aku ingin mendapat dukungan.",
+          "nextNodeId": "node-11",
+          "tendency": "communicate",
+          "effects": [
+            {
+              "stat": "socialSupport",
+              "amount": 7
+            },
+            {
+              "stat": "anxiety",
+              "amount": -4
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": 4
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": 3
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": 6
+            }
+          ]
+        },
+        {
+          "id": "10B",
+          "label": "Aku tidak ingin siapa pun tahu.",
+          "nextNodeId": "node-11",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "anxiety",
+              "amount": 3
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -2
+            },
+            {
+              "stat": "emotionalRegulation",
+              "amount": -1
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": -3
+            }
+          ]
+        },
+        {
+          "id": "10C",
+          "label": "Mungkin aku bisa menanganinya sendiri.",
+          "nextNodeId": "node-11",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "confidence",
+              "amount": 2
+            },
+            {
+              "stat": "anxiety",
+              "amount": 2
+            },
+            {
+              "stat": "familyCommunication",
+              "amount": -1
+            },
+            {
+              "stat": "helpSeekingTendency",
+              "amount": -2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-11",
+      "location": "Rumah Alex • Malam",
+      "background": "home",
+      "speaker": "Ibu",
+      "body": "Malam itu, saat suasana tenang, Ibu mengajak Alex duduk bersama.\n\nIbu: Maaf kalau kami membuatmu merasa harus menghadapi semuanya sendirian.\nAlex: Aku hanya ingin kita lebih sering bicara.\nIbu: Kita bisa mencoba.\n\nTidak ada yang langsung selesai malam itu. Tetapi untuk pertama kalinya, kami mulai berbicara.",
+      "branch": "home-conversation",
+      "nextNodeId": "END",
+      "variants": [
+        {
+          "stat": "familyCommunication",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Malam itu, saat suasana tenang, Ibu mengajak Alex duduk bersama.\n\nIbu: Maaf kalau kami membuatmu merasa harus menghadapi semuanya sendirian.\nAlex: Aku hanya ingin kita lebih sering bicara.\nIbu: Kita bisa mencoba.\n\nTidak ada yang langsung selesai malam itu. Tetapi untuk pertama kalinya, kami mulai berbicara.\n\nAlex belum siap menceritakan semuanya. Percakapan bisa dimulai sedikit demi sedikit; dukungan di luar rumah tetap tersedia."
+        },
+        {
+          "stat": "familyCommunication",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Malam itu, saat suasana tenang, Ibu mengajak Alex duduk bersama.\n\nIbu: Maaf kalau kami membuatmu merasa harus menghadapi semuanya sendirian.\nAlex: Aku hanya ingin kita lebih sering bicara.\nIbu: Kita bisa mencoba.\n\nTidak ada yang langsung selesai malam itu. Tetapi untuk pertama kalinya, kami mulai berbicara.\n\nAlex mulai menyampaikan satu hal yang ia butuhkan. Ia tidak harus punya jawaban untuk semua masalah."
+        }
+      ]
+    }
+  ]
+}

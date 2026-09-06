@@ -113,7 +113,7 @@ namespace YouthRise.Tests
             Assert.That(CampaignProgression.Complete(StoryRepository.LoadChapterFive().Chapter, profile), Is.Zero);
             Assert.That(profile.xp, Is.EqualTo(1000));
             Assert.That(profile.completedChapterFive, Is.True);
-            Assert.That(profile.seasonOneCompleted, Is.True);
+            Assert.That(profile.seasonOneCompleted, Is.False);
             Assert.That(profile.financialSafetyArticleUnlocked, Is.True);
             Assert.That(profile.moneySmartGuideUnlocked, Is.True);
         }
@@ -139,7 +139,7 @@ namespace YouthRise.Tests
             CampaignProgression.Normalize(save);
             Assert.That(save.profile.completedChapterOne && save.profile.completedChapterTwo
                 && save.profile.completedChapterThree && save.profile.completedChapterFour, Is.True);
-            Assert.That(save.profile.seasonOneCompleted, Is.True);
+            Assert.That(save.profile.seasonOneCompleted, Is.False);
             Assert.That(save.profile.completedChapterFive, Is.EqualTo(complete));
             Assert.That(save.profile.financialSafetyArticleUnlocked, Is.EqualTo(complete));
             Assert.That(save.profile.moneySmartGuideUnlocked, Is.EqualTo(complete));

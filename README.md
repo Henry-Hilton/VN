@@ -1,6 +1,6 @@
 # YouthRise
 
-**YouthRise** is a playable Indonesian high-school visual novel prototype built with Unity. Its four-chapter Season 1 follows Alex from a first day at school through bullying intervention, healthy relationships, digital safety, emotional overload, healthy coping, and seeking trusted support. Chapter 5, “Easy Money?”, continues the journey with budgeting, online-loan risks, and scam awareness.
+**YouthRise** is a playable Indonesian high-school visual novel prototype built with Unity. Its eight-chapter Season 1 follows Alex from a first day at school through bullying intervention, healthy relationships, digital safety, emotional overload, healthy coping, and seeking trusted support. Chapter 5, “Easy Money?”, explores financial literacy; Chapter 6, “Take Care of You,” covers realistic self-care; Chapter 7, “Always Connected,” explores digital balance. Chapter 8, “Home Is Complicated,” closes the season with family communication, safe support, and a reminder that young people do not have to solve every family problem.
 
 ![YouthRise school setting](Assets/YouthRise/Resources/YouthRise/Art/Backgrounds/bg_school_gate.png)
 
@@ -9,13 +9,13 @@
 
 ## Highlights
 
-- Five complete chapters with 61 story nodes and 51 three-choice decisions.
-- Branching outcomes and hidden indicators cover risk, trust, confidence, empathy, knowledge, social support, anxiety, bystander response, relationships, digital safety, boundaries, emotional awareness, coping, help-seeking, resilience, financial awareness, spending control, impulse control, and scam awareness.
+- Eight complete chapters with 97 story nodes and 82 three-choice decisions.
+- Branching outcomes and hidden indicators cover risk, trust, confidence, empathy, knowledge, social support, anxiety, bystander response, relationships, digital safety, boundaries, emotional awareness, coping, help-seeking, resilience, financial awareness, spending control, impulse control, scam awareness, and healthy lifestyle habits, and digital balance.
 - State-aware dialogue selected locally from bounded, authored variants.
 - Autosave, decision-latency tracking, tendency classification, and branch history.
 - Chapter-specific reflections, persistent XP rewards, Safe Zone access, the Relationship Path, and a Season 1 finale state.
-- Safe Zone chat, unlockable bullying, healthy-relationship, digital-safety, Financial Safety and Money Smart guidance, plus a discreet reporting-draft flow.
-- Ten hand-painted environments and nine illustrated characters, including financial mentor Mr. Arman.
+- Safe Zone chat, unlockable bullying, healthy-relationship, digital-safety, Financial Safety, Money Smart, Healthy Lifestyle, My Healthy Routine and Family & Support guidance, plus a discreet reporting-draft flow.
+- Twelve hand-painted environments and eleven illustrated characters, including financial mentor Mr. Arman, PE teacher Coach Sarah and Alex's father.
 - Crossfaded scenes, animated character entrances, dialogue fades, and staggered choice reveals.
 
 ## Getting started
@@ -67,8 +67,11 @@ Assets/
     │   ├── chapter1.json                 # Chapter 1 story graph
     │   ├── chapter2.json                 # Chapter 2 story graph
     │   ├── chapter3.json                 # Chapter 3 story graph
-    │   ├── chapter4.json                 # Season 1 finale
-    │   └── chapter5.json                 # Financial literacy continuation
+    │   ├── chapter4.json                 # Emotional well-being and support
+    │   ├── chapter5.json                 # Financial literacy continuation
+    │   ├── chapter6.json                 # Healthy lifestyle and self-care
+    │   ├── chapter7.json                 # Digital balance and FOMO
+    │   └── chapter8.json                 # Family support; Season 1 finale
     ├── Scripts/
     │   ├── Model/                        # Story and player-state models
     │   ├── Services/                     # Story, dialogue, saves, telemetry, safety
@@ -78,9 +81,13 @@ Assets/
 
 ## Content and architecture
 
-Chapter content is authored in `Assets/YouthRise/Resources/YouthRise/chapter1.json` through `chapter5.json`. Each node can define a speaker, setting, dialogue, choices, stat effects, next-node references, and optional stat-gated dialogue variants. The repository validates each story graph when it loads.
+Chapter content is authored in `Assets/YouthRise/Resources/YouthRise/chapter1.json` through `chapter8.json`. Each node can define a speaker, setting, dialogue, choices, stat effects, next-node references, and optional stat-gated dialogue variants. The repository validates each story graph when it loads.
 
-Complete Chapter 4 to unlock Chapter 5; earlier saves remain compatible. First-time chapter rewards are 100/150/200/300/250 XP, totaling 1,000 XP. Chapter 5 adds Financial Awareness, Spending Control, Impulse Control and Scam Awareness to local snapshots while retaining earlier support and relationship progress. Its two guides unlock under **Safe Zone > Finansial**. See [Chapter 5 notes](Assets/YouthRise/Chapter5-Notes.md) for the scoring rubric, financial-education sources and artwork prompt.
+Complete each chapter to unlock the next; earlier saves remain compatible. First-time chapter rewards are 100/150/200/300/250/250/300/300 XP, totaling 1,850 XP. Chapter 5 adds financial indicators and guides under **Safe Zone > Finansial**. Chapter 6 adds hidden health, sleep, movement, nutrition and habit indicators, with **Healthy Lifestyle** and **My Healthy Routine** under **Safe Zone > Gaya Hidup**. These are authored game indicators, not real-world health assessments. See the [Chapter 5 notes](Assets/YouthRise/Chapter5-Notes.md) and [Chapter 6 notes](Assets/YouthRise/Chapter6-Notes.md) for scoring, educational sources and artwork prompts.
+
+Chapter 7 adds six digital-habit indicators while preserving health, sleep and earlier progress. It awards 300 XP, with no new guide unlocks. Its screen-time example is fictional, not device monitoring. See [Chapter 7 notes](Assets/YouthRise/Chapter7-Notes.md) for scoring and educational boundaries.
+
+Chapter 8 adds Family Communication, Family Support and Emotional Regulation while reusing Help-Seeking. Completion unlocks **Safe Zone > Keluarga: Family & Support** and the two-part Season 1 ending. Legacy saves keep their earned XP and chapter unlocks; the old Season 1 flag now reflects Chapter 8 completion. These fictional indicators do not rate the player's real family or safety. See [Chapter 8 notes](Assets/YouthRise/Chapter8-Notes.md) for scoring, safeguards, Dad's artwork prompt and validation.
 
 Dynamic dialogue is intentionally offline and deterministic. `LocalConversationGenerator` implements `IConversationGenerator` by choosing among authored variants that match the player's hidden state. A future provider can replace it, but generated content should remain bounded by scene intent, moderated, resilient to timeouts, and unable to mutate player metrics directly.
 

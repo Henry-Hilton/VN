@@ -178,7 +178,7 @@ namespace YouthRise.Tests
         }
 
         [Test]
-        public void ChapterFourProgression_AwardsOnceAndCompletesSeasonOne()
+        public void ChapterFourProgression_AwardsOnceWithoutCompletingExpandedSeasonOne()
         {
             var profile = new PlayerProfile();
             profile.ResetForChapterOne();
@@ -204,7 +204,7 @@ namespace YouthRise.Tests
             Assert.That(snapshot.helpSeekingTendency, Is.EqualTo(57));
             Assert.That(snapshot.resilienceIndicator, Is.EqualTo(58));
             Assert.That(profile.completedChapterFour, Is.True);
-            Assert.That(profile.seasonOneCompleted, Is.True);
+            Assert.That(profile.seasonOneCompleted, Is.False);
             Assert.That(profile.safeZoneUnlocked, Is.True);
         }
 
@@ -270,7 +270,7 @@ namespace YouthRise.Tests
             Assert.That(profile.completedChapterTwo, Is.True);
             Assert.That(profile.completedChapterThree, Is.True);
             Assert.That(profile.completedChapterFour, Is.True);
-            Assert.That(profile.seasonOneCompleted, Is.True);
+            Assert.That(profile.seasonOneCompleted, Is.False);
             Assert.That(profile.relationshipPathUnlocked, Is.True);
             Assert.That(profile.healthyRelationshipArticleUnlocked, Is.True);
             Assert.That(profile.digitalSafetyGuideUnlocked, Is.True);
@@ -330,6 +330,7 @@ namespace YouthRise.Tests
                 "YouthRise/Art/Backgrounds/bg_back_school",
                 "YouthRise/Art/Backgrounds/bg_street",
                 "YouthRise/Art/Backgrounds/bg_bedroom",
+                "YouthRise/Art/Backgrounds/bg_bedroom_morning",
                 "YouthRise/Art/Backgrounds/bg_locker",
                 "YouthRise/Art/Backgrounds/bg_counselor",
                 "YouthRise/Art/Backgrounds/bg_cafeteria",
@@ -337,11 +338,14 @@ namespace YouthRise.Tests
                 "YouthRise/Art/Characters/char_kevin_chroma",
                 "YouthRise/Art/Characters/char_rina_chroma",
                 "YouthRise/Art/Characters/char_ibu_chroma",
+                "YouthRise/Art/Characters/char_dad_chroma",
                 "YouthRise/Art/Characters/char_senior_chroma",
                 "YouthRise/Art/Characters/char_mr_daniel_chroma",
                 "YouthRise/Art/Characters/char_leo_chroma",
                 "YouthRise/Art/Characters/char_sarah_chroma",
-                "YouthRise/Art/Characters/char_mr_arman_chroma"
+                "YouthRise/Art/Characters/char_mr_arman_chroma",
+                "YouthRise/Art/Characters/char_coach_sarah_chroma",
+                "YouthRise/Art/Backgrounds/bg_school_court"
             };
 
             foreach (string resourcePath in resourcePaths)

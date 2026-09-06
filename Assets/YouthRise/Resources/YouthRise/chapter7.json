@@ -1,0 +1,842 @@
+{
+  "id": "chapter-7",
+  "title": "Always Connected",
+  "subtitle": "Selalu Terhubung",
+  "number": 7,
+  "rewardXp": 300,
+  "completionHeading": "ALWAYS CONNECTED\nCHAPTER 7 SELESAI",
+  "reflectionLines": [
+    "Ponselmu adalah alat, bukan seluruh duniamu.",
+    "Kamu tidak harus langsung merespons semuanya.",
+    "Media sosial tidak menunjukkan seluruh cerita.",
+    "Luangkan waktu untuk tidur, teman, keluarga, dan dirimu.",
+    "Kendalikan teknologimu. Jangan biarkan teknologi mengendalikanmu."
+  ],
+  "unlockLabels": [],
+  "startNodeId": "opening",
+  "nodes": [
+    {
+      "id": "opening",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Narasi",
+      "body": "Pesan. Pesan lagi. Like. Komentar. Undangan game. Video pendek.\n\nAku seharusnya tidur...\n\nPonsel berbunyi lagi. Jempolku sudah bergerak sebelum aku sempat berpikir.\n\nLima menit lagi.",
+      "nextNodeId": "node-1",
+      "branch": "always-connected"
+    },
+    {
+      "id": "node-1",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Alex",
+      "body": "Video berikutnya mulai otomatis. Mataku lelah, tetapi layar masih menyala.\n\nBenarkah cuma lima menit lagi?",
+      "branch": "five-more-minutes",
+      "choices": [
+        {
+          "id": "1A",
+          "label": "Simpan ponsel dan bersiap tidur.",
+          "nextNodeId": "node-2",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": 5
+            },
+            {
+              "stat": "health",
+              "amount": 3
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": 4
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": -3
+            },
+            {
+              "stat": "sleepAwareness",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "1B",
+          "label": "Tonton satu video lagi.",
+          "nextNodeId": "node-2",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": -2
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": -2
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": 2
+            },
+            {
+              "stat": "sleepAwareness",
+              "amount": -1
+            }
+          ]
+        },
+        {
+          "id": "1C",
+          "label": "Terus scrolling.",
+          "nextNodeId": "node-2",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": -5
+            },
+            {
+              "stat": "health",
+              "amount": -2
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": -4
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": 4
+            },
+            {
+              "stat": "sleepAwareness",
+              "amount": -3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-2",
+      "location": "Kamar Alex • Pagi",
+      "background": "bedroom_morning",
+      "speaker": "Narasi",
+      "body": "Alarm berbunyi. Alex bangun lebih lambat dari rencananya. Malam tadi sudah telanjur larut.\n\nSaat bersiap ke sekolah, ponsel kembali menarik perhatiannya.",
+      "branch": "morning-check",
+      "choices": [
+        {
+          "id": "2A",
+          "label": "Tinjau waktu layar kemarin.",
+          "nextNodeId": "node-3",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "digitalAwareness",
+              "amount": 5
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": 4
+            }
+          ]
+        },
+        {
+          "id": "2B",
+          "label": "Langsung cek media sosial.",
+          "nextNodeId": "node-3",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "digitalAwareness",
+              "amount": -2
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "2C",
+          "label": "Matikan notifikasi untuk sementara.",
+          "nextNodeId": "node-3",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": 5
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": 4
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": -2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-3",
+      "location": "Gerbang Sekolah • Pagi",
+      "background": "school_gate",
+      "speaker": "Kevin",
+      "body": "Semua lagi online! Kamu harus ikut.\n\nAlex masih punya kegiatan lain. Rasanya tidak enak membayangkan teman-teman bersenang-senang tanpa dirinya.\n\nRasa takut ketinggalan itu sering disebut FOMO.",
+      "branch": "fear-of-missing-out",
+      "variants": [
+        {
+          "stat": "selfControl",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Semua lagi online! Kamu harus ikut.\n\nAlex masih punya kegiatan lain. Rasanya tidak enak membayangkan teman-teman bersenang-senang tanpa dirinya.\n\nRasa takut ketinggalan itu sering disebut FOMO."
+        },
+        {
+          "stat": "selfControl",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Semua lagi online! Kamu harus ikut.\n\nAlex mengenali rasa takut ketinggalan, atau FOMO. Namun ia mengingat bahwa ajakan tidak selalu harus dijawab sekarang.\n\nIa tetap ingin berteman tanpa meninggalkan rencananya."
+        }
+      ],
+      "choices": [
+        {
+          "id": "3A",
+          "label": "Aku bisa ikut nanti.",
+          "nextNodeId": "node-4",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": 4
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": 3
+            },
+            {
+              "stat": "fomoIndex",
+              "amount": -5
+            }
+          ]
+        },
+        {
+          "id": "3B",
+          "label": "Oke, aku ikut sekarang.",
+          "nextNodeId": "node-4",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": -2
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": -2
+            },
+            {
+              "stat": "fomoIndex",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "3C",
+          "label": "Aku tidak mau ketinggalan apa pun!",
+          "nextNodeId": "node-4",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "anxiety",
+              "amount": 4
+            },
+            {
+              "stat": "selfControl",
+              "amount": -3
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": -3
+            },
+            {
+              "stat": "fomoIndex",
+              "amount": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-4",
+      "location": "Kantin • Istirahat",
+      "background": "cafeteria",
+      "speaker": "Rina",
+      "body": "Leo menunjukkan unggahan teman-teman: liburan, prestasi, tawa di depan kamera. Rina menatap layar lebih lama.\n\nSemua terlihat bahagia, kecuali aku.\n\nAlex duduk di sampingnya.",
+      "branch": "comparison-feed",
+      "choices": [
+        {
+          "id": "4A",
+          "label": "Media sosial tidak menunjukkan seluruh cerita.",
+          "nextNodeId": "node-5",
+          "tendency": "prosocial",
+          "effects": [
+            {
+              "stat": "empathy",
+              "amount": 5
+            },
+            {
+              "stat": "digitalAwareness",
+              "amount": 5
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": -3
+            }
+          ]
+        },
+        {
+          "id": "4B",
+          "label": "Mungkin kamu perlu lebih sering posting.",
+          "nextNodeId": "node-5",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 3
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "4C",
+          "label": "Jangan dipikirkan.",
+          "nextNodeId": "node-5",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "empathy",
+              "amount": -2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-5",
+      "location": "Kelas • Waktu Belajar",
+      "background": "classroom",
+      "speaker": "Alex",
+      "body": "PING! PING! PING! PING!\n\nAku baru membaca dua kalimat, tetapi notifikasi terus muncul. Buku terbuka, pikiranku berpindah-pindah.\n\nBagaimana aku bisa memberi ruang untuk belajar?",
+      "branch": "notification-storm",
+      "choices": [
+        {
+          "id": "5A",
+          "label": "Matikan notifikasi yang tidak perlu.",
+          "nextNodeId": "node-6",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": 5
+            },
+            {
+              "stat": "confidence",
+              "amount": 2
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": 5
+            },
+            {
+              "stat": "fomoIndex",
+              "amount": -2
+            }
+          ]
+        },
+        {
+          "id": "5B",
+          "label": "Periksa setiap notifikasi.",
+          "nextNodeId": "node-6",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": -5
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": -5
+            },
+            {
+              "stat": "fomoIndex",
+              "amount": 3
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "5C",
+          "label": "Letakkan ponsel di samping buku.",
+          "nextNodeId": "node-6",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": -2
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": -2
+            },
+            {
+              "stat": "fomoIndex",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-6",
+      "location": "Kamar Alex • Sore",
+      "background": "bedroom_morning",
+      "speaker": "Kevin",
+      "body": "Satu pertandingan lagi!\n\nSuara Kevin terdengar dari ponsel. Waktu bermain yang kurencanakan sudah habis, dan tugas sekolah masih menunggu.",
+      "branch": "one-more-match",
+      "choices": [
+        {
+          "id": "6A",
+          "label": "Berhenti sesuai waktu yang sudah direncanakan.",
+          "nextNodeId": "node-7",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": 5
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": 5
+            }
+          ]
+        },
+        {
+          "id": "6B",
+          "label": "Main sampai menang.",
+          "nextNodeId": "node-7",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": -4
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": -4
+            }
+          ]
+        },
+        {
+          "id": "6C",
+          "label": "Lewati PR agar bisa terus bermain.",
+          "nextNodeId": "node-7",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "risk",
+              "amount": 7
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": -6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-7",
+      "location": "Halaman Sekolah • Siang",
+      "background": "school_court",
+      "speaker": "Maya",
+      "body": "Kita sudah chat seharian, tapi belum benar-benar ngobrol.\n\nMaya menunjuk bangku teduh. Leo menyimpan ponsel setelah merekam konten dan melambaikan tangan.\n\nKalau kamu ada waktu, duduk bareng, yuk?",
+      "branch": "offline-friendship",
+      "choices": [
+        {
+          "id": "7A",
+          "label": "Temui Maya dan ngobrol langsung.",
+          "nextNodeId": "node-8",
+          "tendency": "prosocial",
+          "effects": [
+            {
+              "stat": "trustMaya",
+              "amount": 5
+            },
+            {
+              "stat": "socialSupport",
+              "amount": 4
+            },
+            {
+              "stat": "offlineSocialSupport",
+              "amount": 5
+            }
+          ]
+        },
+        {
+          "id": "7B",
+          "label": "Lanjutkan ngobrol lewat chat saja.",
+          "nextNodeId": "node-8",
+          "tendency": "social",
+          "effects": [
+            {
+              "stat": "trustMaya",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "7C",
+          "label": "Abaikan Maya.",
+          "nextNodeId": "node-8",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "trustMaya",
+              "amount": -3
+            },
+            {
+              "stat": "offlineSocialSupport",
+              "amount": -3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-8",
+      "location": "Ruang BK • Siang",
+      "background": "counselor",
+      "speaker": "Mr. Daniel",
+      "body": "Beristirahat dari ponsel bukan berarti melewatkan hidup.\n\nKita bisa mencoba jeda yang sesuai kebutuhan, sambil tetap menyediakan akses untuk urusan penting. Ini bukan hukuman atau kewajiban menghapus semua aplikasi.\n\nKalau terasa sulit, kamu boleh meminta dukungan.",
+      "branch": "phone-free-pause",
+      "choices": [
+        {
+          "id": "8A",
+          "label": "Coba satu jam tanpa ponsel.",
+          "nextNodeId": "node-9",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": 6
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": 5
+            },
+            {
+              "stat": "fomoIndex",
+              "amount": -3
+            }
+          ]
+        },
+        {
+          "id": "8B",
+          "label": "Mungkin nanti.",
+          "nextNodeId": "node-9",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": 1
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": 1
+            }
+          ]
+        },
+        {
+          "id": "8C",
+          "label": "Aku tidak bisa melakukannya.",
+          "nextNodeId": "node-9",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": -4
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": -3
+            },
+            {
+              "stat": "fomoIndex",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-9",
+      "location": "Koridor • Sepulang Sekolah",
+      "background": "hallway",
+      "speaker": "Rina",
+      "body": "Kalau merasa kesepian, aku terus scrolling.\n\nKadang aku ingin ada teman, tapi tidak tahu harus mulai bicara dari mana.\n\nAlex mendengarkan. Ia tidak harus punya semua jawaban untuk menemani Rina.",
+      "branch": "emotional-escape",
+      "variants": [
+        {
+          "stat": "digitalAwareness",
+          "minInclusive": 0,
+          "maxInclusive": 49,
+          "text": "Kalau merasa kesepian, aku terus scrolling.\n\nKadang aku ingin ada teman, tapi tidak tahu harus mulai bicara dari mana.\n\nAlex mendengarkan. Ia tidak harus punya semua jawaban untuk menemani Rina."
+        },
+        {
+          "stat": "digitalAwareness",
+          "minInclusive": 50,
+          "maxInclusive": 100,
+          "text": "Kalau merasa kesepian, aku terus scrolling.\n\nAlex teringat bahwa unggahan hanya sebagian dari cerita seseorang. Ia ingin memahami apa yang Rina butuhkan, bukan menghakiminya karena memakai ponsel.\n\nKadang aku cuma ingin ada teman, kata Rina."
+        }
+      ],
+      "choices": [
+        {
+          "id": "9A",
+          "label": "Mungkin kita bisa ngobrol sekarang.",
+          "nextNodeId": "node-10",
+          "tendency": "prosocial",
+          "effects": [
+            {
+              "stat": "empathy",
+              "amount": 5
+            },
+            {
+              "stat": "socialSupport",
+              "amount": 5
+            },
+            {
+              "stat": "offlineSocialSupport",
+              "amount": 5
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": -4
+            }
+          ]
+        },
+        {
+          "id": "9B",
+          "label": "Sibukkan diri di internet saja.",
+          "nextNodeId": "node-10",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "socialSupport",
+              "amount": -2
+            },
+            {
+              "stat": "offlineSocialSupport",
+              "amount": -2
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": 4
+            }
+          ]
+        },
+        {
+          "id": "9C",
+          "label": "Mungkin coba istirahat sebentar dari layar.",
+          "nextNodeId": "node-10",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "digitalAwareness",
+              "amount": 4
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": -2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-10",
+      "location": "Kamar Alex • Malam",
+      "background": "bedroom",
+      "speaker": "Alex",
+      "body": "WAKTU LAYAR ALEX — KEMARIN\nMedia sosial     4 jam 20 menit\nGaming             3 jam 10 menit\nHiburan             2 jam 15 menit\nSekolah             1 jam 30 menit\n\nAku tidak sadar sudah selama itu.\n\nAngka ini contoh dalam cerita, bukan data perangkatmu. Aku ingin menyisihkan waktu untuk tidur, belajar, dan hal lain yang penting.",
+      "branch": "screen-time-review",
+      "choices": [
+        {
+          "id": "10A",
+          "label": "Tetapkan batas harian yang realistis.",
+          "nextNodeId": "node-11",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": 7
+            },
+            {
+              "stat": "digitalAwareness",
+              "amount": 5
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": 6
+            }
+          ]
+        },
+        {
+          "id": "10B",
+          "label": "Langsung hapus semuanya.",
+          "nextNodeId": "node-11",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "confidence",
+              "amount": 2
+            },
+            {
+              "stat": "anxiety",
+              "amount": 2
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": -2
+            }
+          ]
+        },
+        {
+          "id": "10C",
+          "label": "Abaikan angkanya.",
+          "nextNodeId": "node-11",
+          "tendency": "avoidant",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": -4
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": -4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node-11",
+      "location": "Gerbang Sekolah • Pagi Berikutnya",
+      "background": "school_gate",
+      "speaker": "Maya",
+      "body": "Teknologi itu berguna. Kita hanya perlu memastikan kita yang mengendalikannya.\n\nAlex memikirkan rutinitas yang memberi tempat bagi sekolah, game, teman, keluarga, dan tidur. Kebiasaan bisa dilatih sedikit demi sedikit, dengan dukungan saat diperlukan.\n\nApa langkah selanjutnya?",
+      "branch": "digital-balance",
+      "choices": [
+        {
+          "id": "11A",
+          "label": "Buat rutinitas digital yang sehat.",
+          "nextNodeId": "END",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": 6
+            },
+            {
+              "stat": "digitalAwareness",
+              "amount": 5
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": 6
+            },
+            {
+              "stat": "fomoIndex",
+              "amount": -3
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": -3
+            },
+            {
+              "stat": "offlineSocialSupport",
+              "amount": 3
+            },
+            {
+              "stat": "sleepAwareness",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "11B",
+          "label": "Gunakan ponsel setiap kali merasa bosan.",
+          "nextNodeId": "END",
+          "tendency": "impulsive",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": -4
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": -4
+            },
+            {
+              "stat": "fomoIndex",
+              "amount": 2
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": 3
+            }
+          ]
+        },
+        {
+          "id": "11C",
+          "label": "Coba seimbangkan kehidupan online dan offline.",
+          "nextNodeId": "END",
+          "tendency": "reflective",
+          "effects": [
+            {
+              "stat": "selfControl",
+              "amount": 5
+            },
+            {
+              "stat": "socialSupport",
+              "amount": 4
+            },
+            {
+              "stat": "screenTimeManagement",
+              "amount": 4
+            },
+            {
+              "stat": "fomoIndex",
+              "amount": -2
+            },
+            {
+              "stat": "socialMediaDependencyTendency",
+              "amount": -2
+            },
+            {
+              "stat": "offlineSocialSupport",
+              "amount": 4
+            },
+            {
+              "stat": "sleepAwareness",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -37,9 +37,14 @@ namespace YouthRise
         private GameObject storyScreen;
         private GameObject completionScreen;
         private GameObject safeZoneScreen;
+        private GameObject seasonEndingScreen;
+        private GameObject seasonClosingPanel;
+        private GameObject seasonJourneyPanel;
         private GameObject safeChatPanel;
         private GameObject safeArticlesPanel;
         private GameObject safeFinancialPanel;
+        private GameObject safeLifestylePanel;
+        private GameObject safeFamilyPanel;
         private GameObject safeReportPanel;
 
         private Image sceneBackground;
@@ -67,6 +72,15 @@ namespace YouthRise
         private Text chapterThreeMenuLabel;
         private Text chapterFourMenuLabel;
         private Text chapterFiveMenuLabel;
+        private Text chapterSixMenuLabel;
+        private Text chapterSevenMenuLabel;
+        private Text chapterEightMenuLabel;
+        private Text familySupportArticleBody;
+        private Text safeAdultArticleBody;
+        private Text seasonClosingText;
+        private Text seasonJourneyText;
+        private Text healthyLifestyleArticleBody;
+        private Text healthyRoutineGuideBody;
         private Text financialSafetyArticleBody;
         private Text moneySmartGuideBody;
         private Text bullyingArticleBody;
@@ -101,6 +115,9 @@ namespace YouthRise
         private Button chapterThreeMenuButton;
         private Button chapterFourMenuButton;
         private Button chapterFiveMenuButton;
+        private Button chapterSixMenuButton;
+        private Button chapterSevenMenuButton;
+        private Button chapterEightMenuButton;
         private Button safeZoneMenuButton;
         private Button completionPrimaryButton;
         private Text safeZoneMenuLabel;
@@ -188,6 +205,7 @@ namespace YouthRise
             storyScreen = BuildStoryScreen(canvasRect);
             completionScreen = BuildCompletionScreen(canvasRect);
             safeZoneScreen = BuildSafeZoneScreen(canvasRect);
+            seasonEndingScreen = BuildSeasonEndingScreen(canvasRect);
 
             toastRoot = CreateRect("Toast", canvasRect, new Vector2(0.365f, 0.862f), new Vector2(0.635f, 0.897f));
             toastRect = toastRoot.GetComponent<RectTransform>();
@@ -233,24 +251,36 @@ namespace YouthRise
             GameObject feature = CreateRect("Features", root.transform, new Vector2(0.18f, 0.43f), new Vector2(0.82f, 0.51f));
             menuFeatureText = AddText(feature, "DIALOG PCG LOKAL   •   PILIHAN BERCABANG   •   SAFE ZONE", 19, new Color(1f, 1f, 1f, 0.65f), TextAnchor.MiddleLeft, FontStyle.Bold);
 
-            Button start = CreateButton(root.transform, "Start", "CHAPTER 1 • MULAI BARU", new Vector2(0.18f, 0.34f), new Vector2(0.386f, 0.41f), Blue, White, 17);
+            Button start = CreateButton(root.transform, "Start", "CHAPTER 1 • MULAI BARU", new Vector2(0.18f, 0.34f), new Vector2(0.332f, 0.41f), Blue, White, 16);
             start.onClick.AddListener(StartNewGame);
 
-            chapterTwoMenuButton = CreateButton(root.transform, "Start Chapter 2", "CHAPTER 2 • TERKUNCI", new Vector2(0.397f, 0.34f), new Vector2(0.603f, 0.41f), Coral, White, 17);
+            chapterTwoMenuButton = CreateButton(root.transform, "Start Chapter 2", "CHAPTER 2 • TERKUNCI", new Vector2(0.343f, 0.34f), new Vector2(0.495f, 0.41f), Coral, White, 16);
             chapterTwoMenuLabel = chapterTwoMenuButton.GetComponentInChildren<Text>();
             chapterTwoMenuButton.onClick.AddListener(StartChapterTwo);
 
-            chapterThreeMenuButton = CreateButton(root.transform, "Start Chapter 3", "CHAPTER 3 • TERKUNCI", new Vector2(0.614f, 0.34f), new Vector2(0.82f, 0.41f), Gold, Navy, 17);
+            chapterThreeMenuButton = CreateButton(root.transform, "Start Chapter 3", "CHAPTER 3 • TERKUNCI", new Vector2(0.505f, 0.34f), new Vector2(0.657f, 0.41f), Gold, Navy, 16);
             chapterThreeMenuLabel = chapterThreeMenuButton.GetComponentInChildren<Text>();
             chapterThreeMenuButton.onClick.AddListener(StartChapterThree);
 
-            chapterFourMenuButton = CreateButton(root.transform, "Start Chapter 4", "CHAPTER 4 • TERKUNCI", new Vector2(0.18f, 0.26f), new Vector2(0.495f, 0.33f), Mint, Navy, 17);
+            chapterFourMenuButton = CreateButton(root.transform, "Start Chapter 4", "CHAPTER 4 • TERKUNCI", new Vector2(0.668f, 0.34f), new Vector2(0.82f, 0.41f), Mint, Navy, 16);
             chapterFourMenuLabel = chapterFourMenuButton.GetComponentInChildren<Text>();
             chapterFourMenuButton.onClick.AddListener(StartChapterFour);
 
-            chapterFiveMenuButton = CreateButton(root.transform, "Start Chapter 5", "CHAPTER 5 • TERKUNCI", new Vector2(0.505f, 0.26f), new Vector2(0.82f, 0.33f), Gold, Navy, 17);
+            chapterFiveMenuButton = CreateButton(root.transform, "Start Chapter 5", "CHAPTER 5 • TERKUNCI", new Vector2(0.18f, 0.26f), new Vector2(0.332f, 0.33f), Gold, Navy, 16);
             chapterFiveMenuLabel = chapterFiveMenuButton.GetComponentInChildren<Text>();
             chapterFiveMenuButton.onClick.AddListener(StartChapterFive);
+
+            chapterSixMenuButton = CreateButton(root.transform, "Start Chapter 6", "CHAPTER 6 • TERKUNCI", new Vector2(0.343f, 0.26f), new Vector2(0.495f, 0.33f), Cyan, Navy, 16);
+            chapterSixMenuLabel = chapterSixMenuButton.GetComponentInChildren<Text>();
+            chapterSixMenuButton.onClick.AddListener(StartChapterSix);
+
+            chapterSevenMenuButton = CreateButton(root.transform, "Start Chapter 7", "CHAPTER 7 • TERKUNCI", new Vector2(0.505f, 0.26f), new Vector2(0.657f, 0.33f), Blue, White, 16);
+            chapterSevenMenuLabel = chapterSevenMenuButton.GetComponentInChildren<Text>();
+            chapterSevenMenuButton.onClick.AddListener(StartChapterSeven);
+
+            chapterEightMenuButton = CreateButton(root.transform, "Start Chapter 8", "CHAPTER 8 • TERKUNCI", new Vector2(0.668f, 0.26f), new Vector2(0.82f, 0.33f), Mint, Navy, 16);
+            chapterEightMenuLabel = chapterEightMenuButton.GetComponentInChildren<Text>();
+            chapterEightMenuButton.onClick.AddListener(StartChapterEight);
 
             continueMenuButton = CreateButton(root.transform, "Continue", "LANJUTKAN", new Vector2(0.18f, 0.18f), new Vector2(0.495f, 0.25f), Cyan, Navy, 20);
             continueMenuButton.onClick.AddListener(ContinueGame);
@@ -438,6 +468,64 @@ namespace YouthRise
             return root;
         }
 
+        private GameObject BuildSeasonEndingScreen(RectTransform parent)
+        {
+            GameObject root = CreateRect("Season Ending Screen", parent, Vector2.zero, Vector2.one);
+            Image background = AddImage(root, Navy);
+            background.sprite = LoadArtSprite("YouthRise/Art/Backgrounds/bg_home");
+            background.color = background.sprite != null ? White : Navy;
+            AddImage(CreateRect("Ending Wash", root.transform, Vector2.zero, Vector2.one),
+                new Color(Navy.r, Navy.g, Navy.b, 0.92f)).raycastTarget = false;
+            AddText(CreateRect("Ending Kicker", root.transform, new Vector2(0.14f, 0.81f), new Vector2(0.86f, 0.9f)),
+                "YOUTHRise • SEASON 1", 25, Mint, TextAnchor.MiddleCenter, FontStyle.Bold);
+
+            seasonClosingPanel = CreateRect("Closing Message", root.transform, Vector2.zero, Vector2.one);
+            seasonClosingText = AddText(CreateRect("Closing Lines", seasonClosingPanel.transform, new Vector2(0.18f, 0.37f), new Vector2(0.82f, 0.78f)),
+                string.Empty, 34, Paper, TextAnchor.MiddleCenter);
+            Button next = CreateButton(seasonClosingPanel.transform, "Season Ending Continue", "LANJUT →", new Vector2(0.36f, 0.17f), new Vector2(0.64f, 0.27f), Mint, Navy, 22);
+            next.onClick.AddListener(() => ShowSeasonEnding(true));
+
+            seasonJourneyPanel = CreateRect("Journey Message", root.transform, Vector2.zero, Vector2.one);
+            seasonJourneyText = AddText(CreateRect("Journey Heading", seasonJourneyPanel.transform, new Vector2(0.12f, 0.49f), new Vector2(0.88f, 0.77f)),
+                string.Empty, 66, White, TextAnchor.MiddleCenter, FontStyle.Bold);
+            seasonJourneyText.resizeTextForBestFit = true;
+            seasonJourneyText.resizeTextMinSize = 38;
+            seasonJourneyText.resizeTextMaxSize = 66;
+            AddText(CreateRect("Journey Recap", seasonJourneyPanel.transform, new Vector2(0.19f, 0.32f), new Vector2(0.81f, 0.46f)),
+                "Dari hari pertama, tekanan teman, bullying, dan batas pribadi, hingga emosi, uang, kebiasaan sehat, dunia digital, dan keluarga.\n\nKamu tidak harus menghadapi semuanya sendirian.",
+                22, Paper, TextAnchor.MiddleCenter);
+            Button support = CreateButton(seasonJourneyPanel.transform, "Ending Family Support", "FAMILY & SUPPORT", new Vector2(0.18f, 0.14f), new Vector2(0.49f, 0.25f), Mint, Navy, 22);
+            support.onClick.AddListener(() => { ShowSafeZone(); ShowSafeTab("family"); });
+            Button menu = CreateButton(seasonJourneyPanel.transform, "Ending Menu", "KEMBALI KE MENU", new Vector2(0.51f, 0.14f), new Vector2(0.82f, 0.25f), Cyan, Navy, 22);
+            menu.onClick.AddListener(ShowStartMenu);
+            return root;
+        }
+
+        private void ShowSeasonEnding(bool journey)
+        {
+            if (!IsChapterEight() || !chapterCompleted)
+                return;
+            seasonClosingText.text = string.Join("\n\n", story.Chapter.endingLines ?? new string[0]);
+            seasonJourneyText.text = story.Chapter.endingHeading ?? string.Empty;
+            if (journey && seasonEndingScreen.activeSelf && seasonClosingPanel.activeSelf)
+            {
+                if (screenTransition != null)
+                    return;
+                screenTransition = StartCoroutine(CrossfadeScreens(seasonClosingPanel, seasonJourneyPanel, false));
+                return;
+            }
+            foreach (GameObject panel in new[] { seasonClosingPanel, seasonJourneyPanel })
+            {
+                CanvasGroup group = GetOrAddCanvasGroup(panel);
+                group.alpha = 1f;
+                group.interactable = true;
+                group.blocksRaycasts = true;
+            }
+            seasonClosingPanel.SetActive(!journey);
+            seasonJourneyPanel.SetActive(journey);
+            ShowScreenSmooth(seasonEndingScreen);
+        }
+
         private GameObject BuildSafeZoneScreen(RectTransform parent)
         {
             GameObject root = CreateRect("Safe Zone Screen", parent, Vector2.zero, Vector2.one);
@@ -456,18 +544,24 @@ namespace YouthRise
             close.onClick.AddListener(ShowStartMenu);
 
             GameObject tabs = CreateRect("Tabs", root.transform, new Vector2(0.045f, 0.735f), new Vector2(0.955f, 0.82f));
-            Button chatTab = CreateButton(tabs.transform, "Chat Tab", "CHAT PENDAMPING", new Vector2(0f, 0f), new Vector2(0.235f, 1f), Blue, White, 19);
+            Button chatTab = CreateButton(tabs.transform, "Chat Tab", "CHAT PENDAMPING", new Vector2(0f, 0f), new Vector2(0.152f, 1f), Blue, White, 17);
             chatTab.onClick.AddListener(() => ShowSafeTab("chat"));
-            Button articleTab = CreateButton(tabs.transform, "Article Tab", "ARTIKEL SINGKAT", new Vector2(0.255f, 0f), new Vector2(0.49f, 1f), Cyan, Navy, 19);
+            Button articleTab = CreateButton(tabs.transform, "Article Tab", "ARTIKEL SINGKAT", new Vector2(0.17f, 0f), new Vector2(0.322f, 1f), Cyan, Navy, 17);
             articleTab.onClick.AddListener(() => ShowSafeTab("articles"));
-            Button financialTab = CreateButton(tabs.transform, "Financial Tab", "FINANSIAL", new Vector2(0.51f, 0f), new Vector2(0.745f, 1f), Gold, Navy, 19);
+            Button financialTab = CreateButton(tabs.transform, "Financial Tab", "FINANSIAL", new Vector2(0.34f, 0f), new Vector2(0.492f, 1f), Gold, Navy, 17);
             financialTab.onClick.AddListener(() => ShowSafeTab("financial"));
-            Button reportTab = CreateButton(tabs.transform, "Report Tab", "NEED EXTRA HELP?", new Vector2(0.765f, 0f), new Vector2(1f, 1f), Coral, White, 19);
+            Button lifestyleTab = CreateButton(tabs.transform, "Lifestyle Tab", "GAYA HIDUP", new Vector2(0.508f, 0f), new Vector2(0.66f, 1f), Mint, Navy, 17);
+            lifestyleTab.onClick.AddListener(() => ShowSafeTab("lifestyle"));
+            Button familyTab = CreateButton(tabs.transform, "Family Tab", "KELUARGA", new Vector2(0.678f, 0f), new Vector2(0.83f, 1f), Mint, Navy, 17);
+            familyTab.onClick.AddListener(() => ShowSafeTab("family"));
+            Button reportTab = CreateButton(tabs.transform, "Report Tab", "NEED EXTRA HELP?", new Vector2(0.848f, 0f), new Vector2(1f, 1f), Coral, White, 17);
             reportTab.onClick.AddListener(() => ShowSafeTab("report"));
 
             safeChatPanel = BuildChatPanel(root.transform);
             safeArticlesPanel = BuildArticlesPanel(root.transform);
             safeFinancialPanel = BuildFinancialPanel(root.transform);
+            safeLifestylePanel = BuildLifestylePanel(root.transform);
+            safeFamilyPanel = BuildFamilyPanel(root.transform);
             safeReportPanel = BuildReportPanel(root.transform);
 
             GameObject disclaimer = CreateRect("Disclaimer", root.transform, new Vector2(0.045f, 0.025f), new Vector2(0.955f, 0.075f));
@@ -543,6 +637,49 @@ namespace YouthRise
             moneySmartGuideBody.text = profile != null && profile.moneySmartGuideUnlocked
                 ? "KEBUTUHAN DULU, KEINGINAN KEMUDIAN\n\nCatat uang yang tersedia. Dahulukan makan dan transportasi; sisihkan tabungan sesuai kemampuan. Beri jeda sebelum membeli barang karena tren.\n\nContoh anggaran fiktif: Rp50.000 = makan Rp20.000 + transportasi Rp15.000 + tabungan Rp10.000 + sisa Rp5.000. Sesuaikan dengan kebutuhanmu.\n\nCatat pengeluaran dan cek sisa anggaran. Untuk pelajar, menabung untuk keinginan lebih aman daripada terburu-buru berutang."
                 : "TERKUNCI • Selesaikan Chapter 5 untuk membuka Money Smart Guide.";
+        }
+
+        private GameObject BuildLifestylePanel(Transform parent)
+        {
+            GameObject panel = CreateRect("Lifestyle Panel", parent, new Vector2(0.045f, 0.095f), new Vector2(0.955f, 0.71f));
+            AddImage(panel, Paper);
+            healthyLifestyleArticleBody = CreateArticleCard(panel.transform, 0.04f, 0.485f, 0.07f, 0.93f,
+                "HEALTHY LIFESTYLE", "TERKUNCI • Selesaikan Chapter 6.", Mint, true);
+            healthyRoutineGuideBody = CreateArticleCard(panel.transform, 0.515f, 0.96f, 0.07f, 0.93f,
+                "MY HEALTHY ROUTINE", "TERKUNCI • Selesaikan Chapter 6.", Cyan, true);
+            return panel;
+        }
+
+        private void UpdateLifestyleContent()
+        {
+            healthyLifestyleArticleBody.text = profile != null && profile.healthyLifestyleArticleUnlocked
+                ? "RAWAT DIRI, TANPA HARUS SEMPURNA\n\nTidur cukup membantu perhatian dan konsentrasi. Usahakan waktu tidur teratur; beri jeda dari layar dan hindari kafein menjelang malam.\n\nPilih gerak yang nyaman dan sesuai kemampuan, termasuk gerak sambil duduk. Makan teratur dan beragam: makanan pokok, lauk, sayur, dan buah sesuai yang tersedia.\n\nSediakan air minum dan cuci tangan dengan sabun sebelum makan. Tujuannya mendukung energi dan kenyamanan, bukan mengubah bentuk tubuh."
+                : "TERKUNCI • Selesaikan Chapter 6 untuk membuka Healthy Lifestyle.";
+            healthyRoutineGuideBody.text = profile != null && profile.healthyRoutineGuideUnlocked
+                ? "SATU LANGKAH KECIL MINGGU INI\n\nPilih satu kebiasaan: siapkan air minum, sisihkan waktu makan, bergerak dengan nyaman, atau akhiri game sebelum waktu tidur.\n\nTentukan kapan dan minta dukungan bila perlu. Contoh: setelah pulang sekolah, bergerak sebentar sesuai kemampuan. Catat apa yang terasa membantu, bukan mengejar rekor.\n\nTinjau di akhir minggu dan sesuaikan. Jika terlewat, mulai lagi tanpa menghukum diri. Bila sulit tidur, makan, atau merawat diri, bicaralah dengan orang dewasa tepercaya atau tenaga kesehatan."
+                : "TERKUNCI • Selesaikan Chapter 6 untuk membuka My Healthy Routine.";
+        }
+
+        private GameObject BuildFamilyPanel(Transform parent)
+        {
+            GameObject panel = CreateRect("Family Panel", parent, new Vector2(0.045f, 0.095f), new Vector2(0.955f, 0.71f));
+            AddImage(panel, Paper);
+            familySupportArticleBody = CreateArticleCard(panel.transform, 0.04f, 0.485f, 0.07f, 0.93f,
+                "FAMILY & SUPPORT", "TERKUNCI • Selesaikan Chapter 8.", Mint, true);
+            safeAdultArticleBody = CreateArticleCard(panel.transform, 0.515f, 0.96f, 0.07f, 0.93f,
+                "ORANG DEWASA AMAN", "TERKUNCI • Selesaikan Chapter 8.", Gold, true);
+            return panel;
+        }
+
+        private void UpdateFamilyContent()
+        {
+            bool unlocked = profile != null && profile.familySupportArticleUnlocked;
+            familySupportArticleBody.text = unlocked
+                ? "KAMU TIDAK HARUS MEMPERBAIKI SEMUANYA\n\nPerbedaan pendapat tidak selalu berarti tidak ada kasih sayang. Namun, tekanan tidak membenarkan ancaman atau kekerasan. Masalah dan utang orang dewasa bukan tanggung jawabmu untuk diselesaikan.\n\nJika aman, pilih waktu tenang. Coba: 'Aku merasa tertekan saat dibandingkan. Aku ingin didengarkan.' Kamu boleh mengambil jeda atau minta didampingi.\n\nKamu tetap berhak mendapat dukungan, meski belum siap bicara dengan keluarga. Tidak semua masalah selesai dalam satu percakapan."
+                : "TERKUNCI • Selesaikan Chapter 8 untuk membuka Family & Support.";
+            safeAdultArticleBody.text = unlocked
+                ? "CARI DUKUNGAN YANG MENJAGA KESELAMATANMU\n\nOrang dewasa aman mendengarkan, tidak menyalahkan, dan membantu melindungimu. Bisa Guru BK, guru lain, kerabat yang aman, atau tenaga profesional. Tidak harus orang tua.\n\nMulai dengan: 'Aku butuh bantuan. Aku merasa tidak aman atau kewalahan di rumah.' Jika orang pertama tidak membantu, cari orang aman lainnya.\n\nJika ada ancaman atau kekerasan, utamakan tempat aman dan bantuan langsung. Jangan mencoba menengahi sendirian. Chat dan draft di game ini tidak menghubungi bantuan atau layanan darurat."
+                : "TERKUNCI • Panduan orang dewasa aman terbuka bersama Family & Support setelah Chapter 8.";
         }
 
         private GameObject BuildReportPanel(Transform parent)
@@ -740,6 +877,105 @@ namespace YouthRise
             }
 
             profile.PrepareForChapterFive();
+            ResetMeterAnimation();
+            branchPath = string.Empty;
+            chapterCompleted = false;
+            sessionSeed = Guid.NewGuid().GetHashCode();
+            telemetry = new DecisionTelemetry(story.Chapter.id);
+            telemetry.RecordSessionStarted(profile);
+            ShowNode(story.Chapter.startNodeId);
+        }
+
+        private void StartChapterSix()
+        {
+            if (PrototypeSaveService.TryLoad(out PrototypeSave saved) && saved.profile != null)
+            {
+                NormalizeLoadedProgress(saved);
+                profile = saved.profile;
+            }
+
+            if (!CampaignProgression.CanStartChapterSix(profile))
+            {
+                ShowToast("Selesaikan Chapter 5 untuk membuka Chapter 6.", false);
+                return;
+            }
+
+            try
+            {
+                story = StoryRepository.LoadChapterSix();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                ShowToast("Chapter 6 gagal dimuat.", true);
+                return;
+            }
+
+            profile.PrepareForChapterSix();
+            ResetMeterAnimation();
+            branchPath = string.Empty;
+            chapterCompleted = false;
+            sessionSeed = Guid.NewGuid().GetHashCode();
+            telemetry = new DecisionTelemetry(story.Chapter.id);
+            telemetry.RecordSessionStarted(profile);
+            ShowNode(story.Chapter.startNodeId);
+        }
+
+        private void StartChapterSeven()
+        {
+            if (PrototypeSaveService.TryLoad(out PrototypeSave saved) && saved.profile != null)
+            {
+                NormalizeLoadedProgress(saved);
+                profile = saved.profile;
+            }
+
+            if (!CampaignProgression.CanStartChapterSeven(profile))
+            {
+                ShowToast("Selesaikan Chapter 6 untuk membuka Chapter 7.", false);
+                return;
+            }
+
+            try
+            {
+                story = StoryRepository.LoadChapterSeven();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                ShowToast("Chapter 7 gagal dimuat.", true);
+                return;
+            }
+
+            profile.PrepareForChapterSeven();
+            ResetMeterAnimation();
+            branchPath = string.Empty;
+            chapterCompleted = false;
+            sessionSeed = Guid.NewGuid().GetHashCode();
+            telemetry = new DecisionTelemetry(story.Chapter.id);
+            telemetry.RecordSessionStarted(profile);
+            ShowNode(story.Chapter.startNodeId);
+        }
+
+        private void StartChapterEight()
+        {
+            if (PrototypeSaveService.TryLoad(out PrototypeSave saved) && saved.profile != null)
+            {
+                NormalizeLoadedProgress(saved);
+                profile = saved.profile;
+            }
+            if (!CampaignProgression.CanStartChapterEight(profile))
+            {
+                ShowToast("Selesaikan Chapter 7 untuk membuka Chapter 8.", false);
+                return;
+            }
+            try { story = StoryRepository.LoadChapterEight(); }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                ShowToast("Chapter 8 gagal dimuat.", true);
+                return;
+            }
+            profile.PrepareForChapterEight();
             ResetMeterAnimation();
             branchPath = string.Empty;
             chapterCompleted = false;
@@ -999,12 +1235,14 @@ namespace YouthRise
         private static string CharacterResource(string speaker)
         {
             string normalized = (speaker ?? string.Empty).Trim().ToLowerInvariant();
+            if (normalized == "coach sarah") return "YouthRise/Art/Characters/char_coach_sarah_chroma";
             if (normalized.StartsWith("maya")) return "YouthRise/Art/Characters/char_maya_chroma";
             if (normalized.StartsWith("kevin")) return "YouthRise/Art/Characters/char_kevin_chroma";
             if (normalized.StartsWith("rina")) return "YouthRise/Art/Characters/char_rina_chroma";
             if (normalized.StartsWith("leo")) return "YouthRise/Art/Characters/char_leo_chroma";
             if (normalized.StartsWith("sarah")) return "YouthRise/Art/Characters/char_sarah_chroma";
-            if (normalized.StartsWith("ibu")) return "YouthRise/Art/Characters/char_ibu_chroma";
+            if (normalized.StartsWith("ibu") || normalized == "mom") return "YouthRise/Art/Characters/char_ibu_chroma";
+            if (normalized.StartsWith("ayah") || normalized == "dad") return "YouthRise/Art/Characters/char_dad_chroma";
             if (normalized.StartsWith("senior")) return "YouthRise/Art/Characters/char_senior_chroma";
             if (normalized.Contains("arman")) return "YouthRise/Art/Characters/char_mr_arman_chroma";
             if (normalized.Contains("wali kelas") || normalized.Contains("daniel") || normalized.Contains("guru bk"))
@@ -1093,11 +1331,14 @@ namespace YouthRise
 
         private void HandleCompletionPrimary()
         {
-            if (IsChapterFive())
-            {
-                ShowSafeZone();
-                ShowSafeTab("financial");
-            }
+            if (IsChapterEight())
+                ShowSeasonEnding(false);
+            else if (IsChapterSeven())
+                StartChapterEight();
+            else if (IsChapterSix())
+                StartChapterSeven();
+            else if (IsChapterFive())
+                StartChapterSix();
             else if (IsChapterFour())
                 StartChapterFive();
             else if (IsChapterThree())
@@ -1134,9 +1375,15 @@ namespace YouthRise
             bool chapterTwo = IsChapterTwo();
             bool chapterThree = IsChapterThree();
             bool chapterFour = IsChapterFour();
-            completionPrimaryLabel.text = IsChapterFive()
-                ? "MASUK SAFE ZONE"
-                : chapterFour
+            completionPrimaryLabel.text = IsChapterEight()
+                ? "AKHIR SEASON 1 →"
+                : IsChapterSeven()
+                    ? "MULAI CHAPTER 8"
+                : IsChapterSix()
+                    ? "MULAI CHAPTER 7"
+                    : IsChapterFive()
+                    ? "MULAI CHAPTER 6"
+                    : chapterFour
                     ? "MULAI CHAPTER 5"
                     : chapterThree
                     ? "MULAI CHAPTER 4"
@@ -1199,7 +1446,40 @@ namespace YouthRise
                 ? "CHAPTER 5 • TERKUNCI"
                 : save.profile.completedChapterFive ? "ULANGI CHAPTER 5" : "MULAI CHAPTER 5";
 
-            if (chapterFiveUnlocked)
+            bool chapterSixUnlocked = hasSave && CampaignProgression.CanStartChapterSix(save.profile);
+            SetButtonEnabled(chapterSixMenuButton, chapterSixUnlocked);
+            chapterSixMenuLabel.text = !chapterSixUnlocked
+                ? "CHAPTER 6 • TERKUNCI"
+                : save.profile.completedChapterSix ? "ULANGI CHAPTER 6" : "MULAI CHAPTER 6";
+
+            bool chapterSevenUnlocked = hasSave && CampaignProgression.CanStartChapterSeven(save.profile);
+            SetButtonEnabled(chapterSevenMenuButton, chapterSevenUnlocked);
+            chapterSevenMenuLabel.text = !chapterSevenUnlocked
+                ? "CHAPTER 7 • TERKUNCI"
+                : save.profile.completedChapterSeven ? "ULANGI CHAPTER 7" : "MULAI CHAPTER 7";
+
+            bool chapterEightUnlocked = hasSave && CampaignProgression.CanStartChapterEight(save.profile);
+            SetButtonEnabled(chapterEightMenuButton, chapterEightUnlocked);
+            chapterEightMenuLabel.text = !chapterEightUnlocked
+                ? "CHAPTER 8 • TERKUNCI"
+                : save.profile.completedChapterEight ? "ULANGI CHAPTER 8" : "MULAI CHAPTER 8";
+
+            if (chapterEightUnlocked)
+            {
+                menuTitleText.text = "HOME IS\nCOMPLICATED";
+                menuSubtitleText.text = "Chapter 8 • Keluarga, komunikasi, dan dukungan aman";
+            }
+            else if (chapterSevenUnlocked)
+            {
+                menuTitleText.text = "ALWAYS\nCONNECTED";
+                menuSubtitleText.text = "Chapter 7 • FOMO, waktu layar, dan keseimbangan digital";
+            }
+            else if (chapterSixUnlocked)
+            {
+                menuTitleText.text = "TAKE CARE\nOF YOU";
+                menuSubtitleText.text = "Chapter 6 • Istirahat, gerak, dan kebiasaan sehat";
+            }
+            else if (chapterFiveUnlocked)
             {
                 menuTitleText.text = "EASY\nMONEY?";
                 menuSubtitleText.text = "Chapter 5 • Literasi finansial, pinjol, dan mengenali scam";
@@ -1225,12 +1505,18 @@ namespace YouthRise
                 menuSubtitleText.text = "Chapter 1 • Hari pertama Alex di sekolah baru";
             }
 
-            menuFeatureText.text = hasSave && save.profile != null && save.profile.completedChapterFive
-                ? "CHAPTER 5 • SELESAI   •   FINANCIAL SAFETY + MONEY SMART"
+            menuFeatureText.text = hasSave && save.profile != null && save.profile.completedChapterEight
+                ? "SEASON 1 • SELESAI   •   FAMILY & SUPPORT TERBUKA"
+                : chapterEightUnlocked
+                    ? "SEASON 1 FINALE • TERBUKA   •   CHAPTER 8"
+                : chapterSevenUnlocked
+                    ? "CHAPTER 6 • SELESAI   •   CHAPTER 7 TERBUKA"
+                : chapterSixUnlocked
+                    ? "CHAPTER 5 • SELESAI   •   CHAPTER 6 TERBUKA"
                 : chapterFiveUnlocked
-                    ? "SEASON 1 • SELESAI   •   CHAPTER 5 TERBUKA"
+                    ? "CHAPTER 4 • SELESAI   •   CHAPTER 5 TERBUKA"
                 : hasSave && save.profile != null && save.profile.completedChapterThree
-                    ? "SEASON 1 FINALE • TERBUKA   •   CHAPTER 4"
+                    ? "CHAPTER 3 • SELESAI   •   CHAPTER 4 TERBUKA"
                 : hasSave && save.profile != null && save.profile.relationshipPathUnlocked
                     ? "RELATIONSHIP PATH • TERBUKA   •   CHAPTER 3"
                     : "DIALOG PCG LOKAL   •   PILIHAN BERCABANG   •   SAFE ZONE";
@@ -1260,11 +1546,17 @@ namespace YouthRise
             safeChatPanel.SetActive(tab == "chat");
             safeArticlesPanel.SetActive(tab == "articles");
             safeFinancialPanel.SetActive(tab == "financial");
+            safeLifestylePanel.SetActive(tab == "lifestyle");
+            safeFamilyPanel.SetActive(tab == "family");
             safeReportPanel.SetActive(tab == "report");
         }
 
         private void UpdateSafeZoneArticles()
         {
+            if (familySupportArticleBody != null && safeAdultArticleBody != null)
+                UpdateFamilyContent();
+            if (healthyLifestyleArticleBody != null && healthyRoutineGuideBody != null)
+                UpdateLifestyleContent();
             if (financialSafetyArticleBody != null && moneySmartGuideBody != null)
                 BuildFinancialContent();
             if (bullyingArticleBody == null || healthyRelationshipArticleBody == null || digitalSafetyGuideBody == null)
@@ -1291,6 +1583,21 @@ namespace YouthRise
         private bool IsChapterThree()
         {
             return string.Equals(story?.Chapter?.id, "chapter-3", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool IsChapterEight()
+        {
+            return string.Equals(story?.Chapter?.id, "chapter-8", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool IsChapterSeven()
+        {
+            return string.Equals(story?.Chapter?.id, "chapter-7", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool IsChapterSix()
+        {
+            return string.Equals(story?.Chapter?.id, "chapter-6", StringComparison.OrdinalIgnoreCase);
         }
 
         private bool IsChapterFive()
@@ -1537,6 +1844,7 @@ namespace YouthRise
             storyScreen.SetActive(active == storyScreen);
             completionScreen.SetActive(active == completionScreen);
             safeZoneScreen.SetActive(active == safeZoneScreen);
+            seasonEndingScreen.SetActive(active == seasonEndingScreen);
         }
 
         private void ShowScreenSmooth(GameObject target)
@@ -1567,7 +1875,7 @@ namespace YouthRise
             screenTransition = StartCoroutine(CrossfadeScreens(current, target));
         }
 
-        private IEnumerator CrossfadeScreens(GameObject current, GameObject target)
+        private IEnumerator CrossfadeScreens(GameObject current, GameObject target, bool fullScreen = true)
         {
             CanvasGroup from = GetOrAddCanvasGroup(current);
             CanvasGroup to = GetOrAddCanvasGroup(target);
@@ -1587,8 +1895,15 @@ namespace YouthRise
                 yield return null;
             }
 
-            foreach (GameObject screen in AllScreens())
-                screen.SetActive(screen == target);
+            if (fullScreen)
+            {
+                foreach (GameObject screen in AllScreens())
+                    screen.SetActive(screen == target);
+            }
+            else
+            {
+                current.SetActive(false);
+            }
 
             from.alpha = 1f;
             to.alpha = 1f;
@@ -1603,6 +1918,7 @@ namespace YouthRise
             yield return storyScreen;
             yield return completionScreen;
             yield return safeZoneScreen;
+            yield return seasonEndingScreen;
         }
 
         private static CanvasGroup GetOrAddCanvasGroup(GameObject target)

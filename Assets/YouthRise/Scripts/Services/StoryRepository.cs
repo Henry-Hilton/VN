@@ -10,6 +10,9 @@ namespace YouthRise
         private const string ChapterThreeResource = "YouthRise/chapter3";
         private const string ChapterFourResource = "YouthRise/chapter4";
         private const string ChapterFiveResource = "YouthRise/chapter5";
+        private const string ChapterSixResource = "YouthRise/chapter6";
+        private const string ChapterSevenResource = "YouthRise/chapter7";
+        private const string ChapterEightResource = "YouthRise/chapter8";
 
         public static StoryGraph LoadChapterOne()
         {
@@ -36,8 +39,19 @@ namespace YouthRise
             return Load(ChapterFiveResource, "Chapter 5");
         }
 
+        public static StoryGraph LoadChapterSix()
+        {
+            return Load(ChapterSixResource, "Chapter 6");
+        }
+
         public static StoryGraph LoadById(string chapterId)
         {
+            if (string.Equals(chapterId, "chapter-8", StringComparison.OrdinalIgnoreCase))
+                return LoadChapterEight();
+            if (string.Equals(chapterId, "chapter-7", StringComparison.OrdinalIgnoreCase))
+                return LoadChapterSeven();
+            if (string.Equals(chapterId, "chapter-6", StringComparison.OrdinalIgnoreCase))
+                return LoadChapterSix();
             if (string.Equals(chapterId, "chapter-5", StringComparison.OrdinalIgnoreCase))
                 return LoadChapterFive();
             if (string.Equals(chapterId, "chapter-4", StringComparison.OrdinalIgnoreCase))
@@ -47,6 +61,16 @@ namespace YouthRise
             if (string.Equals(chapterId, "chapter-2", StringComparison.OrdinalIgnoreCase))
                 return LoadChapterTwo();
             return LoadChapterOne();
+        }
+
+        public static StoryGraph LoadChapterSeven()
+        {
+            return Load(ChapterSevenResource, "Chapter 7");
+        }
+
+        public static StoryGraph LoadChapterEight()
+        {
+            return Load(ChapterEightResource, "Chapter 8");
         }
 
         private static StoryGraph Load(string resourcePath, string displayName)

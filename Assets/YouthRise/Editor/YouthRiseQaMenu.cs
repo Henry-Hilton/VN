@@ -79,6 +79,30 @@ namespace YouthRise.EditorTools
         [MenuItem("YouthRise/QA/Return From Completion", false, 25)]
         private static void ReturnFromCompletion() => InvokeButton("Back to Menu");
 
+        [MenuItem("YouthRise/QA/Start Chapter 6", false, 26)]
+        private static void StartChapterSix() => InvokeButton("Start Chapter 6");
+
+        [MenuItem("YouthRise/QA/Open Lifestyle Guides", false, 27)]
+        private static void OpenLifestyleGuides() => InvokeButton("Lifestyle Tab");
+
+        [MenuItem("YouthRise/QA/Start Chapter 7", false, 28)]
+        private static void StartChapterSeven() => InvokeButton("Start Chapter 7");
+
+        [MenuItem("YouthRise/QA/Start Chapter 8", false, 29)]
+        private static void StartChapterEight() => InvokeButton("Start Chapter 8");
+
+        [MenuItem("YouthRise/QA/Open Family Support", false, 30)]
+        private static void OpenFamilySupport() => InvokeButton("Family Tab");
+
+        [MenuItem("YouthRise/QA/Continue Season Ending", false, 31)]
+        private static void ContinueSeasonEnding() => InvokeButton("Season Ending Continue");
+
+        [MenuItem("YouthRise/QA/Ending Family Support", false, 32)]
+        private static void EndingFamilySupport() => InvokeButton("Ending Family Support");
+
+        [MenuItem("YouthRise/QA/Return From Ending", false, 33)]
+        private static void ReturnFromEnding() => InvokeButton("Ending Menu");
+
         private static void InvokeButton(string objectName)
         {
             if (!EditorApplication.isPlaying)

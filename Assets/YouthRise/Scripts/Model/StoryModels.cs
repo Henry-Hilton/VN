@@ -14,6 +14,8 @@ namespace YouthRise
         public string completionHeading;
         public string[] reflectionLines;
         public string[] unlockLabels;
+        public string[] endingLines;
+        public string endingHeading;
         public string startNodeId;
         public StoryNode[] nodes;
     }
