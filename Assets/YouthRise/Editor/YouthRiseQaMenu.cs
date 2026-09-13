@@ -103,6 +103,30 @@ namespace YouthRise.EditorTools
         [MenuItem("YouthRise/QA/Return From Ending", false, 33)]
         private static void ReturnFromEnding() => InvokeButton("Ending Menu");
 
+        [MenuItem("YouthRise/QA/Review Reflection", false, 34)]
+        private static void ReviewReflection() => InvokeButton("Review Reflection");
+
+        [MenuItem("YouthRise/QA/Preview Journey", false, 35)]
+        private static void PreviewJourney() => InvokeButton("Preview Journey");
+
+        [MenuItem("YouthRise/QA/Open Reporting", false, 36)]
+        private static void OpenReporting() => InvokeButton("Report Tab");
+
+        [MenuItem("YouthRise/QA/Open Connection Settings", false, 37)]
+        private static void OpenConnectionSettings() => InvokeButton("Connection Settings");
+
+        [MenuItem("YouthRise/QA/Return From Connection", false, 38)]
+        private static void ReturnFromConnection() => InvokeButton("Connection Back");
+
+        [MenuItem("YouthRise/QA/Return From Sharing", false, 39)]
+        private static void ReturnFromSharing() => InvokeButton("Sharing Back");
+
+        [MenuItem("YouthRise/QA/Toggle Narration", false, 40)]
+        private static void ToggleNarration() => InvokeButton("Voice");
+
+        [MenuItem("YouthRise/QA/Export Preview", false, 41)]
+        private static void ExportPreview() => InvokeButton("Export Preview");
+
         private static void InvokeButton(string objectName)
         {
             if (!EditorApplication.isPlaying)

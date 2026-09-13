@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace YouthRise
 {
-    public sealed class YouthRisePrototype : MonoBehaviour
+    public sealed partial class YouthRisePrototype : MonoBehaviour
     {
         private static readonly Color Ink = Hex("17233A");
         private static readonly Color Paper = Hex("F7F4EC");
@@ -147,6 +147,8 @@ namespace YouthRise
             font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             conversationGenerator = new LocalConversationGenerator();
             safeZoneAssistant = new SafeZoneAssistant();
+            storyAudio = gameObject.AddComponent<StoryAudio>();
+            onlineSettings = OnlineSupportSettings.Load();
             sessionSeed = Guid.NewGuid().GetHashCode();
 
             profile = new PlayerProfile();
@@ -206,6 +208,7 @@ namespace YouthRise
             completionScreen = BuildCompletionScreen(canvasRect);
             safeZoneScreen = BuildSafeZoneScreen(canvasRect);
             seasonEndingScreen = BuildSeasonEndingScreen(canvasRect);
+            BuildLecturerScreens(canvasRect);
 
             toastRoot = CreateRect("Toast", canvasRect, new Vector2(0.365f, 0.862f), new Vector2(0.635f, 0.897f));
             toastRect = toastRoot.GetComponent<RectTransform>();
@@ -368,8 +371,7 @@ namespace YouthRise
             GameObject location = CreateRect("Location", topBar.transform, new Vector2(0.228f, 0.12f), new Vector2(0.52f, 0.88f));
             locationText = AddText(location, "", 20, new Color(1f, 1f, 1f, 0.76f), TextAnchor.MiddleLeft, FontStyle.Bold);
 
-            CreateMeter(topBar.transform, "Risk", "RISK", new Vector2(0.55f, 0.18f), new Vector2(0.75f, 0.82f), Coral, out riskFill, out riskValue);
-            CreateMeter(topBar.transform, "Trust", "TRUST", new Vector2(0.77f, 0.18f), new Vector2(0.97f, 0.82f), Cyan, out trustFill, out trustValue);
+            BuildAudioControls(topBar.transform);
 
             GameObject dialogueShadow = CreateRect("Dialogue Shadow", root.transform, new Vector2(0.315f, 0.258f), new Vector2(0.97f, 0.848f));
             AddImage(dialogueShadow, new Color(0f, 0f, 0f, 0.20f)).raycastTarget = false;
@@ -406,7 +408,7 @@ namespace YouthRise
                 choiceLabels[index].alignment = TextAnchor.MiddleLeft;
                 SetTextPadding(choiceLabels[index], 88f, 18f, 5f, 5f);
 
-                GameObject choiceAccent = CreateRect("Accent", choiceButtons[index].transform, Vector2.zero, new Vector2(0.016f, 1f));
+                GameObject choiceAccent = CreateRect("Accent", choiceButtons[index].transform, new Vector2(0.02f, 0.15f), new Vector2(0.026f, 0.85f));
                 AddImage(choiceAccent, choiceAccents[index]).raycastTarget = false;
 
                 GameObject keycap = CreateRect("Keycap", choiceButtons[index].transform, new Vector2(0.052f, 0.31f), new Vector2(0.145f, 0.69f));
@@ -582,7 +584,7 @@ namespace YouthRise
 
             GameObject intro = CreateRect("Intro", panel.transform, new Vector2(0.05f, 0.75f), new Vector2(0.95f, 0.94f));
             AddText(intro,
-                "PENDAMPING LOKAL\nCeritakan apa yang kamu rasakan. Respons dibuat dari aturan aman di perangkat ini—bukan diagnosis dan bukan manusia.",
+                "PENDAMPING AI / LOKAL — bukan konselor manusia atau layanan darurat. Jangan tulis identitas. Mode online hanya aktif dengan konfigurasi dan persetujuanmu.",
                 21,
                 Navy,
                 TextAnchor.MiddleLeft);
@@ -598,7 +600,14 @@ namespace YouthRise
 
             chatInput = CreateInputField(panel.transform, "Chat Input", "Tulis perasaan atau situasimu...", new Vector2(0.05f, 0.08f), new Vector2(0.76f, 0.30f), false);
             Button send = CreateButton(panel.transform, "Send Chat", "KIRIM", new Vector2(0.79f, 0.08f), new Vector2(0.95f, 0.30f), Blue, White, 21);
+            chatSendButton = send;
             send.onClick.AddListener(SendSafeZoneChat);
+            Button connect = CreateButton(panel.transform, "Connection Settings", "KONEKSI / PRIVASI", new Vector2(0.64f, 0.91f), new Vector2(0.95f, 0.995f), Mint, Navy, 16);
+            connect.onClick.AddListener(ShowConnectionSettings);
+            chatResponse.supportRichText = false;
+            chatResponse.resizeTextForBestFit = true;
+            chatResponse.resizeTextMinSize = 18;
+            chatResponse.resizeTextMaxSize = 23;
 
             return panel;
         }
@@ -699,7 +708,7 @@ namespace YouthRise
             GameObject assessment = CreateRect("Assessment", panel.transform, new Vector2(0.59f, 0.30f), new Vector2(0.955f, 0.73f));
             AddImage(assessment, new Color(Mint.r, Mint.g, Mint.b, 0.45f));
             reportAssessment = AddText(assessment,
-                "Belum dianalisis.\n\nPrototype ini hanya membuat draft lokal; tidak ada laporan yang dikirim otomatis.",
+                "Belum dianalisis.\n\nMulai dari draft lokal. Tidak ada laporan dikirim otomatis. Tinjau / Kirim menyediakan opsi WhatsApp jika koneksi sudah diaktifkan.",
                 20,
                 Ink,
                 TextAnchor.UpperLeft);
@@ -715,14 +724,20 @@ namespace YouthRise
             Button clear = CreateButton(panel.transform, "Clear", "HAPUS FORM", new Vector2(0.60f, 0.08f), new Vector2(0.79f, 0.23f), Cyan, Navy, 18);
             clear.onClick.AddListener(ClearReportForm);
 
-            GameObject localOnly = CreateRect("Local Only", panel.transform, new Vector2(0.81f, 0.08f), new Vector2(0.955f, 0.23f));
-            AddText(localOnly, "LOCAL\nONLY", 17, Coral, TextAnchor.MiddleCenter, FontStyle.Bold);
+            Button submit = CreateButton(panel.transform, "Preview Incident", "TINJAU / KIRIM", new Vector2(0.81f, 0.08f), new Vector2(0.955f, 0.23f), Gold, Navy, 16);
+            submit.onClick.AddListener(() => PreviewSharing(false));
+            Button journey = CreateButton(panel.transform, "Preview Journey", "RINGKASAN PILIHAN 8 ISU", new Vector2(0.60f, 0.93f), new Vector2(0.955f, 0.995f), Mint, Navy, 16);
+            journey.onClick.AddListener(() => PreviewSharing(true));
+            reportInput.characterLimit = 1500;
+            reportInput.onValueChanged.AddListener(_ => { currentAssessment = null; SetButtonEnabled(saveDraftButton, false); });
 
             return panel;
         }
 
         private void StartNewGame()
         {
+            ClearSupportSession();
+            ClearReportForm();
             try
             {
                 story = StoryRepository.LoadChapterOne();
@@ -1014,7 +1029,7 @@ namespace YouthRise
             telemetry.RecordSessionStarted(profile);
 
             if (chapterCompleted)
-                ShowCompletion(false);
+                ShowChapterReview();
             else
                 ShowNode(story.Contains(save.currentNodeId) ? save.currentNodeId : story.Chapter.startNodeId);
         }
@@ -1026,6 +1041,7 @@ namespace YouthRise
 
         private void ShowNode(string nodeId)
         {
+            storyAudio.StopNarration();
             if (string.IsNullOrWhiteSpace(nodeId) || nodeId.Equals("END", StringComparison.OrdinalIgnoreCase))
             {
                 CompleteChapter();
@@ -1127,6 +1143,7 @@ namespace YouthRise
             storyInteractionGroup.blocksRaycasts = true;
             decisionStartedAt = Time.unscaledTime;
             storyTransition = null;
+            NarrateCurrentNode();
         }
 
         private IEnumerator AnimateNodeEntrance(float duration)
@@ -1154,6 +1171,8 @@ namespace YouthRise
 
         private void PopulateNode(StoryNode node)
         {
+            if (node.id == story.Chapter.startNodeId && string.IsNullOrEmpty(branchPath))
+                PlayerJourneyReport.BeginChapter(profile, story.Chapter.number);
             currentNode = node;
             locationText.text = (node.location ?? string.Empty).ToUpperInvariant();
             speakerName.text = (node.speaker ?? "Narasi").ToUpperInvariant();
@@ -1284,6 +1303,7 @@ namespace YouthRise
             int beforeRisk = profile.risk;
             int beforeTrust = profile.TrustScore;
             profile.Apply(choice.effects);
+            PlayerJourneyReport.Record(profile, story.Chapter.number, currentNode, choice);
             branchPath = string.IsNullOrEmpty(branchPath)
                 ? $"{currentNode.id}:{choice.id}"
                 : branchPath + ">" + currentNode.id + ":" + choice.id;
@@ -1308,7 +1328,7 @@ namespace YouthRise
                 SaveProgress("END", true);
             }
 
-            ShowCompletion(false);
+            ShowChapterReview();
         }
 
         private void ShowCompletion(bool grantReward)
@@ -1402,6 +1422,7 @@ namespace YouthRise
 
         private void ShowStartMenu()
         {
+            storyAudio.StopNarration();
             ShowScreenSmooth(startScreen);
 
             bool hasSave = PrototypeSaveService.TryLoad(out PrototypeSave save);
@@ -1524,6 +1545,7 @@ namespace YouthRise
 
         private void ShowSafeZone()
         {
+            storyAudio.StopNarration();
             if ((profile == null || !profile.safeZoneUnlocked) &&
                 PrototypeSaveService.TryLoad(out PrototypeSave save) &&
                 save.profile != null && save.profile.safeZoneUnlocked)
@@ -1612,10 +1634,7 @@ namespace YouthRise
 
         private void SendSafeZoneChat()
         {
-            string input = chatInput.text;
-            chatResponse.text = safeZoneAssistant.CreateChatResponse(input);
-            if (!string.IsNullOrWhiteSpace(input))
-                chatInput.text = string.Empty;
+            SendSupportChat();
         }
 
         private void AnalyzeReport()
@@ -1630,8 +1649,7 @@ namespace YouthRise
 
         private void SaveReportDraft()
         {
-            if (currentAssessment == null)
-                AnalyzeReport();
+            AnalyzeReport();
 
             ReportSaveResult result = safeZoneAssistant.SaveLocalDraft(reportInput.text, currentAssessment);
             reportAssessment.text = result.message;
@@ -1715,8 +1733,8 @@ namespace YouthRise
 
         private void ApplyMeterVisuals()
         {
-            riskFill.fillAmount = displayedRisk / 100f;
-            trustFill.fillAmount = displayedTrust / 100f;
+            MeterFill.SetValue(riskFill, displayedRisk / 100f);
+            MeterFill.SetValue(trustFill, displayedTrust / 100f);
             riskValue.text = $"{Mathf.RoundToInt(displayedRisk):00}%";
             trustValue.text = $"{Mathf.RoundToInt(displayedTrust):00}%";
         }
@@ -1731,19 +1749,8 @@ namespace YouthRise
 
         private void ShowChoiceFeedback(int previousRisk, int previousTrust)
         {
-            int riskDelta = profile.risk - previousRisk;
-            int trustDelta = profile.TrustScore - previousTrust;
-
-            if (riskDelta != 0 || trustDelta != 0)
-            {
-                string risk = riskDelta == 0 ? string.Empty : $"Risk {(riskDelta > 0 ? "↑" : "↓")}  ";
-                string trust = trustDelta == 0 ? string.Empty : $"Trust {(trustDelta > 0 ? "↑" : "↓")}";
-                ShowToast((risk + trust).Trim(), false);
-            }
-            else
-            {
-                ShowToast("Pilihanmu membentuk perjalanan Alex.", false);
-            }
+            // No score arrows or deltas before the end-of-chapter review.
+            ShowToast("Pilihanmu membentuk perjalanan Alex.", false);
         }
 
         private static Color BackgroundFallback(string background)
@@ -1845,6 +1852,9 @@ namespace YouthRise
             completionScreen.SetActive(active == completionScreen);
             safeZoneScreen.SetActive(active == safeZoneScreen);
             seasonEndingScreen.SetActive(active == seasonEndingScreen);
+            if (chapterReviewScreen != null) chapterReviewScreen.SetActive(active == chapterReviewScreen);
+            if (sharingScreen != null) sharingScreen.SetActive(active == sharingScreen);
+            if (connectionScreen != null) connectionScreen.SetActive(active == connectionScreen);
         }
 
         private void ShowScreenSmooth(GameObject target)
@@ -1919,6 +1929,9 @@ namespace YouthRise
             yield return completionScreen;
             yield return safeZoneScreen;
             yield return seasonEndingScreen;
+            yield return chapterReviewScreen;
+            yield return sharingScreen;
+            yield return connectionScreen;
         }
 
         private static CanvasGroup GetOrAddCanvasGroup(GameObject target)
@@ -1936,7 +1949,7 @@ namespace YouthRise
             AddImage(accent, color).raycastTarget = false;
 
             GameObject labelObject = CreateRect("Label", container.transform, new Vector2(0.055f, 0f), new Vector2(0.30f, 1f));
-            AddText(labelObject, label, 14, new Color(1f, 1f, 1f, 0.76f), TextAnchor.MiddleLeft, FontStyle.Bold);
+            AddText(labelObject, label, 22, new Color(1f, 1f, 1f, 0.76f), TextAnchor.MiddleLeft, FontStyle.Bold);
 
             GameObject track = CreateRect("Track", container.transform, new Vector2(0.31f, 0.34f), new Vector2(0.77f, 0.66f));
             AddImage(track, new Color(1f, 1f, 1f, 0.17f)).raycastTarget = false;
@@ -1948,7 +1961,7 @@ namespace YouthRise
             fill.fillOrigin = 0;
 
             GameObject valueObject = CreateRect("Value", container.transform, new Vector2(0.79f, 0f), new Vector2(0.96f, 1f));
-            value = AddText(valueObject, "00%", 16, White, TextAnchor.MiddleRight, FontStyle.Bold);
+            value = AddText(valueObject, "00%", 24, White, TextAnchor.MiddleRight, FontStyle.Bold);
         }
 
         private Text CreateArticleCard(
@@ -2003,7 +2016,8 @@ namespace YouthRise
         private Button CreateButton(Transform parent, string name, string label, Vector2 min, Vector2 max, Color background, Color foreground, int fontSize)
         {
             GameObject buttonObject = CreateRect(name, parent, min, max);
-            Image image = AddImage(buttonObject, background);
+            Image image = buttonObject.AddComponent<RoundedGraphic>();
+            image.color = White;
             Button button = buttonObject.AddComponent<Button>();
             button.targetGraphic = image;
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace YouthRise
@@ -6,6 +7,7 @@ namespace YouthRise
     [Serializable]
     public sealed class PlayerProfile
     {
+        public List<RecordedChoice> recordedChoices = new List<RecordedChoice>();
         public int risk;
         public int trustParent;
         public int trustFriend;
@@ -75,6 +77,7 @@ namespace YouthRise
 
         public void ResetForChapterOne()
         {
+            recordedChoices = new List<RecordedChoice>();
             risk = 30;
             trustParent = 0;
             trustFriend = 0;

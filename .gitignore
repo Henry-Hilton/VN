@@ -22,6 +22,11 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 *.log
+/Backend/.env
+/Backend/.env.*
+!/Backend/.env.example
+/Backend/private-receipts/
+/Backend/node_modules/
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
 *.blend1

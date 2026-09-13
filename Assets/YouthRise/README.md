@@ -6,13 +6,15 @@ YouthRise is a playable Indonesian high-school visual novel prototype. Open the 
 
 - Eight connected chapters with 82 three-choice decisions across 97 story nodes. “Home Is Complicated” (Chapter 8) is the Season 1 finale; Chapter 4 remains an emotional well-being milestone.
 - Hidden evolving metrics include risk, trust, confidence, empathy, knowledge, social support, anxiety, bystander response, relationship awareness, digital safety, boundaries, emotional awareness, coping, help-seeking, and resilience.
-- Visible Risk and Trust meters, decision latency, tendency classification, branch history, and local autosave.
+- Risk and Trust meters hidden during story decisions, revealed in a chapter review before reflection; decision latency, tendency classification, branch history, and local autosave remain.
 - A bounded PCG conversation provider that selects authored dialogue variants from hidden player state. It is deterministic, offline, and replaceable through `IConversationGenerator`.
 - Chapter-specific reflections, one-time 100/150/200/300/250/250/300/300 XP rewards (1,850 total), and an eight-chapter Season 1 progression path.
 - Safe Zone chat, unlockable bullying, healthy-relationship, digital-safety, Financial Safety, Money Smart, Healthy Lifestyle, My Healthy Routine and Family & Support guidance, plus a discreet **Need Extra Help?** reporting tab.
 - Local, explainable report triage for prototype use, including immediate-safety guidance.
 - Twelve hand-painted Indonesian school, home, and support environments plus eleven illustrated cast portraits.
 - Crossfaded scene changes, sliding character entrances, dialogue fades, staggered choice reveals, and smooth screen transitions.
+- Rounded rectangle buttons, original ambient background music and optional local Windows voice narration; Indonesian pronunciation depends on installed voices or authored recordings.
+- Previewable eight-issue choice summaries and disabled-by-default bot/WhatsApp-to-Guru-BK connectors. See [lecturer revision notes](Lecturer-Changes.md).
 
 ## Visual direction
 
@@ -22,15 +24,17 @@ The **YouthRise > QA** editor menu can start the chapter, continue dialogue, or 
 
 ## Safety and privacy boundaries
 
-This prototype does not diagnose users, contact emergency services, or submit reports. Report text can only be saved as an unencrypted local draft, and the interface says so before saving. Telemetry is pseudonymous and local; it records choice metadata and metric snapshots but deliberately excludes chat and report text.
+The shipped configuration does not diagnose users, contact emergency services, submit reports or call online AI. Optional server connections can enable consent-based bot chat and reviewed WhatsApp reports to a configured Guru BK. No report is sent automatically. Game-choice summaries are unvalidated descriptions, not findings about the player's real life. Telemetry is pseudonymous and local; it records choice metadata and metric snapshots but deliberately excludes chat and report text.
 
 Runtime data is written below `Application.persistentDataPath/YouthRise/`:
 
 - `prototype-save.json` — current story/profile save.
 - `Telemetry/*.jsonl` — one local event stream per session.
 - `Reports/*.json` — explicitly saved, unencrypted local drafts.
+- `Reports/*.txt` — explicitly exported preview text, not submitted.
+- `Receipts/*.json` — attempted-report IDs and API acceptance metadata when confirmed; not proof of delivery/read.
 
-Production deployment needs authentication, encrypted transport and storage, consent/retention controls, trained human review, local safeguarding escalation policies, and an approved AI provider. The local PCG and triage implementations are safe placeholders, not production AI services.
+Production deployment needs authentication, encrypted transport and storage, age-appropriate consent/retention controls, trained human review, local safeguarding escalation policies, and an approved AI provider. The local PCG, keyword triage and optional connector are prototypes, not production counseling services. See [backend setup and safety limits](../../Backend/README.md).
 
 ## Content authoring
 

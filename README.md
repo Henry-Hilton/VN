@@ -17,6 +17,9 @@
 - Safe Zone chat, unlockable bullying, healthy-relationship, digital-safety, Financial Safety, Money Smart, Healthy Lifestyle, My Healthy Routine and Family & Support guidance, plus a discreet reporting-draft flow.
 - Twelve hand-painted environments and eleven illustrated characters, including financial mentor Mr. Arman, PE teacher Coach Sarah and Alex's father.
 - Crossfaded scenes, animated character entrances, dialogue fades, and staggered choice reveals.
+- Rounded buttons, original ambient background music, and optional local Windows speech narration (installed voice quality varies).
+- Meters hidden during the story, then a chapter review before reflection; previewable eight-issue choice summaries.
+- Disabled-by-default Gemini/OpenAI support chat and WhatsApp-to-Guru-BK connectors, with separate chat/report consent and API-acceptance receipts. No local AI model required. See [lecturer revision notes](Assets/YouthRise/Lecturer-Changes.md) and [connector setup](Backend/README.md).
 
 ## Getting started
 
@@ -100,10 +103,16 @@ Runtime data is stored beneath `Application.persistentDataPath/YouthRise/`:
 | `prototype-save.json` | Current story and player-profile save |
 | `Telemetry/*.jsonl` | Pseudonymous choice metadata and metric snapshots for one session |
 | `Reports/*.json` | Explicitly saved, unencrypted local report drafts |
+| `Reports/*.txt` | Explicitly exported preview text, not submitted |
+| `Receipts/*.json` | Submission-attempt metadata; API acceptance only when confirmed |
 
-The prototype does not submit reports, contact authorities, diagnose users, or call an online AI service. Telemetry deliberately excludes Safe Zone chat and report text. The interface warns users before saving an unencrypted local draft.
+The shipped configuration makes no online AI calls or report submissions. An optional server connector can enable consent-based support chat and reviewed WhatsApp reports to a configured Guru BK; it is not deployed or configured. No reports are sent automatically from game scores. AI is not a human counselor, and API acceptance is not proof of delivery, reading, or intervention. Telemetry deliberately excludes Safe Zone chat and report text. The interface warns users before saving unencrypted local drafts.
+
+The save now records chapter/node choices for descriptive eight-issue summaries. Legacy saves remain playable but do not acquire invented historical assessments; chapters without newly recorded choices say that data is unavailable. These summaries are unvalidated game-choice heuristics, not psychological or behavioral diagnoses.
 
 A production release would require authentication, encrypted transport and storage, consent and retention controls, trained human review, local safeguarding and escalation policies, and an approved AI provider.
+
+The backend remains a supervised-demo connector, not production safeguarding infrastructure. Gemini support is implemented but not activated or tested against Google's live service. Google's current Gemini terms exclude API clients aimed at or likely to be accessed by under-18s, which conflicts with YouthRise's 11–18 audience; unpaid services must not receive sensitive/personal information. A student key does not resolve these limits. See [Google's terms](https://ai.google.dev/gemini-api/terms) and the [backend safety and activation checklist](Backend/README.md).
 
 ## License
 
