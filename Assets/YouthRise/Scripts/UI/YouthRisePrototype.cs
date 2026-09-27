@@ -209,6 +209,7 @@ namespace YouthRise
             safeZoneScreen = BuildSafeZoneScreen(canvasRect);
             seasonEndingScreen = BuildSeasonEndingScreen(canvasRect);
             BuildLecturerScreens(canvasRect);
+            BuildAccountScreens(canvasRect);
 
             toastRoot = CreateRect("Toast", canvasRect, new Vector2(0.365f, 0.862f), new Vector2(0.635f, 0.897f));
             toastRect = toastRoot.GetComponent<RectTransform>();
@@ -584,7 +585,7 @@ namespace YouthRise
 
             GameObject intro = CreateRect("Intro", panel.transform, new Vector2(0.05f, 0.75f), new Vector2(0.95f, 0.94f));
             AddText(intro,
-                "PENDAMPING AI / LOKAL — bukan konselor manusia atau layanan darurat. Jangan tulis identitas. Mode online hanya aktif dengan konfigurasi dan persetujuanmu.",
+                "RUANG CURHAT LOKAL — bukan konselor manusia atau layanan darurat. Chat biasa tidak dikirim. Pesan mendesak dapat dibagikan ke konselor setelah konfirmasi.",
                 21,
                 Navy,
                 TextAnchor.MiddleLeft);
@@ -708,7 +709,7 @@ namespace YouthRise
             GameObject assessment = CreateRect("Assessment", panel.transform, new Vector2(0.59f, 0.30f), new Vector2(0.955f, 0.73f));
             AddImage(assessment, new Color(Mint.r, Mint.g, Mint.b, 0.45f));
             reportAssessment = AddText(assessment,
-                "Belum dianalisis.\n\nMulai dari draft lokal. Tidak ada laporan dikirim otomatis. Tinjau / Kirim menyediakan opsi WhatsApp jika koneksi sudah diaktifkan.",
+                "Belum dianalisis.\n\nMulai dari draft lokal. Tidak ada laporan dikirim otomatis. Tinjau / Kirim membuka konfirmasi pengiriman ke dashboard konselor lokal.",
                 20,
                 Ink,
                 TextAnchor.UpperLeft);
@@ -1178,7 +1179,9 @@ namespace YouthRise
             speakerName.text = (node.speaker ?? "Narasi").ToUpperInvariant();
             speakerInitials.text = GetInitials(node.speaker);
             storyChapterCaption.text = $"CHAPTER {Mathf.Max(1, story.Chapter.number):00}  •  {(story.Chapter.title ?? string.Empty).ToUpperInvariant()}";
-            dialogueText.text = conversationGenerator.Generate(node, profile, sessionSeed);
+            dialogueText.text = CharacterText(conversationGenerator.Generate(node, profile, sessionSeed));
+            speakerName.text = CharacterText(speakerName.text);
+            speakerInitials.text = GetInitials(CharacterText(node.speaker));
             bool hasChoices = node.choices != null && node.choices.Length > 0;
             for (int index = 0; index < choiceButtons.Length; index++)
             {
@@ -1192,7 +1195,7 @@ namespace YouthRise
                 choiceButtons[index].gameObject.SetActive(true);
                 choiceButtons[index].onClick.RemoveAllListeners();
                 choiceButtons[index].onClick.AddListener(() => SelectChoice(selectedChoice));
-                choiceLabels[index].text = selectedChoice.label;
+                choiceLabels[index].text = CharacterText(selectedChoice.label);
             }
 
             continueStoryButton.gameObject.SetActive(!hasChoices);
@@ -1210,6 +1213,9 @@ namespace YouthRise
         private void SetCharacterArt(string speaker)
         {
             string resource = CharacterResource(speaker);
+            bool anita = account?.gender == "female" && (speaker ?? "").StartsWith("Alex", StringComparison.OrdinalIgnoreCase);
+            if (anita) resource = "YouthRise/Art/Characters/char_anita";
+            characterPortrait.material = anita ? null : chromaKeyMaterial;
             Sprite sprite = string.IsNullOrEmpty(resource) ? null : LoadArtSprite(resource);
             characterPortrait.sprite = sprite;
             characterPortrait.color = sprite != null ? White : new Color(1f, 1f, 1f, 0f);
@@ -1422,6 +1428,7 @@ namespace YouthRise
 
         private void ShowStartMenu()
         {
+            if (account == null) { SetScreen(accountScreen); return; }
             storyAudio.StopNarration();
             ShowScreenSmooth(startScreen);
 
@@ -1434,8 +1441,8 @@ namespace YouthRise
 
             continueMenuButton.gameObject.SetActive(hasSave);
             bool unlocked = hasSave && save.profile != null && save.profile.safeZoneUnlocked;
-            SetButtonEnabled(safeZoneMenuButton, unlocked);
-            safeZoneMenuLabel.text = unlocked ? "SAFE ZONE • TERBUKA" : "SAFE ZONE • TERKUNCI";
+            SetButtonEnabled(safeZoneMenuButton, true);
+            safeZoneMenuLabel.text = "SAFE ZONE • CURHAT & BANTUAN";
 
             bool chapterTwoUnlocked = hasSave && save.profile != null && save.profile.completedChapterOne;
             SetButtonEnabled(chapterTwoMenuButton, chapterTwoUnlocked);
@@ -1541,6 +1548,7 @@ namespace YouthRise
                 : hasSave && save.profile != null && save.profile.relationshipPathUnlocked
                     ? "RELATIONSHIP PATH • TERBUKA   •   CHAPTER 3"
                     : "DIALOG PCG LOKAL   •   PILIHAN BERCABANG   •   SAFE ZONE";
+            ApplyCharacterText();
         }
 
         private void ShowSafeZone()
@@ -1553,7 +1561,7 @@ namespace YouthRise
                 profile = save.profile;
             }
 
-            if (profile == null || !profile.safeZoneUnlocked)
+            if (profile == null || account == null)
                 return;
 
             ShowScreenSmooth(safeZoneScreen);
@@ -1673,6 +1681,7 @@ namespace YouthRise
 
         private void SaveProgress(string nodeId, bool completed)
         {
+            if (account == null) return;
             PrototypeSaveService.Save(new PrototypeSave
             {
                 chapterId = story?.Chapter.id,
@@ -1681,6 +1690,7 @@ namespace YouthRise
                 chapterCompleted = completed,
                 profile = profile
             });
+            resultsDirty = true;
         }
 
         private void UpdateMeters()
@@ -1847,6 +1857,9 @@ namespace YouthRise
 
         private void SetScreen(GameObject active)
         {
+            if (account == null) active = accountScreen;
+            accountScreen.SetActive(active == accountScreen);
+            incidentScreen.SetActive(active == incidentScreen);
             startScreen.SetActive(active == startScreen);
             storyScreen.SetActive(active == storyScreen);
             completionScreen.SetActive(active == completionScreen);
@@ -1855,10 +1868,16 @@ namespace YouthRise
             if (chapterReviewScreen != null) chapterReviewScreen.SetActive(active == chapterReviewScreen);
             if (sharingScreen != null) sharingScreen.SetActive(active == sharingScreen);
             if (connectionScreen != null) connectionScreen.SetActive(active == connectionScreen);
+            CanvasGroup activeGroup = GetOrAddCanvasGroup(active);
+            activeGroup.alpha = 1f;
+            activeGroup.interactable = true;
+            activeGroup.blocksRaycasts = true;
+            ApplyCharacterText();
         }
 
         private void ShowScreenSmooth(GameObject target)
         {
+            ApplyCharacterText();
             GameObject current = null;
             int activeCount = 0;
             foreach (GameObject screen in AllScreens())
@@ -1932,6 +1951,8 @@ namespace YouthRise
             yield return chapterReviewScreen;
             yield return sharingScreen;
             yield return connectionScreen;
+            yield return accountScreen;
+            yield return incidentScreen;
         }
 
         private static CanvasGroup GetOrAddCanvasGroup(GameObject target)

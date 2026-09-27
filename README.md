@@ -21,6 +21,12 @@
 - Meters hidden during the story, then a chapter review before reflection; previewable eight-issue choice summaries.
 - Disabled-by-default Gemini/OpenAI support chat and WhatsApp-to-Guru-BK connectors, with separate chat/report consent and API-acceptance receipts. No local AI model required. See [lecturer revision notes](Assets/YouthRise/Lecturer-Changes.md) and [connector setup](Backend/README.md).
 
+## Local account and counselor dashboard demo
+
+Players now register/login with a name, unique nickname, password, age and gender. Male players follow Alex; female players follow Anita with a new portrait. Saves are isolated per account. Authenticated counselors can view player results, aggregate trends and explicitly confirmed reports in a local web dashboard. Ordinary Safe Zone chat stays local, with a confirmation preview for urgent messages. See [local demo setup](Backend/LOCAL-DEMO.md).
+
+Start the local backend (`npm run setup`, then `npm start` in `Backend`) before playing. Counselor credentials are generated into an ignored local file. No external AI or WhatsApp service is required.
+
 ## Getting started
 
 ### Requirements
@@ -40,7 +46,7 @@ git lfs pull
 1. Add the cloned folder as a project in Unity Hub.
 2. Open it with Unity **6000.5.10f1** and allow Unity to restore the packages.
 3. Open `Assets/Scenes/SampleScene.unity`.
-4. Press **Play**.
+4. Start the local backend as described above, press **Play**, and register or log in.
 
 The runtime bootstrap creates the complete interface automatically; the scene does not require manual wiring.
 
@@ -100,13 +106,14 @@ Runtime data is stored beneath `Application.persistentDataPath/YouthRise/`:
 
 | Path | Purpose |
 | --- | --- |
-| `prototype-save.json` | Current story and player-profile save |
+| `Accounts/<account-id>/prototype-save.json` | Account-isolated story and player-profile save |
+| `prototype-save.json` | Preserved legacy save; not assigned automatically to a new account |
 | `Telemetry/*.jsonl` | Pseudonymous choice metadata and metric snapshots for one session |
 | `Reports/*.json` | Explicitly saved, unencrypted local report drafts |
 | `Reports/*.txt` | Explicitly exported preview text, not submitted |
 | `Receipts/*.json` | Submission-attempt metadata; API acceptance only when confirmed |
 
-The shipped configuration makes no online AI calls or report submissions. An optional server connector can enable consent-based support chat and reviewed WhatsApp reports to a configured Guru BK; it is not deployed or configured. No reports are sent automatically from game scores. AI is not a human counselor, and API acceptance is not proof of delivery, reading, or intervention. Telemetry deliberately excludes Safe Zone chat and report text. The interface warns users before saving unencrypted local drafts.
+The current demo uses the local account/dashboard server. Ordinary Safe Zone chat makes no online AI calls. Confirmed incident messages are saved to the local counselor dashboard; game-choice results sync after saves. Legacy AI/WhatsApp connector endpoints remain disabled and are not used by this demo flow. No reports are sent automatically from game scores. AI is not a human counselor, and API acceptance is not proof of delivery, reading, or intervention. Telemetry deliberately excludes Safe Zone chat and report text. The interface warns users before saving unencrypted local drafts.
 
 The save now records chapter/node choices for descriptive eight-issue summaries. Legacy saves remain playable but do not acquire invented historical assessments; chapters without newly recorded choices say that data is unavailable. These summaries are unvalidated game-choice heuristics, not psychological or behavioral diagnoses.
 

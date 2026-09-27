@@ -18,6 +18,14 @@ namespace YouthRise
     public static class PrototypeSaveService
     {
         private const string SaveFileName = "prototype-save.json";
+        private static string accountId;
+
+        public static void SetAccount(string id)
+        {
+            if (!string.IsNullOrEmpty(id) && !Guid.TryParse(id, out _))
+                throw new ArgumentException("Invalid account ID.", nameof(id));
+            accountId = id;
+        }
 
         public static bool Exists => File.Exists(GetPath());
 
@@ -34,9 +42,8 @@ namespace YouthRise
 
                 string temporaryPath = path + ".tmp";
                 File.WriteAllText(temporaryPath, JsonUtility.ToJson(save, true));
-                if (File.Exists(path))
-                    File.Delete(path);
-                File.Move(temporaryPath, path);
+                if (File.Exists(path)) File.Replace(temporaryPath, path, path + ".bak");
+                else File.Move(temporaryPath, path);
             }
             catch (Exception exception)
             {
@@ -79,7 +86,9 @@ namespace YouthRise
 
         private static string GetPath()
         {
-            return Path.Combine(Application.persistentDataPath, "YouthRise", SaveFileName);
+            return string.IsNullOrEmpty(accountId)
+                ? Path.Combine(Application.persistentDataPath, "YouthRise", SaveFileName)
+                : Path.Combine(Application.persistentDataPath, "YouthRise", "Accounts", accountId, SaveFileName);
         }
     }
 }

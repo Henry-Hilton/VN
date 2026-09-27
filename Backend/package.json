@@ -3,5 +3,5 @@
   "private": true,
   "type": "module",
   "engines": { "node": ">=22.9" },
-  "scripts": { "start": "node --env-file-if-exists=.env server.mjs", "test": "node --test connector.test.mjs gemini.test.mjs" }
+  "scripts": { "setup": "node setup-demo.mjs", "start": "node --env-file-if-exists=.env server.mjs", "test": "node --test connector.test.mjs gemini.test.mjs portal.test.mjs" }
 }

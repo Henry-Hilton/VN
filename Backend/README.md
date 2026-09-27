@@ -1,6 +1,8 @@
 # YouthRise — konektor demo Safe Zone dan WhatsApp Guru BK
 
-Konektor disiapkan, **belum diaktifkan atau dipasang di hosting**. Game tetap dapat dimainkan tanpa server. Gunakan data fiktif untuk demo terawasi; jangan membuka server ini untuk siswa sebelum peninjauan keselamatan dan privasi.
+Untuk fitur terbaru register/login, Alex/Anita, dashboard hasil dan laporan terkonfirmasi, ikuti **[panduan demo lokal](LOCAL-DEMO.md)**. Backend lokal sekarang diperlukan untuk login.
+
+Bagian berikut mendokumentasikan endpoint konektor AI/WhatsApp lama, yang **belum diaktifkan atau dipasang di hosting** dan tidak dipakai alur demo lokal terbaru. Gunakan data fiktif untuk demo terawasi; jangan membuka server ini untuk siswa sebelum peninjauan keselamatan dan privasi.
 
 ## Fitur dan batasnya
 
@@ -18,7 +20,7 @@ Set-Location C:\Users\Henry\VN\Backend
 npm test
 ```
 
-29 tes memakai penyedia palsu dan server loopback sementara. Tidak mengirim pesan WhatsApp atau memanggil AI sungguhan. Mencakup pemilihan penyedia, format Gemini, filter, respons terpotong, konteks, timeout, kegagalan kuota, privasi error, serta regresi OpenAI/WhatsApp.
+Tes konektor memakai penyedia palsu dan server loopback sementara. Tidak mengirim pesan WhatsApp atau memanggil AI sungguhan. Mencakup pemilihan penyedia, format Gemini, filter, respons terpotong, konteks, timeout, kegagalan kuota, privasi error, serta regresi OpenAI/WhatsApp.
 
 Untuk menjalankan server demo dengan layanan eksternal tetap mati:
 

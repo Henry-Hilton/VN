@@ -19,7 +19,7 @@ namespace YouthRise
         private Button chatSendButton, shareButton, localExportButton, sharingBack;
         private readonly List<Text> musicLabels = new List<Text>(), voiceLabels = new List<Text>();
         private readonly List<SupportMessage> chatHistory = new List<SupportMessage>();
-        private bool chatBusy, sharingBusy, previewAttempted;
+        private bool sharingBusy, previewAttempted;
         private int chatEpoch;
         private SupportReportRequest previewRequest;
 
@@ -76,7 +76,7 @@ namespace YouthRise
             onlineChatConsent.onValueChanged.AddListener(consented => {
                 if (consented) return;
                 // In-flight data cannot be recalled; ignore its reply and do not reuse context.
-                chatEpoch++; chatHistory.Clear(); chatBusy = false;
+                chatEpoch++; chatHistory.Clear();
                 SetButtonEnabled(chatSendButton, true);
                 chatResponse.text = "Persetujuan online dinonaktifkan. Chat berikutnya memakai respons lokal.";
             });
@@ -130,49 +130,37 @@ namespace YouthRise
         }
         private void ShowConnectionSettings()
         {
-            connectionStatus.text = (onlineSettings.IsConfigured ? $"Server: {onlineSettings.baseUrl}\nTujuan laporan: {onlineSettings.recipientLabel}" : "Mode lokal. Backend belum dikonfigurasi; chat dan laporan tidak dikirim.") + "\n\nKode akses hanya berada dalam memori sesi. API key AI/WhatsApp tidak boleh dimasukkan ke game. Untuk demo terawasi; bukan pengganti bantuan profesional.";
+            connectionStatus.text = "Demo lokal: chat biasa diproses di perangkat dan tidak dikirim ke AI atau dashboard.\n\nPesan mendesak membuka pratinjau. Hanya setelah kamu menekan Setuju, pesan dan profil akun masuk ke dashboard konselor. Deteksi kata kunci dapat keliru; gunakan tab Need Extra Help untuk meminta bantuan kapan pun.\n\nBukan layanan darurat. Konselor harus membuka dashboard untuk melihat laporan.";
+            accessCode.gameObject.SetActive(false); onlineChatConsent.gameObject.SetActive(false);
             ShowScreenSmooth(connectionScreen);
         }
         private void SendSupportChat()
         {
-            if (chatBusy || string.IsNullOrWhiteSpace(chatInput.text)) return;
-            string input = chatInput.text.Trim(); SafeZoneAssessment assessment = safeZoneAssistant.Assess(input);
-            if (!onlineSettings.IsConfigured || !onlineChatConsent.isOn || string.IsNullOrWhiteSpace(accessCode.text) || assessment.immediateSafetyConcern)
-            { chatResponse.text = "[PENDAMPING LOKAL — tidak dikirim]\n" + safeZoneAssistant.CreateChatResponse(input); chatInput.text = ""; return; }
-            chatBusy = true; SetButtonEnabled(chatSendButton, false);
-            int epoch = chatEpoch;
-            chatResponse.text = "Menghubungi bot AI… Jika ada bahaya sekarang, jangan menunggu aplikasi.";
-            var context = new List<SupportMessage>(chatHistory) { new SupportMessage { role = "user", content = input } };
-            while (context.Count > 6) context.RemoveAt(0);
-            StartCoroutine(OnlineSupportClient.Post(onlineSettings, "/chat", accessCode.text, JsonUtility.ToJson(new SupportChatRequest { consent = true, messages = context.ToArray() }), response => {
-                if (epoch != chatEpoch) return;
-                chatBusy = false; SetButtonEnabled(chatSendButton, true);
-                if (response.success && !string.IsNullOrWhiteSpace(response.reply))
-                {
-                    string answer = response.reply.Length > 900 ? response.reply.Substring(0,900) : response.reply;
-                    chatResponse.text = "[BOT AI — bukan konselor manusia]\n" + answer;
-                    chatHistory.Clear(); chatHistory.AddRange(context); chatHistory.Add(new SupportMessage { role = "assistant", content = answer });
-                    while (chatHistory.Count > 5) chatHistory.RemoveAt(0);
-                    chatInput.text = "";
-                }
-                else chatResponse.text = "[KONEKSI GAGAL — respons lokal]\n" + safeZoneAssistant.CreateChatResponse(input);
-            }));
+            if (account == null || incidentBusy || string.IsNullOrWhiteSpace(chatInput.text)) return;
+            string input = chatInput.text.Trim();
+            SafeZoneAssessment assessment = safeZoneAssistant.Assess(input);
+            chatResponse.text = "[PENDAMPING LOKAL — chat biasa tidak dikirim]\n" + safeZoneAssistant.CreateChatResponse(input);
+            if (assessment.immediateSafetyConcern) PreviewIncident(input);
+            else chatInput.text = "";
         }
         private void ClearSupportSession()
         {
-            chatEpoch++; chatBusy = false; SetButtonEnabled(chatSendButton, true);
+            chatEpoch++; SetButtonEnabled(chatSendButton, true);
             accessCode.text = ""; onlineChatConsent.isOn = false; chatHistory.Clear(); chatInput.text = "";
             chatResponse.text = "Konteks lokal dibersihkan. Data yang sudah dikirim mengikuti kebijakan server/penyedia.";
         }
         private void PreviewSharing(bool journey)
         {
             if (sharingBusy) return;
+            if (!journey && !string.IsNullOrWhiteSpace(reportInput.text)) { PreviewIncident(reportInput.text.Trim()); return; }
             if (!journey && string.IsNullOrWhiteSpace(reportInput.text)) { ShowToast("Tuliskan kejadian terlebih dahulu.", true); return; }
             previewAttempted = false;
             previewRequest = new SupportReportRequest { reportId = "YR-" + Guid.NewGuid().ToString("N"), kind = journey ? "journey" : "incident", recipientLabel = onlineSettings.recipientLabel, text = journey ? PlayerJourneyReport.CreateText(profile) : "PENGADUAN SUKARELA PEMAIN\n" + reportInput.text.Trim() };
             previewText.text = previewRequest.text; previewText.rectTransform.anchoredPosition = Vector2.zero; sharingConsent.isOn = false;
             SetButtonEnabled(localExportButton, true);
             sharingStatus.text = "Tujuan: " + onlineSettings.recipientLabel + ". Gulir untuk membaca seluruh teks.\nSimpan lokal tidak terenkripsi. " + (onlineSettings.IsConfigured ? "Pengiriman memerlukan kode akses di Koneksi / Privasi." : "WhatsApp belum terhubung; tidak ada data dikirim.");
+            sharingStatus.text = "Ringkasan ini tersinkron ke dashboard konselor. Data yang belum tersinkron akan dicoba lagi. Ekspor menyimpan salinan lokal tanpa enkripsi.";
+            sharingConsent.gameObject.SetActive(false); shareButton.gameObject.SetActive(false);
             UpdateShareEnabled(); ShowScreenSmooth(sharingScreen);
         }
         private void UpdateShareEnabled() { SetButtonEnabled(shareButton, !sharingBusy && previewRequest != null && sharingConsent.isOn && onlineSettings.IsConfigured && !string.IsNullOrWhiteSpace(accessCode.text)); }

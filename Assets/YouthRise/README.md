@@ -2,6 +2,10 @@
 
 YouthRise is a playable Indonesian high-school visual novel prototype. Open the project in Unity 6000.5.10f1 and press Play in `Assets/Scenes/SampleScene.unity`; the runtime bootstrap builds the complete interface without requiring scene wiring.
 
+## Local accounts and counselor dashboard
+
+Run the local backend before Play and register/login in the game. Male profiles use Alex; female profiles use Anita. Saves are isolated per account, results sync to an authenticated counselor dashboard, and urgent chat opens a confirmation preview before submission. Ordinary chat stays local. Setup and limitations: [local demo guide](../../Backend/LOCAL-DEMO.md).
+
 ## Implemented flow
 
 - Eight connected chapters with 82 three-choice decisions across 97 story nodes. “Home Is Complicated” (Chapter 8) is the Season 1 finale; Chapter 4 remains an emotional well-being milestone.
@@ -24,7 +28,7 @@ The **YouthRise > QA** editor menu can start the chapter, continue dialogue, or 
 
 ## Safety and privacy boundaries
 
-The shipped configuration does not diagnose users, contact emergency services, submit reports or call online AI. Optional server connections can enable consent-based bot chat and reviewed WhatsApp reports to a configured Guru BK. No report is sent automatically. Game-choice summaries are unvalidated descriptions, not findings about the player's real life. Telemetry is pseudonymous and local; it records choice metadata and metric snapshots but deliberately excludes chat and report text.
+The local demo does not diagnose users, contact emergency services, or call online AI. Confirmed reports are stored in the authenticated local counselor dashboard. Optional server connections can enable consent-based bot chat and reviewed WhatsApp reports to a configured Guru BK. No report is sent automatically. Game-choice summaries are unvalidated descriptions, not findings about the player's real life. Telemetry is pseudonymous and local; it records choice metadata and metric snapshots but deliberately excludes chat and report text.
 
 Runtime data is written below `Application.persistentDataPath/YouthRise/`:
 

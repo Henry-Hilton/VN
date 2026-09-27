@@ -1,0 +1,12 @@
+import { randomBytes } from 'node:crypto';
+import { writeFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+import { createPortal } from './portal.mjs';
+const directory = path.join(path.dirname(fileURLToPath(import.meta.url)), 'private-portal');
+const nickname = 'konselor-' + randomBytes(3).toString('hex');
+const password = randomBytes(15).toString('base64url');
+await createPortal({ portalDirectory: directory, counselorUsername: nickname, counselorPassword: password });
+const filename = path.join(directory, `access-${nickname}.txt`);
+await writeFile(filename, `YouthRise demo lokal\nDashboard: http://127.0.0.1:8787/dashboard\nUsername: ${nickname}\nPassword: ${password}\n\nSimpan privat. Akun ini dapat melihat profil dan laporan semua pemain demo.\n`, { mode: 0o600, flag: 'wx' });
+console.log(`Akun konselor dibuat. Kredensial tersimpan di ${filename}. Jangan commit atau bagikan file ini ke pemain.`);

@@ -4,6 +4,7 @@ import { mkdir, readFile, writeFile, rename } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildGeminiRequest, readGeminiReply } from './gemini.mjs';
+import { createPortal } from './portal.mjs';
 
 const digest = value => createHash('sha256').update(value).digest('hex');
 const safeReply = 'Aku bot AI, bukan konselor manusia. Terima kasih sudah bercerita. Jika kamu tidak aman atau ingin menyakiti diri, jangan menunggu aplikasi: cari tempat aman dan hubungi orang dewasa tepercaya atau layanan darurat setempat. Kamu tidak harus menghadapinya sendirian.';
@@ -99,9 +100,10 @@ export function createConnector(config, options = {}) {
   return { chat, reports };
 }
 
-export function createServer(config, connector = createConnector(config)) {
+export function createServer(config, connector = createConnector(config), portal = null) {
   let windowStart = Date.now(), requests = 0;
   return http.createServer(async (req, res) => {
+    if (portal && await portal(req, res)) return;
     const send = (status, body) => { res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(body)); };
     try {
       requireValue(req.method === 'POST' && ['/chat','/reports'].includes(req.url), 'Not found.', 404);
@@ -128,7 +130,9 @@ export function environmentConfig(env = process.env) {
     waRecipient: env.WHATSAPP_RECIPIENT, waVersion: env.WHATSAPP_GRAPH_VERSION, receiptDirectory: env.RECEIPT_DIRECTORY };
 }
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
-  const server = createServer(environmentConfig());
+  const portal = await createPortal({ counselorUsername: process.env.COUNSELOR_USERNAME,
+    counselorPassword: process.env.COUNSELOR_PASSWORD, portalDirectory: process.env.PORTAL_DIRECTORY });
+  const server = createServer(environmentConfig(), undefined, portal);
   server.requestTimeout = 30000;
   server.listen(Number(process.env.PORT ?? 8787), process.env.HOST ?? '127.0.0.1', () => console.log('YouthRise demo connector ready. No request bodies or credentials are logged.'));
 }
