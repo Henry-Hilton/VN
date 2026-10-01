@@ -334,7 +334,8 @@ namespace YouthRise
             characterPortrait.preserveAspect = true;
             characterPortrait.raycastTarget = false;
 
-            Shader chromaShader = Shader.Find("YouthRise/UI Chroma Key");
+            // Resources retains the shader in player builds, including Android.
+            Shader chromaShader = Resources.Load<Shader>("YouthRise/UIColorKey");
             if (chromaShader != null)
             {
                 chromaKeyMaterial = new Material(chromaShader);
