@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace YouthRise.EditorTools
 {
-    // Explicit opt-in integration test against an isolated local QA server only.
+    // Explicit local integration test; snapshots/restores the PlayerPrefs portal.
     public sealed class YouthRisePortalSmokeTest
     {
         private YouthRisePrototype host;
@@ -21,7 +21,7 @@ namespace YouthRise.EditorTools
 
         public static void RunBatch()
         {
-            if (!File.Exists("Logs/YouthRiseQA/portal-url.txt")) { Debug.LogError("Missing isolated QA server URL."); EditorApplication.Exit(1); return; }
+            UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/Scenes/SampleScene.unity");
             Directory.CreateDirectory("Logs/YouthRiseQA");
             File.WriteAllText("Logs/YouthRiseQA/portal-smoke.txt", "RUNNING");
             SessionState.SetBool("YouthRise.PortalBatch", true);
@@ -55,8 +55,8 @@ namespace YouthRise.EditorTools
         [MenuItem("YouthRise/QA/Run Account Integration Smoke Test", false, 101)]
         private static void Run()
         {
-            if (!Application.isPlaying || !File.Exists("Logs/YouthRiseQA/portal-url.txt"))
-            { Debug.LogWarning("Start isolated QA backend, write its loopback URL to Logs/YouthRiseQA/portal-url.txt, then enter Play Mode first."); return; }
+            if (!Application.isPlaying)
+            { Debug.LogWarning("Enter Play Mode with a logged-out game first. No backend is required."); return; }
             var test = new YouthRisePortalSmokeTest { host = UnityEngine.Object.FindAnyObjectByType<YouthRisePrototype>() };
             if (test.host == null) { Debug.LogError("No active game host."); return; }
             test.host.StartCoroutine(test.Start());
@@ -64,6 +64,10 @@ namespace YouthRise.EditorTools
 
         private IEnumerator Start()
         {
+            bool hadData = PlayerPrefs.HasKey(LocalPlayerPortal.StorageKey);
+            string previousData = PlayerPrefs.GetString(LocalPlayerPortal.StorageKey);
+            PlayerPrefs.DeleteKey(LocalPlayerPortal.StorageKey);
+            try {
             host = UnityEngine.Object.FindAnyObjectByType<YouthRisePrototype>();
             IEnumerator test = Exercise();
             while (true)
@@ -79,14 +83,16 @@ namespace YouthRise.EditorTools
             }
             File.WriteAllText("Logs/YouthRiseQA/portal-smoke.txt", "PASSED: register, female story/portrait, choice sync, ordinary local chat, urgent preview/consent/receipt, logout isolation, login and save restore.");
             Debug.Log("YouthRise portal integration smoke test passed.");
+            } finally {
+                if (hadData) PlayerPrefs.SetString(LocalPlayerPortal.StorageKey, previousData);
+                else PlayerPrefs.DeleteKey(LocalPlayerPortal.StorageKey);
+                PlayerPrefs.Save();
+            }
         }
 
         private IEnumerator Exercise()
         {
-            string url = File.ReadAllText("Logs/YouthRiseQA/portal-url.txt").Trim();
-            Check(Uri.TryCreate(url, UriKind.Absolute, out Uri uri) && uri.IsLoopback, "Only an isolated loopback test server is allowed.");
             Check(host != null && Get<PlayerAccount>("account") == null, "Start with a logged-out game.");
-            Set("accountSettings", new AccountServiceSettings { baseUrl = url });
             string nickname = "qa-" + Guid.NewGuid().ToString("N").Substring(0, 12);
             Set("registering", true); Set("female", true); Call("RefreshAccountMode");
             Get<InputField>("accountName").text = "Unity QA Fictional Player";
@@ -111,7 +117,7 @@ namespace YouthRise.EditorTools
             Call("SelectChoice", decision.choices[0]);
             deadline = Time.realtimeSinceStartup + 20;
             while ((Get<bool>("resultsBusy") || Get<bool>("resultsDirty")) && Time.realtimeSinceStartup < deadline) yield return null;
-            Check(Get<Text>("syncStatus").text.StartsWith("Hasil tersinkron"), "Result upload failed.");
+            Check(Get<Text>("syncStatus").text.StartsWith("Hasil tersimpan"), "Result upload failed.");
             Check(PrototypeSaveService.TryLoad(out PrototypeSave saved) && saved.profile.recordedChoices.Count > 0, "Choice not saved.");
             Call("ShowSafeZone"); yield return new WaitForSecondsRealtime(.5f);
             Check(Get<GameObject>("safeZoneScreen").activeSelf, "Safe Zone unavailable before chapter completion.");
@@ -133,9 +139,20 @@ namespace YouthRise.EditorTools
             while (Get<bool>("accountBusy") && Time.realtimeSinceStartup < deadline) yield return null;
             Check(Get<PlayerAccount>("account")?.nickname == nickname, "Login failed.");
             Check(Get<PlayerProfile>("profile").recordedChoices.Count > 0, "Login did not restore account save.");
+            Call("ShowLocalDashboard");
+            Get<InputField>("dashboardPassword").text = "qa-dashboard-password";
+            Call("RefreshLocalDashboard"); yield return new WaitForSecondsRealtime(.5f);
+            Check(Get<Text>("dashboardText").text.Contains(nickname), "Player missing from local dashboard.");
+            Check(Get<Text>("dashboardText").text.Contains("PESAN UJI FIKTIF"), "Confirmed report missing from local dashboard.");
+            Check(Get<Text>("dashboardText").text.Contains("TREN PILIHAN"), "Aggregate trends missing from dashboard.");
+            Check(Get<GameObject>("localDashboardScreen").activeSelf && !Get<GameObject>("accountScreen").activeSelf, "Dashboard screen transition failed.");
+            LocalPlayerPortal.Logout(Get<string>("dashboardToken")); Set("dashboardToken", null);
+            Get<Text>("dashboardText").text = "";
             deadline = Time.realtimeSinceStartup + 20;
             while (Get<bool>("resultsBusy") && Time.realtimeSinceStartup < deadline) yield return null;
             Call("LogoutAccount");
+            PrototypeSaveService.SetAccount(saved == null ? null : LocalPlayerPortal.Read().players.Find(p => p.user.nickname == nickname)?.user.id);
+            PrototypeSaveService.Clear(); PrototypeSaveService.SetAccount(null);
         }
     }
 }

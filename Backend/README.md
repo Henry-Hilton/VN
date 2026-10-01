@@ -1,6 +1,6 @@
 # YouthRise — konektor demo Safe Zone dan WhatsApp Guru BK
 
-Untuk fitur terbaru register/login, Alex/Anita, dashboard hasil dan laporan terkonfirmasi, ikuti **[panduan demo lokal](LOCAL-DEMO.md)**. Backend lokal sekarang diperlukan untuk login.
+Untuk fitur terbaru register/login, Alex/Anita, dashboard hasil dan laporan terkonfirmasi, ikuti **[panduan demo lokal](LOCAL-DEMO.md)**. Alur game terbaru memakai PlayerPrefs untuk login dan dashboard dalam game; backend tidak diperlukan. Lihat [panduan terbaru](../Assets/YouthRise/Local-Features.md).
 
 Bagian berikut mendokumentasikan endpoint konektor AI/WhatsApp lama, yang **belum diaktifkan atau dipasang di hosting** dan tidak dipakai alur demo lokal terbaru. Gunakan data fiktif untuk demo terawasi; jangan membuka server ini untuk siswa sebelum peninjauan keselamatan dan privasi.
 

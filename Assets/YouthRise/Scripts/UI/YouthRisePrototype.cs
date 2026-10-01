@@ -1857,8 +1857,11 @@ namespace YouthRise
 
         private void SetScreen(GameObject active)
         {
-            if (account == null) active = accountScreen;
+            // A direct navigation during a crossfade must cancel its pending target.
+            if (screenTransition != null) { StopCoroutine(screenTransition); screenTransition = null; }
+            if (account == null && active != localDashboardScreen) active = accountScreen;
             accountScreen.SetActive(active == accountScreen);
+            if (localDashboardScreen != null) localDashboardScreen.SetActive(active == localDashboardScreen);
             incidentScreen.SetActive(active == incidentScreen);
             startScreen.SetActive(active == startScreen);
             storyScreen.SetActive(active == storyScreen);
@@ -1952,6 +1955,7 @@ namespace YouthRise
             yield return sharingScreen;
             yield return connectionScreen;
             yield return accountScreen;
+            if (localDashboardScreen != null) yield return localDashboardScreen;
             yield return incidentScreen;
         }
 

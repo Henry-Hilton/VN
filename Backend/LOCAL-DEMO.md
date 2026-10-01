@@ -1,3 +1,5 @@
+> Legacy Node demo: the current game uses PlayerPrefs and an in-game dashboard with no backend requirement. See [current local setup](../Assets/YouthRise/Local-Features.md). The instructions below describe the retained optional web-backend implementation.
+
 # YouthRise: akun pemain dan dashboard konselor lokal
 
 Implementasi ini menjalankan **satu sekolah/demo per server lokal**. Tidak memerlukan API AI, WhatsApp, npm install, atau layanan eksternal. Gunakan profil dan pesan fiktif untuk demonstrasi.

@@ -21,11 +21,15 @@
 - Meters hidden during the story, then a chapter review before reflection; previewable eight-issue choice summaries.
 - Disabled-by-default Gemini/OpenAI support chat and WhatsApp-to-Guru-BK connectors, with separate chat/report consent and API-acceptance receipts. No local AI model required. See [lecturer revision notes](Assets/YouthRise/Lecturer-Changes.md) and [connector setup](Backend/README.md).
 
-## Local account and counselor dashboard demo
+## Local accounts, dashboard and Gemini chat
 
-Players now register/login with a name, unique nickname, password, age and gender. Male players follow Alex; female players follow Anita with a new portrait. Saves are isolated per account. Authenticated counselors can view player results, aggregate trends and explicitly confirmed reports in a local web dashboard. Ordinary Safe Zone chat stays local, with a confirmation preview for urgent messages. See [local demo setup](Backend/LOCAL-DEMO.md).
-
-Start the local backend (`npm run setup`, then `npm start` in `Backend`) before playing. Counselor credentials are generated into an ignored local file. No external AI or WhatsApp service is required.
+Players register/login locally with a name, nickname, password, age and gender.
+Accounts use PlayerPrefs; story saves remain isolated per account. The in-game
+local dashboard shows player results, aggregate trends and explicitly confirmed
+reports. No Node backend is required. The first dashboard visit sets a manager
+password. Gemini chat can be configured privately for adult developer demos;
+ordinary chat falls back to authored local responses. See
+[local feature setup](Assets/YouthRise/Local-Features.md).
 
 ## Getting started
 
@@ -46,7 +50,7 @@ git lfs pull
 1. Add the cloned folder as a project in Unity Hub.
 2. Open it with Unity **6000.5.10f1** and allow Unity to restore the packages.
 3. Open `Assets/Scenes/SampleScene.unity`.
-4. Start the local backend as described above, press **Play**, and register or log in.
+4. Press **Play**, then register or log in locally. No backend is needed.
 
 The runtime bootstrap creates the complete interface automatically; the scene does not require manual wiring.
 
@@ -113,13 +117,13 @@ Runtime data is stored beneath `Application.persistentDataPath/YouthRise/`:
 | `Reports/*.txt` | Explicitly exported preview text, not submitted |
 | `Receipts/*.json` | Submission-attempt metadata; API acceptance only when confirmed |
 
-The current demo uses the local account/dashboard server. Ordinary Safe Zone chat makes no online AI calls. Confirmed incident messages are saved to the local counselor dashboard; game-choice results sync after saves. Legacy AI/WhatsApp connector endpoints remain disabled and are not used by this demo flow. No reports are sent automatically from game scores. AI is not a human counselor, and API acceptance is not proof of delivery, reading, or intervention. Telemetry deliberately excludes Safe Zone chat and report text. The interface warns users before saving unencrypted local drafts.
+The current demo uses PlayerPrefs for accounts, results and confirmed reports. Ordinary Safe Zone chat uses local responses unless Gemini is privately configured and the session has online-chat consent. Confirmed incident messages and game-choice results are saved to the in-game local dashboard. Legacy AI/WhatsApp connector endpoints remain disabled and are not used by this demo flow. No reports are sent automatically from game scores. AI is not a human counselor, and API acceptance is not proof of delivery, reading, or intervention. Telemetry deliberately excludes Safe Zone chat and report text. The interface warns users before saving unencrypted local drafts.
 
 The save now records chapter/node choices for descriptive eight-issue summaries. Legacy saves remain playable but do not acquire invented historical assessments; chapters without newly recorded choices say that data is unavailable. These summaries are unvalidated game-choice heuristics, not psychological or behavioral diagnoses.
 
 A production release would require authentication, encrypted transport and storage, consent and retention controls, trained human review, local safeguarding and escalation policies, and an approved AI provider.
 
-The backend remains a supervised-demo connector, not production safeguarding infrastructure. Gemini support is implemented but not activated or tested against Google's live service. Google's current Gemini terms exclude API clients aimed at or likely to be accessed by under-18s, which conflicts with YouthRise's 11–18 audience; unpaid services must not receive sensitive/personal information. A student key does not resolve these limits. See [Google's terms](https://ai.google.dev/gemini-api/terms) and the [backend safety and activation checklist](Backend/README.md).
+The backend remains a supervised-demo connector, not production safeguarding infrastructure. The direct Gemini connection is implemented but remains disabled until privately configured; automated checks do not call Google. Google's current Gemini terms exclude API clients aimed at or likely to be accessed by under-18s, which conflicts with YouthRise's 11–18 audience; unpaid services must not receive sensitive/personal information. A student key does not resolve these limits. See [Google's terms](https://ai.google.dev/gemini-api/terms) and the [backend safety and activation checklist](Backend/README.md).
 
 ## License
 

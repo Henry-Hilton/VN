@@ -22,6 +22,7 @@ namespace YouthRise
         private bool sharingBusy, previewAttempted;
         private int chatEpoch;
         private SupportReportRequest previewRequest;
+        private bool chatBusy;
 
         private void BuildAudioControls(Transform parent, bool menu = false)
         {
@@ -76,7 +77,7 @@ namespace YouthRise
             onlineChatConsent.onValueChanged.AddListener(consented => {
                 if (consented) return;
                 // In-flight data cannot be recalled; ignore its reply and do not reuse context.
-                chatEpoch++; chatHistory.Clear();
+                chatEpoch++; chatBusy = false; chatHistory.Clear();
                 SetButtonEnabled(chatSendButton, true);
                 chatResponse.text = "Persetujuan online dinonaktifkan. Chat berikutnya memakai respons lokal.";
             });
@@ -130,22 +131,43 @@ namespace YouthRise
         }
         private void ShowConnectionSettings()
         {
-            connectionStatus.text = "Demo lokal: chat biasa diproses di perangkat dan tidak dikirim ke AI atau dashboard.\n\nPesan mendesak membuka pratinjau. Hanya setelah kamu menekan Setuju, pesan dan profil akun masuk ke dashboard konselor. Deteksi kata kunci dapat keliru; gunakan tab Need Extra Help untuk meminta bantuan kapan pun.\n\nBukan layanan darurat. Konselor harus membuka dashboard untuk melihat laporan.";
-            accessCode.gameObject.SetActive(false); onlineChatConsent.gameObject.SetActive(false);
+            var settings = GeminiLocalSettings.Load();
+            connectionStatus.text = settings.IsConfigured
+                ? "Gemini siap. Aktifkan persetujuan untuk chat online. Maksimal enam pesan sesi dikirim ke Google; profil akun, skor, dan laporan tidak dilampirkan. Gunakan data fiktif untuk demo pengembang dewasa."
+                : "Gemini belum dikonfigurasi. Chat memakai respons lokal. Pengelola dapat menyiapkan koneksi melalui menu YouthRise > Gemini > Open Private Config di Editor.";
+            accessCode.gameObject.SetActive(false); onlineChatConsent.gameObject.SetActive(true);
             ShowScreenSmooth(connectionScreen);
         }
         private void SendSupportChat()
         {
-            if (account == null || incidentBusy || string.IsNullOrWhiteSpace(chatInput.text)) return;
+            if (account == null || incidentBusy || chatBusy || string.IsNullOrWhiteSpace(chatInput.text)) return;
             string input = chatInput.text.Trim();
             SafeZoneAssessment assessment = safeZoneAssistant.Assess(input);
             chatResponse.text = "[PENDAMPING LOKAL — chat biasa tidak dikirim]\n" + safeZoneAssistant.CreateChatResponse(input);
-            if (assessment.immediateSafetyConcern) PreviewIncident(input);
-            else chatInput.text = "";
+            if (assessment.immediateSafetyConcern) { chatHistory.Clear(); PreviewIncident(input); return; }
+            var settings = GeminiLocalSettings.Load();
+            if (!onlineChatConsent.isOn || !settings.IsConfigured) { chatInput.text = ""; return; }
+            // Keep context local to the session; never attach player profiles or reports.
+            var messages = new List<SupportMessage>(chatHistory);
+            messages.Add(new SupportMessage { role = "user", content = input });
+            while (messages.Count > 5) messages.RemoveAt(0);
+            while (messages.Count > 1 && messages[0].role != "user") messages.RemoveAt(0);
+            int epoch = chatEpoch; chatBusy = true; SetButtonEnabled(chatSendButton, false);
+            chatInput.text = ""; chatResponse.text = "Gemini sedang merespons…";
+            StartCoroutine(GeminiSupportClient.Chat(settings, messages.ToArray(), result => {
+                if (epoch != chatEpoch) return;
+                chatBusy = false; SetButtonEnabled(chatSendButton, true);
+                if (result.success) {
+                    chatResponse.supportRichText = false; chatResponse.text = "[PENDAMPING AI — GEMINI]\n" + result.reply;
+                    chatHistory.Clear(); chatHistory.AddRange(messages); chatHistory.Add(new SupportMessage { role = "assistant", content = result.reply });
+                } else {
+                    chatResponse.text = result.error + "\n\n[PENDAMPING LOKAL]\n" + safeZoneAssistant.CreateChatResponse(input);
+                }
+            }));
         }
         private void ClearSupportSession()
         {
-            chatEpoch++; SetButtonEnabled(chatSendButton, true);
+            chatEpoch++; chatBusy = false; SetButtonEnabled(chatSendButton, true);
             accessCode.text = ""; onlineChatConsent.isOn = false; chatHistory.Clear(); chatInput.text = "";
             chatResponse.text = "Konteks lokal dibersihkan. Data yang sudah dikirim mengikuti kebijakan server/penyedia.";
         }
@@ -159,7 +181,7 @@ namespace YouthRise
             previewText.text = previewRequest.text; previewText.rectTransform.anchoredPosition = Vector2.zero; sharingConsent.isOn = false;
             SetButtonEnabled(localExportButton, true);
             sharingStatus.text = "Tujuan: " + onlineSettings.recipientLabel + ". Gulir untuk membaca seluruh teks.\nSimpan lokal tidak terenkripsi. " + (onlineSettings.IsConfigured ? "Pengiriman memerlukan kode akses di Koneksi / Privasi." : "WhatsApp belum terhubung; tidak ada data dikirim.");
-            sharingStatus.text = "Ringkasan ini tersinkron ke dashboard konselor. Data yang belum tersinkron akan dicoba lagi. Ekspor menyimpan salinan lokal tanpa enkripsi.";
+            sharingStatus.text = "Ringkasan pilihan disimpan di dashboard lokal pada perangkat ini. Ekspor menyimpan salinan lokal tanpa enkripsi.";
             sharingConsent.gameObject.SetActive(false); shareButton.gameObject.SetActive(false);
             UpdateShareEnabled(); ShowScreenSmooth(sharingScreen);
         }
